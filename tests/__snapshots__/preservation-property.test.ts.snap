@@ -1,0 +1,173 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`保持不变的属性测试：非 PrimeVue 组件标签名保持不变 > 记录非 PrimeVue 组件标签基线快照 1`] = `
+{
+  "app/components/FloatingConfigurator.vue": [
+    "AppConfigurator",
+  ],
+  "app/components/layout/AppLayout.vue": [
+    "AppTopbar",
+    "AppSidebar",
+    "router-view",
+    "AppFooter",
+  ],
+  "app/components/layout/AppMenu.vue": [
+    "app-menu-item",
+    "/app-menu-item",
+  ],
+  "app/components/layout/AppMenuItem.vue": [
+    "router-link",
+    "/router-link",
+    "Transition",
+    "app-menu-item",
+    "/Transition",
+  ],
+  "app/components/layout/AppSidebar.vue": [
+    "AppMenu",
+  ],
+  "app/components/layout/AppTopbar.vue": [
+    "router-link",
+    "/router-link",
+    "AppConfigurator",
+  ],
+  "app/components/views/Dashboard.vue": [
+    "StatsWidget",
+    "RecentSalesWidget",
+    "BestSellingWidget",
+    "RevenueStreamWidget",
+    "NotificationsWidget",
+  ],
+  "app/components/views/pages/Landing.vue": [
+    "TopbarWidget",
+    "HeroWidget",
+    "FeaturesWidget",
+    "HighlightsWidget",
+    "PricingWidget",
+    "FooterWidget",
+  ],
+  "app/components/views/pages/NotFound.vue": [
+    "FloatingConfigurator",
+    "router-link",
+    "/router-link",
+    "router-link",
+    "/router-link",
+    "router-link",
+    "/router-link",
+  ],
+  "app/components/views/pages/auth/Access.vue": [
+    "FloatingConfigurator",
+  ],
+  "app/components/views/pages/auth/Error.vue": [
+    "FloatingConfigurator",
+  ],
+  "app/components/views/pages/auth/Login.vue": [
+    "FloatingConfigurator",
+  ],
+  "app/components/views/uikit/MessagesDoc.vue": [
+    "transition-group",
+    "/transition-group",
+  ],
+  "app/components/views/utilities/Blocks.vue": [
+    "BlockViewer",
+    "/BlockViewer",
+    "BlockViewer",
+    "/BlockViewer",
+    "BlockViewer",
+    "/BlockViewer",
+    "BlockViewer",
+    "/BlockViewer",
+    "BlockViewer",
+    "/BlockViewer",
+    "BlockViewer",
+    "/BlockViewer",
+    "BlockViewer",
+    "/BlockViewer",
+    "BlockViewer",
+    "/BlockViewer",
+    "BlockViewer",
+  ],
+  "app/layouts/sakai.vue": [
+    "AppTopbar",
+    "AppSidebar",
+    "AppFooter",
+  ],
+  "app/pages/demo/auth/access/index.vue": [
+    "SakaiAuthAccess",
+  ],
+  "app/pages/demo/auth/error/index.vue": [
+    "SakaiAuthError",
+  ],
+  "app/pages/demo/auth/login/index.vue": [
+    "SakaiAuthLogin",
+  ],
+  "app/pages/demo/blocks/free/index.vue": [
+    "SakaiUtilitiesBlocks",
+  ],
+  "app/pages/demo/dashboard/index.vue": [
+    "TestDashboard",
+  ],
+  "app/pages/demo/index.vue": [
+    "SakaiDashboard",
+  ],
+  "app/pages/demo/landing/index.vue": [
+    "SakaiLanding",
+  ],
+  "app/pages/demo/pages/crud/index.vue": [
+    "SakaiCrud",
+  ],
+  "app/pages/demo/pages/empty/index.vue": [
+    "SakaiEmpty",
+  ],
+  "app/pages/demo/pages/notfound/index.vue": [
+    "SakaiNotFound",
+  ],
+  "app/pages/demo/start/documentation/index.vue": [
+    "SakaiDocumentation",
+  ],
+  "app/pages/demo/uikit/button/index.vue": [
+    "SakaiUikitButtonDoc",
+  ],
+  "app/pages/demo/uikit/charts/index.vue": [
+    "SakaiUikitChartDoc",
+  ],
+  "app/pages/demo/uikit/file/index.vue": [
+    "SakaiUikitFileDoc",
+  ],
+  "app/pages/demo/uikit/formlayout/index.vue": [
+    "SakaiUikitFormLayout",
+  ],
+  "app/pages/demo/uikit/input/index.vue": [
+    "SakaiUikitInputDoc",
+  ],
+  "app/pages/demo/uikit/list/index.vue": [
+    "SakaiUikitListDoc",
+  ],
+  "app/pages/demo/uikit/media/index.vue": [
+    "SakaiUikitMediaDoc",
+  ],
+  "app/pages/demo/uikit/menu/index.vue": [
+    "SakaiUikitMenuDoc",
+  ],
+  "app/pages/demo/uikit/message/index.vue": [
+    "SakaiUikitMessagesDoc",
+  ],
+  "app/pages/demo/uikit/misc/index.vue": [
+    "SakaiUikitMiscDoc",
+  ],
+  "app/pages/demo/uikit/overlay/index.vue": [
+    "SakaiUikitOverlayDoc",
+  ],
+  "app/pages/demo/uikit/panel/index.vue": [
+    "SakaiUikitPanelsDoc",
+  ],
+  "app/pages/demo/uikit/table/index.vue": [
+    "SakaiUikitTableDoc",
+  ],
+  "app/pages/demo/uikit/timeline/index.vue": [
+    "SakaiUikitTimelineDoc",
+  ],
+  "app/pages/demo/uikit/tree/index.vue": [
+    "SakaiUikitTreeDoc",
+  ],
+}
+`;

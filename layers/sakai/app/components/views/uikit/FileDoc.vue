@@ -1,0 +1,53 @@
+<script setup>
+const toast = useToast();
+const fileupload = ref();
+
+function upload() {
+  fileupload.value.upload();
+}
+
+function onUpload() {
+  toast.add({
+    severity: 'info',
+    summary: 'Success',
+    detail: 'File Uploaded',
+    life: 3000,
+  });
+}
+</script>
+
+<template>
+  <div class="grid grid-cols-12 gap-8">
+    <div class="col-span-full lg:col-span-6">
+      <div class="card">
+        <div class="mb-4 text-xl font-semibold">Advanced</div>
+        <PrimeFileUpload
+          name="demo[]"
+          @uploader="onUpload"
+          :multiple="true"
+          accept="image/*"
+          :maxFileSize="1000000"
+          customUpload
+        />
+      </div>
+    </div>
+    <div class="col-span-full lg:col-span-6">
+      <div class="card">
+        <div class="mb-4 text-xl font-semibold">Basic</div>
+        <div class="card flex flex-col items-center justify-center gap-6">
+          <PrimeToast />
+          <PrimeFileUpload
+            ref="fileupload"
+            mode="basic"
+            name="demo[]"
+            accept="image/*"
+            :maxFileSize="1000000"
+            @uploader="onUpload"
+            customUpload
+          />
+          <PrimeButton label="Upload" @click="upload" severity="secondary" />
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

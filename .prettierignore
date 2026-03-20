@@ -1,0 +1,11 @@
+# Ignore artifacts:
+coverage
+node_modules
+dist
+.changeset
+**/public
+**/.umi
+lib
+*-raw.js
+*-raw.json
+./utils/encode.ts

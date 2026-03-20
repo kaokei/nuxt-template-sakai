@@ -1,0 +1,44 @@
+@font-face {
+  font-family: 'JinBuTi';
+  src: local('DingTalk JinBuTi'), local('DingTalk-JinBuTi'),
+    url('https://cdn.kaokei.com/font/JinBuTi_1762832651480/JinBuTi.woff2') format('woff2') /* chrome、firefox */,
+    url('https://cdn.kaokei.com/font/JinBuTi_1762832651480/JinBuTi.woff') format('woff') /* chrome、firefox */,
+    url('https://cdn.kaokei.com/font/JinBuTi_1762832651480/JinBuTi.ttf') format('truetype') /* chrome、firefox、opera、Safari, Android, iOS 4.2+ */,
+    url('https://cdn.kaokei.com/font/JinBuTi_1762832651480/JinBuTi.svg#JinBuTi') format('svg'); /* iOS 4.1- */
+  font-style: normal;
+  font-weight: normal;
+  font-display: swap;
+}
+
+@font-face {
+    font-family: 'RubikDoodleShadow';
+    src: local('Rubik Doodle Shadow Regular'), local('RubikDoodleShadow-Regular'),
+        url('https://cdn.kaokei.com/font/RubikDoodleShadow_1767680918427/RubikDoodleShadow-Regular.woff2') format('woff2'),
+        url('https://cdn.kaokei.com/font/RubikDoodleShadow_1767680918427/RubikDoodleShadow-Regular.woff') format('woff'),
+        url('https://cdn.kaokei.com/font/RubikDoodleShadow_1767680918427/RubikDoodleShadow-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Tourney';
+    src: local('Tourney Thin'), local('Tourney-Thin'),
+        url('https://cdn.kaokei.com/font/Tourney_1764246373295/Tourney-Thin.woff2') format('woff2'),
+        url('https://cdn.kaokei.com/font/Tourney_1764246373295/Tourney-Thin.woff') format('woff'),
+        url('https://cdn.kaokei.com/font/Tourney_1764246373295/Tourney-Thin.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Tourney';
+    src: local('Tourney Thin Italic'), local('Tourney-ThinItalic'),
+        url('https://cdn.kaokei.com/font/Tourney_1764246373295/Tourney-ThinItalic.woff2') format('woff2'),
+        url('https://cdn.kaokei.com/font/Tourney_1764246373295/Tourney-ThinItalic.woff') format('woff'),
+        url('https://cdn.kaokei.com/font/Tourney_1764246373295/Tourney-ThinItalic.ttf') format('truetype');
+    font-weight: 100;
+    font-style: italic;
+    font-display: swap;
+}

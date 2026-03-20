@@ -1,0 +1,16 @@
+# If the commit message file contains any non-comment, non-blank line,
+# treat it as an already-prepared message and skip cz. This handles both
+# -m/-F cases and editors (VSCode) that pass source="message" but leave
+# the file empty when the user didn't type content in the UI.
+if [ -f "$1" ]; then
+  if grep -qE '^[^#[:space:]]' "$1"; then
+    exit 0
+  fi
+fi
+
+# Only run cz in an interactive terminal to avoid blocking non-interactive CI
+if [ -t 1 ]; then
+  exec < /dev/tty
+  pnpm -s exec -- cz --hook "$1" "$2" "$3" || true
+fi
+
