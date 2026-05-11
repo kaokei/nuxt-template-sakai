@@ -1,4 +1,3 @@
-import { Inject } from '@kaokei/use-vue-service';
 import type { UserVO } from '~/types/user';
 import { StorageService } from './storage.service';
 

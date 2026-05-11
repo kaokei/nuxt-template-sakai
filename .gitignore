@@ -26,3 +26,5 @@ logs
 .windsurf/
 .qwen/
 .gemini/
+.claude/
+.kiro/

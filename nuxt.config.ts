@@ -42,7 +42,12 @@ export default defineNuxtConfig({
       extensions: ['.vue', '.tsx'],
     },
   ],
-  modules: ['@primevue/nuxt-module', '@nuxt/icon', '@nuxt/eslint'],
+  modules: [
+    '@primevue/nuxt-module',
+    '@nuxt/icon',
+    '@nuxt/eslint',
+    '@kaokei/nuxt-use-vue-service',
+  ],
   primevue: {
     components: {
       prefix: 'Prime',

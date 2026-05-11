@@ -27,8 +27,9 @@
     "debug": "tsx ./utils/markdown/summary.test.ts"
   },
   "dependencies": {
-    "@kaokei/di": "^3.0.9",
-    "@kaokei/use-vue-service": "^3.0.2",
+    "@kaokei/di": "^5.0.9",
+    "@kaokei/nuxt-use-vue-service": "^1.0.5",
+    "@kaokei/use-vue-service": "^4.0.5",
     "@primeuix/themes": "^2.0.3",
     "@tailwindcss/vite": "^4.2.2",
     "@vueuse/core": "^14.2.1",
