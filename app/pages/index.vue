@@ -1,5 +1,15 @@
 <script lang="ts" setup>
 import { useSeoMeta } from '#imports';
+import { StorageService } from '../services/storage.service';
+import { UserService } from '../services/user.service';
+
+declareProviders([UserService, StorageService]);
+
+const userService = useService(UserService);
+
+userService.initUserWhenPageLoaded();
+
+console.log('userService => ', userService.user);
 
 useSeoMeta({
   title: 'kaokei',
@@ -14,6 +24,7 @@ useSeoMeta({
       基于primevue sakai主题的二次开发，将原项目移植成为nuxt
       layer，从而方便复用代码。
     </p>
+    <p>{{ userService.user }}</p>
 
     <div class="flex gap-2">
       <PrimeButton
