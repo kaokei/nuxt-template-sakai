@@ -50,7 +50,7 @@ onMounted(() => {
   <div class="flex flex-col gap-4">
     <ProblemSearchBar @search="mgr.onSearch" @reset="mgr.onReset" />
 
-    <div class="card">
+    <div class="card !p-4">
       <PrimeToolbar class="mb-4">
         <template #start>
           <div class="flex gap-2">
