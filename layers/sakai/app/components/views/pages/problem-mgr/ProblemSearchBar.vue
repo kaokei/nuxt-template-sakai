@@ -89,7 +89,6 @@ function handleReset() {
         option-value="value"
         placeholder="全部"
         show-clear
-        class="w-32"
       />
     </div>
 
@@ -102,7 +101,6 @@ function handleReset() {
         option-value="value"
         placeholder="全部"
         show-clear
-        class="w-24"
       />
     </div>
 
@@ -113,7 +111,7 @@ function handleReset() {
         :options="allTags"
         placeholder="选择标签"
         show-clear
-        class="max-w-64 min-w-48"
+        class="max-w-64"
         display="chip"
       />
     </div>
@@ -127,7 +125,6 @@ function handleReset() {
         option-value="value"
         placeholder="全部"
         show-clear
-        class="w-24"
       />
     </div>
 
@@ -139,7 +136,7 @@ function handleReset() {
         date-format="yy-mm-dd"
         placeholder="选择范围"
         show-clear
-        class="w-44"
+        class="min-w-66"
       />
     </div>
 
