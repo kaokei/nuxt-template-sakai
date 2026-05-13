@@ -72,6 +72,19 @@
 - 组件直接以文件名注册，无需目录前缀
 - 例：`base/button/CopyButton.vue` → `<CopyButton />`
 
+### Sakai Layer 组件的导入限制 ⚠️
+
+- `nuxt.config.ts` 中仅对 `app/components/` 下的 `base`、`common`、`features` 三个目录配置了自动导入
+- **sakai 层（`layers/sakai/`）中的组件不会被 Nuxt 自动导入**
+- 在 sakai 层的页面或组件中使用 sakai 层自己的子组件时，**必须显式 import**：
+  ```vue
+  <script lang="ts" setup>
+  import MyComponent from '@sakai/components/views/pages/some-dir/MyComponent.vue';
+  </script>
+  ```
+- 例外：PrimeVue 组件（`<PrimeButton>` 等）、Nuxt 内置组件、Vue API（`ref` 等）依然自动可用
+- 主 app 层（`app/`）的组件互相引用时同理，不在 `base/common/features` 目录下的组件也需要显式 import
+
 ### 自动导入
 
 - Nuxt 自动导入 `composables/`、`utils/` 目录下的导出

@@ -244,7 +244,6 @@ onMounted(() => {
         :sort-field="sortField"
         :sort-order="sortOrder"
         scrollable
-        scrollHeight="600px"
         :row-hover="true"
         striped-rows
         paginator-template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
