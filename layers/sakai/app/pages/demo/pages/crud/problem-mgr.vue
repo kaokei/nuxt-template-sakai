@@ -2,9 +2,8 @@
 import ProblemMgr from '@sakai/components/views/pages/ProblemMgr.vue';
 import { ProblemMgrService } from '@sakai/services/ProblemMgrService';
 import { ProblemService } from '@sakai/services/ProblemService';
-import { ProblemMockService } from '@sakai/services/mock/problem-mock.service';
 
-declareProviders([ProblemMockService, ProblemService, ProblemMgrService]);
+declareProviders([ProblemService, ProblemMgrService]);
 
 definePageMeta({
   layout: 'sakai',

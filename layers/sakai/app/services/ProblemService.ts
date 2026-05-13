@@ -1,21 +1,35 @@
-import type { MockQueryParams } from '~/services/mock/base-mock.service';
-import {
-  type MockProblem,
-  ProblemMockService,
-} from './mock/problem-mock.service';
+export interface Problem {
+  id: string;
+  problemNumber: string;
+  title: string;
+  owner: string;
+  difficulty: 'Easy' | 'Medium' | 'Hard';
+  tags: string[];
+  acceptanceRate: number;
+  submissions: number;
+  timeLimit: number;
+  memoryLimit: number;
+  createTime: string;
+  lastModifiedTime: string;
+  accessLevel: 'Public' | 'Private' | 'Shared';
+  description: string;
+}
 
-/**
- * 题目数据模型
- *
- * 注：Mock 层使用 MockProblem 类型，当前服务类型与之保持一致。
- * 当接入真实 API 后，此类型由后端接口定义驱动。
- */
-export type Problem = MockProblem;
+export interface ProblemQueryParams {
+  page?: number;
+  pageSize?: number;
+  sortField?: string;
+  sortOrder?: number;
+  problemNumber?: string;
+  title?: string;
+  owner?: string;
+  difficulty?: string;
+  tags?: string[];
+  accessLevel?: string;
+  createTimeFrom?: string;
+  createTimeTo?: string;
+}
 
-/** 题目查询参数 */
-export interface ProblemQueryParams extends MockQueryParams {}
-
-/** 分页结果 */
 export interface PageResult<T> {
   data: T[];
   total: number;
@@ -28,10 +42,6 @@ export interface SelectOption {
 
 @Injectable()
 export class ProblemService {
-  @Inject(ProblemMockService)
-  private mockService!: ProblemMockService;
-
-  /** 所有标签选项 */
   getAllTags(): string[] {
     return [
       '数组',
@@ -57,7 +67,6 @@ export class ProblemService {
     ];
   }
 
-  /** 难度选项 */
   getDifficultyOptions(): SelectOption[] {
     return [
       { label: '简单', value: 'Easy' },
@@ -66,7 +75,6 @@ export class ProblemService {
     ];
   }
 
-  /** 可见级别选项 */
   getAccessLevelOptions(): SelectOption[] {
     return [
       { label: '公开', value: 'Public' },
@@ -75,7 +83,6 @@ export class ProblemService {
     ];
   }
 
-  /** 所有者选项 */
   getOwnerOptions(): SelectOption[] {
     return [
       '张三',
@@ -91,55 +98,54 @@ export class ProblemService {
     ].map((name) => ({ label: name, value: name }));
   }
 
-  /** 查询列表（分页+筛选+排序） */
   async queryProblems(
     params: ProblemQueryParams = {},
   ): Promise<PageResult<Problem>> {
-    const result = await this.mockService.query(params);
-    return { data: result.data, total: result.total };
+    const query = new URLSearchParams();
+    for (const [key, value] of Object.entries(params)) {
+      if (
+        value !== undefined &&
+        value !== null &&
+        value !== '' &&
+        !(Array.isArray(value) && value.length === 0)
+      ) {
+        query.set(key, String(value));
+      }
+    }
+    return $fetch('/api/problems', { query });
   }
 
-  /** 根据 ID 查询 */
   async getProblemById(id: string): Promise<Problem | undefined> {
-    return this.mockService.getById(id);
+    try {
+      return await $fetch(`/api/problems/${id}`);
+    } catch {
+      return undefined;
+    }
   }
 
-  /** 新增题目 */
   async createProblem(
     data: Omit<
       Problem,
       'id' | 'problemNumber' | 'createTime' | 'lastModifiedTime'
     >,
   ): Promise<Problem> {
-    const now = new Date();
-    const newData = {
-      ...data,
-      problemNumber: `OJ-${Date.now()}`,
-      createTime: now,
-      lastModifiedTime: now,
-    };
-    return this.mockService.create(newData as unknown as Omit<Problem, 'id'>);
+    return $fetch('/api/problems', { method: 'POST', body: data });
   }
 
-  /** 更新题目 */
-  async updateProblem(
-    id: string,
-    data: Partial<Problem>,
-  ): Promise<Problem | undefined> {
-    const updateData = {
-      ...data,
-      lastModifiedTime: new Date(),
-    };
-    return this.mockService.update(id, updateData);
+  async updateProblem(id: string, data: Partial<Problem>): Promise<Problem> {
+    return $fetch(`/api/problems/${id}`, { method: 'PUT', body: data });
   }
 
-  /** 删除单条题目 */
   async deleteProblem(id: string): Promise<boolean> {
-    return this.mockService.delete(id);
+    await $fetch(`/api/problems/${id}`, { method: 'DELETE' });
+    return true;
   }
 
-  /** 批量删除 */
   async deleteProblems(ids: string[]): Promise<number> {
-    return this.mockService.batchDelete(ids);
+    const res = await $fetch('/api/problems/batch-delete', {
+      method: 'POST',
+      body: { ids },
+    });
+    return (res as { deleted: number }).deleted;
   }
 }
