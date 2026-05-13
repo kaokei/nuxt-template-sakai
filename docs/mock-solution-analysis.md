@@ -6,6 +6,135 @@
 
 ---
 
+## 〇、数据流全景
+
+### 整体架构
+
+```mermaid
+flowchart TB
+    subgraph Browser["🖥 浏览器"]
+        direction TB
+        Vue["Vue 组件<br/>ProblemMgr.vue"]
+        Svc["ProblemService<br/>$fetch('/api/problems')"]
+        MSW_Client["MSW Client Plugin<br/>app/plugins/msw.client.ts"]
+    end
+
+    subgraph SW["🔧 Service Worker 层"]
+        MSW_Core["MSW Core<br/>请求拦截 + 路由匹配"]
+    end
+
+    subgraph Handlers["📦 Mock Handlers"]
+        direction LR
+        H_GET["GET /api/problems"]
+        H_POST["POST /api/problems"]
+        H_PUT["PUT /api/problems/:id"]
+        H_DELETE["DELETE /api/problems/:id"]
+        H_BATCH["POST /api/problems/batch-delete"]
+    end
+
+    subgraph Data["🗄 数据层"]
+        direction TB
+        Faker["faker-js<br/>seeded(2026)"]
+        Memory["内存数组<br/>problems: Problem[]"]
+    end
+
+    Vue -->|"useService()"| Svc
+    Svc -->|"HTTP 请求"| MSW_Client
+    MSW_Client -->|"worker.start()"| MSW_Core
+    MSW_Core -->|"匹配路由"| Handlers
+    H_GET & H_POST & H_PUT & H_DELETE & H_BATCH -->|"读写"| Memory
+    Faker -->|"生成 60 条初始数据"| Memory
+    Memory -->|"JSON 响应"| Handlers
+    Handlers -->|"HttpResponse.json()"| MSW_Core
+    MSW_Core -->|"透明返回"| Svc
+    Svc -->|"PageResult<Problem>"| Vue
+```
+
+### 请求生命周期
+
+```mermaid
+sequenceDiagram
+    actor User as 用户
+    participant Page as problem-mgr.vue
+    participant Mgr as ProblemMgrService
+    participant Svc as ProblemService
+    participant Fetch as $fetch
+    participant MSW as MSW Service Worker
+    participant Handler as Mock Handler
+    participant Data as 内存数据
+
+    User->>Page: 打开页面
+    Page->>Page: declareProviders()
+    Page->>Mgr: mgr.loadProblems()
+    Mgr->>Svc: queryProblems({ page, pageSize, sortField, sortOrder })
+
+    Note over Svc: 发真实 HTTP 请求
+    Svc->>Fetch: $fetch('/api/problems?page=1&pageSize=10')
+
+    Note over MSW: Service Worker 拦截
+    Fetch-->>MSW: 请求拦截
+    MSW->>Handler: http.get('/api/problems')
+    Handler->>Handler: 解析 query params
+    Handler->>Data: 筛选 → 排序 → 分页
+    Data-->>Handler: 当前页数据
+    Handler->>Handler: await delay(300)
+    Handler-->>MSW: HttpResponse.json({ data, total })
+
+    MSW-->>Fetch: Mock 响应
+    Fetch-->>Svc: PageResult<Problem>
+    Svc-->>Mgr: { data: [...], total: 60 }
+    Mgr->>Mgr: this.problems = result.data
+    Mgr-->>Page: 响应式更新
+    Page-->>User: 表格渲染 10 条题目
+```
+
+### 新增/编辑/删除流程
+
+```mermaid
+sequenceDiagram
+    actor User as 用户
+    participant Dialog as ProblemFormDialog
+    participant Mgr as ProblemMgrService
+    participant Svc as ProblemService
+    participant MSW as MSW Service Worker
+    participant Handler as Mock Handler
+    participant Data as 内存数组
+
+    Note over User,Data: === 新增题目 ===
+    User->>Dialog: 填写表单 → 保存
+    Dialog->>Mgr: emit('saved')
+    Mgr->>Svc: createProblem(formData)
+    Svc->>MSW: $fetch POST /api/problems
+    MSW->>Handler: 生成 ID + 时间戳
+    Handler->>Data: problems.unshift(newProblem)
+    Handler-->>MSW: 201 Created
+    MSW-->>Svc: Problem
+    Mgr->>Mgr: loadProblems() 刷新列表
+
+    Note over User,Data: === 删除题目 ===
+    User->>Dialog: 确认删除
+    Dialog->>Mgr: confirmDelete()
+    Mgr->>Svc: deleteProblem(id)
+    Svc->>MSW: $fetch DELETE /api/problems/:id
+    MSW->>Handler: 查找并删除
+    Handler->>Data: problems.splice(idx, 1)
+    Handler-->>MSW: { success: true }
+    MSW-->>Svc: true
+    Mgr->>Mgr: loadProblems() 刷新列表
+```
+
+### 关键设计决策
+
+| 决策                    | 说明                                                                                                  |
+| ----------------------- | ----------------------------------------------------------------------------------------------------- |
+| **Service Worker 拦截** | 在网络层透明拦截，`$fetch` 发起的是真实 HTTP 请求，DevTools Network 面板可见                          |
+| **内存数组存储**        | 所有 CRUD 操作修改同一份 `problems[]`，页面刷新后恢复初始数据（符合 Demo 预期）                       |
+| **seeded faker-js**     | `faker.seed(2026)` 固定随机种子，每次生成相同数据，方便截图和回归验证                                 |
+| **全环境启用**          | 不区分 `import.meta.env.DEV`，SSG 构建后部署到 CF Pages 同样可用                                      |
+| **零组件改动**          | `ProblemMgrService` 和所有子组件的接口不变，仅 `ProblemService` 内部从 `@Inject mock` 切换到 `$fetch` |
+
+---
+
 ## 一、当前实现分析
 
 ### 1.1 架构回顾

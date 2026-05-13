@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import type { Problem } from '@sakai/services/ProblemService';
-import { ProblemService } from '@sakai/services/ProblemService';
+import {
+  ProblemService,
+  type SelectOption,
+} from '@sakai/services/ProblemService';
 
 const visible = defineModel<boolean>('visible', { required: true });
 const editData = defineModel<Problem | null>('editData', { default: null });
@@ -25,11 +28,18 @@ const form = ref({
   description: '',
 });
 
-const allTags = ref<string[]>(problemService.getAllTags());
-const difficultyOptions = ref(problemService.getDifficultyOptions());
-const accessLevelOptions = ref(problemService.getAccessLevelOptions());
-const ownerOptions = ref(problemService.getOwnerOptions());
+const allTags = ref<string[]>([]);
+const difficultyOptions = ref<SelectOption[]>([]);
+const accessLevelOptions = ref<SelectOption[]>([]);
+const ownerOptions = ref<SelectOption[]>([]);
 const isEdit = computed(() => !!editData.value);
+
+onMounted(async () => {
+  allTags.value = await problemService.getAllTags();
+  difficultyOptions.value = await problemService.getDifficultyOptions();
+  accessLevelOptions.value = await problemService.getAccessLevelOptions();
+  ownerOptions.value = await problemService.getOwnerOptions();
+});
 
 watch(visible, (isVisible) => {
   if (isVisible) {

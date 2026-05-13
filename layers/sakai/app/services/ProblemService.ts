@@ -40,62 +40,41 @@ export interface SelectOption {
   value: string;
 }
 
+interface ProblemOptions {
+  tags: string[];
+  difficultyOptions: SelectOption[];
+  accessLevelOptions: SelectOption[];
+  ownerOptions: SelectOption[];
+}
+
 @Injectable()
 export class ProblemService {
-  getAllTags(): string[] {
-    return [
-      '数组',
-      '字符串',
-      '哈希表',
-      '动态规划',
-      '贪心',
-      '排序',
-      '二分查找',
-      '双指针',
-      '树',
-      '图',
-      '链表',
-      '栈',
-      '队列',
-      '堆',
-      '回溯',
-      '分治',
-      '位运算',
-      '数学',
-      '深度优先搜索',
-      '广度优先搜索',
-    ];
+  private optionsCache: ProblemOptions | null = null;
+
+  private async loadOptions(): Promise<ProblemOptions> {
+    if (this.optionsCache) return this.optionsCache;
+    this.optionsCache = await $fetch<ProblemOptions>('/api/problems/options');
+    return this.optionsCache;
   }
 
-  getDifficultyOptions(): SelectOption[] {
-    return [
-      { label: '简单', value: 'Easy' },
-      { label: '中等', value: 'Medium' },
-      { label: '困难', value: 'Hard' },
-    ];
+  async getAllTags(): Promise<string[]> {
+    const opts = await this.loadOptions();
+    return opts.tags;
   }
 
-  getAccessLevelOptions(): SelectOption[] {
-    return [
-      { label: '公开', value: 'Public' },
-      { label: '私有', value: 'Private' },
-      { label: '共享', value: 'Shared' },
-    ];
+  async getDifficultyOptions(): Promise<SelectOption[]> {
+    const opts = await this.loadOptions();
+    return opts.difficultyOptions;
   }
 
-  getOwnerOptions(): SelectOption[] {
-    return [
-      '张三',
-      '李四',
-      '王五',
-      '赵六',
-      '孙七',
-      '周八',
-      '吴九',
-      '郑十',
-      '陈一',
-      '刘二',
-    ].map((name) => ({ label: name, value: name }));
+  async getAccessLevelOptions(): Promise<SelectOption[]> {
+    const opts = await this.loadOptions();
+    return opts.accessLevelOptions;
+  }
+
+  async getOwnerOptions(): Promise<SelectOption[]> {
+    const opts = await this.loadOptions();
+    return opts.ownerOptions;
   }
 
   async queryProblems(

@@ -126,4 +126,30 @@ export const problemHandlers = [
       deleted: before - problems.length,
     });
   }),
+
+  // 选项数据（标签/难度/可见级别/所有者）
+  http.get('/api/problems/options', async () => {
+    await delay(150);
+    const tags = [...new Set(problems.flatMap((p) => p.tags))];
+    const difficultyOptions = [
+      { label: '简单', value: 'Easy' },
+      { label: '中等', value: 'Medium' },
+      { label: '困难', value: 'Hard' },
+    ];
+    const accessLevelOptions = [
+      { label: '公开', value: 'Public' },
+      { label: '私有', value: 'Private' },
+      { label: '共享', value: 'Shared' },
+    ];
+    const ownerOptions = [...new Set(problems.map((p) => p.owner))].map(
+      (name) => ({ label: name, value: name }),
+    );
+
+    return HttpResponse.json({
+      tags,
+      difficultyOptions,
+      accessLevelOptions,
+      ownerOptions,
+    });
+  }),
 ];

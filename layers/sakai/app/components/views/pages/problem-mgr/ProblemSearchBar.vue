@@ -1,5 +1,8 @@
 <script lang="ts" setup>
-import { ProblemService } from '@sakai/services/ProblemService';
+import {
+  ProblemService,
+  type SelectOption,
+} from '@sakai/services/ProblemService';
 
 const emit = defineEmits<{
   search: [params: Record<string, any>];
@@ -18,10 +21,17 @@ const searchForm = ref({
   createTimeRange: null as Date[] | null,
 });
 
-const allTags = ref<string[]>(problemService.getAllTags());
-const difficultyOptions = ref(problemService.getDifficultyOptions());
-const accessLevelOptions = ref(problemService.getAccessLevelOptions());
-const ownerOptions = ref(problemService.getOwnerOptions());
+const allTags = ref<string[]>([]);
+const difficultyOptions = ref<SelectOption[]>([]);
+const accessLevelOptions = ref<SelectOption[]>([]);
+const ownerOptions = ref<SelectOption[]>([]);
+
+onMounted(async () => {
+  allTags.value = await problemService.getAllTags();
+  difficultyOptions.value = await problemService.getDifficultyOptions();
+  accessLevelOptions.value = await problemService.getAccessLevelOptions();
+  ownerOptions.value = await problemService.getOwnerOptions();
+});
 
 function handleSearch() {
   const params: Record<string, any> = {};
