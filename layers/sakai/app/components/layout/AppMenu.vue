@@ -149,7 +149,19 @@ const model = ref([
       {
         label: 'Crud',
         icon: 'pi pi-fw pi-pencil',
-        to: '/demo/pages/crud',
+        path: '/pages/crud',
+        items: [
+          {
+            label: 'CRUD Demo',
+            icon: 'pi pi-fw pi-pencil',
+            to: '/demo/pages/crud',
+          },
+          {
+            label: '题目管理',
+            icon: 'pi pi-fw pi-list',
+            to: '/demo/pages/crud/problem-mgr',
+          },
+        ],
       },
       {
         label: 'Not Found',
