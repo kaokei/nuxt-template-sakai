@@ -104,6 +104,84 @@
 - `全局服务类` 或者 `通用服务类` 放在 `app/services/` 目录
 - 新建服务时遵循该模式，不要引入其他 DI 方案
 
+### 服务 Provider 绑定规则
+
+**所有服务都必须显式绑定，不存在自动发现机制**。`@Injectable()` 只是标记类可被 DI 系统识别，不会自动注册到容器。
+
+通过 `declareXXX()` 方法绑定服务，按作用域分为三层：
+
+| 绑定方法                          | 作用域          | 绑定位置                                      | 示例                                                    |
+| --------------------------------- | --------------- | --------------------------------------------- | ------------------------------------------------------- |
+| `declareProviders([...])`         | 页面级 / 组件级 | **页面入口文件**（首选）或组件自身            | `declareProviders([ProblemService, ProblemMgrService])` |
+| `declareAppProviders([...], app)` | App 级          | Nuxt 插件（通过 `declareAppProvidersPlugin`） | 主题服务、应用级状态                                    |
+| `declareRootProviders([...])`     | 全局级          | Nuxt 插件                                     | 日志、全局配置等单例服务                                |
+
+#### 页面入口绑定（推荐模式）
+
+```
+layers/sakai/app/pages/demo/pages/crud/problem-mgr.vue  ← 页面入口
+  └─ declareProviders([ProblemService, ProblemMgrService])
+       └─ ProblemMgr.vue  ← 组件（只消费，不绑定）
+            └─ const mgr = useService(ProblemMgrService)
+```
+
+- **页面维度服务**：在页面入口 `.vue` 文件中调用 `declareProviders()`，整个页面树共享
+- **组件自身服务**：仅该组件使用的弹窗等服务，在组件自身调用 `declareProviders()`
+- `declareProviders` 在同一 `setup` 中只能调用一次，且**必须放在最顶部**
+
+### 组件与服务分工模式
+
+> 适用于**复杂组件**（含大量状态和业务逻辑的页面级组件）。简单组件无需创建专属服务。
+
+核心原则：**组件的所有状态和处理状态的逻辑，全部转移到服务中维护。组件只做 UI 消费。**
+
+#### 服务负责（全部移入）
+
+- 组件所有响应式状态（`ref`、`reactive`、`computed`）
+- 所有业务逻辑方法（数据加载、搜索、分页、排序、CRUD 操作等）
+- 工具函数（格式化、映射、校验等纯函数）
+- 子组件的显隐/编辑状态（`dialogVisible`、`editData` 等）
+
+服务通过 `@Injectable()` 装饰，类属性天然被 `use-vue-service` 转为响应式，组件模板直接消费。
+
+#### 组件保留（仅 UI 粘合层）
+
+| 保留项          | 说明                             | 示例                                      |
+| --------------- | -------------------------------- | ----------------------------------------- |
+| 模板引用 `ref`  | PrimeVue 组件实例引用            | `const dt = ref()` 调用 `dt.exportCSV()`  |
+| Composition API | toast、确认框等 UI 反馈          | `const toast = useToast()`                |
+| 生命周期钩子    | 初始化触发服务                   | `onMounted(() => mgr.loadProblems())`     |
+| 复杂事件包装    | 需要协调服务调用 + UI 反馈的场景 | 保存后既调 `mgr.onSaved()` 又显示 toast   |
+| Props 处理      | `watch(props, ...)` 同步服务状态 | 弹窗组件通过 prop 初始化服务中的编辑数据  |
+| Emit 处理       | 自定义事件转发                   | 子组件 `@confirm` → 包装函数调服务 + emit |
+
+#### 两种事件绑定模式
+
+```
+直接绑定（大多数场景）：
+  模板: @click="mgr.openNew"
+  服务: openNew() { this.formDialogVisible = true; }
+
+包装绑定（需要 UI 反馈时）：
+  模板: @saved="onSaved"
+  组件: function onSaved() {
+          const r = mgr.onSaved();
+          toast.add({ detail: r.isEdit ? '已更新' : '已创建' });
+        }
+```
+
+#### 服务分层约定
+
+复杂功能的服务应**按职责拆分**，而非堆在一个文件：
+
+| 服务类型     | 命名约定        | 示例                                    | 复用范围      |
+| ------------ | --------------- | --------------------------------------- | ------------- |
+| 数据服务     | `XxxService`    | `ProblemService`（CRUD + 查询）         | 跨页面/跨组件 |
+| 页面状态服务 | `XxxMgrService` | `ProblemMgrService`（分页、弹窗、选中） | 单页面        |
+
+- 数据服务不含 UI 状态（分页、弹窗等），保持纯数据层
+- 页面状态服务通过 `@Inject()` 注入数据服务，编排数据流
+
 ---
 
 ## 五、代码质量工具

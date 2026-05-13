@@ -2,187 +2,32 @@
 import ProblemDeleteDialog from '@sakai/components/views/pages/problem-mgr/ProblemDeleteDialog.vue';
 import ProblemFormDialog from '@sakai/components/views/pages/problem-mgr/ProblemFormDialog.vue';
 import ProblemSearchBar from '@sakai/components/views/pages/problem-mgr/ProblemSearchBar.vue';
-import type { Problem } from '@sakai/services/ProblemService';
-import { ProblemService } from '@sakai/services/ProblemService';
-import type {
-  DataTablePageEvent,
-  DataTableSortEvent,
-} from 'primevue/datatable';
+import { ProblemMgrService } from '@sakai/services/ProblemMgrService';
 
-const problemService = useService(ProblemService);
+const mgr = useService(ProblemMgrService);
 const toast = useToast();
 const dt = ref();
 
-// 表格数据状态
-const problems = ref<Problem[]>([]);
-const totalRecords = ref(0);
-const loading = ref(false);
-const selectedProblems = ref<Problem[]>();
-
-// 分页参数
-const page = ref(1);
-const pageSize = ref(10);
-const sortField = ref('problemNumber');
-const sortOrder = ref<number>(1);
-const searchParams = ref<Record<string, any>>({});
-
-// 弹窗状态
-const formDialogVisible = ref(false);
-const editData = ref<Problem | null>(null);
-const deleteDialogVisible = ref(false);
-const deleteMode = ref<'single' | 'batch'>('single');
-const deleteTarget = ref<Problem | null>(null);
-
-// 难度和权限的显示映射
-const difficultyLabels: Record<string, string> = {
-  Easy: '简单',
-  Medium: '中等',
-  Hard: '困难',
-};
-const accessLevelLabels: Record<string, string> = {
-  Public: '公开',
-  Private: '私有',
-  Shared: '共享',
-};
-
-function getDifficultySeverity(
-  difficulty: string,
-): 'success' | 'warn' | 'danger' | 'info' {
-  const map: Record<string, 'success' | 'warn' | 'danger' | 'info'> = {
-    Easy: 'success',
-    Medium: 'warn',
-    Hard: 'danger',
-  };
-  return map[difficulty] || 'info';
-}
-
-function getAccessSeverity(level: string): 'success' | 'info' | 'warn' {
-  const map: Record<string, 'success' | 'info' | 'warn'> = {
-    Public: 'success',
-    Shared: 'info',
-    Private: 'warn',
-  };
-  return map[level] || 'info';
-}
-
-function formatDate(date: Date): string {
-  if (!date) return '--';
-  const d = new Date(date);
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${y}-${m}-${day}`;
-}
-
-function formatDateTime(date: Date): string {
-  if (!date) return '--';
-  const d = new Date(date);
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  const h = String(d.getHours()).padStart(2, '0');
-  const min = String(d.getMinutes()).padStart(2, '0');
-  return `${y}-${m}-${day} ${h}:${min}`;
-}
-
-async function loadProblems() {
-  loading.value = true;
-  try {
-    const result = await problemService.queryProblems({
-      ...searchParams.value,
-      page: page.value,
-      pageSize: pageSize.value,
-      sortField: sortField.value,
-      sortOrder: sortOrder.value,
-    });
-    problems.value = result.data;
-    totalRecords.value = result.total;
-  } finally {
-    loading.value = false;
-  }
-}
-
-function onSearch(params: Record<string, any>) {
-  searchParams.value = params;
-  page.value = 1;
-  loadProblems();
-}
-
-function onReset() {
-  searchParams.value = {};
-  page.value = 1;
-  loadProblems();
-}
-
-function onPage(event: DataTablePageEvent) {
-  page.value = event.page + 1;
-  pageSize.value = event.rows;
-  loadProblems();
-}
-
-function onSort(event: DataTableSortEvent) {
-  sortField.value = event.sortField as string;
-  sortOrder.value = event.sortOrder!;
-  loadProblems();
-}
-
-function openNew() {
-  editData.value = null;
-  formDialogVisible.value = true;
-}
-
-function openEdit(problem: Problem) {
-  editData.value = { ...problem };
-  formDialogVisible.value = true;
-}
-
 function onSaved() {
+  const result = mgr.onSaved();
   toast.add({
     severity: 'success',
     summary: '成功',
-    detail: editData.value ? '题目已更新' : '题目已创建',
+    detail: result.isEdit ? '题目已更新' : '题目已创建',
     life: 3000,
   });
-  loadProblems();
-}
-
-function confirmDelete(problem: Problem) {
-  deleteMode.value = 'single';
-  deleteTarget.value = problem;
-  deleteDialogVisible.value = true;
-}
-
-function confirmBatchDelete() {
-  if (!selectedProblems.value || selectedProblems.value.length === 0) return;
-  deleteMode.value = 'batch';
-  deleteTarget.value = null;
-  deleteDialogVisible.value = true;
 }
 
 async function onDeleteConfirm() {
   try {
-    if (deleteMode.value === 'single' && deleteTarget.value) {
-      await problemService.deleteProblem(deleteTarget.value.id);
-      toast.add({
-        severity: 'success',
-        summary: '成功',
-        detail: '题目已删除',
-        life: 3000,
-      });
-    } else {
-      const ids = (selectedProblems.value || []).map((p) => p.id);
-      await problemService.deleteProblems(ids);
-      selectedProblems.value = undefined;
-      toast.add({
-        severity: 'success',
-        summary: '成功',
-        detail: `已删除 ${ids.length} 道题目`,
-        life: 3000,
-      });
-    }
-    deleteDialogVisible.value = false;
-    loadProblems();
-  } catch (err) {
+    const result = await mgr.onDeleteConfirm();
+    toast.add({
+      severity: 'success',
+      summary: '成功',
+      detail: result.message,
+      life: 3000,
+    });
+  } catch {
     toast.add({
       severity: 'error',
       summary: '错误',
@@ -197,13 +42,13 @@ function exportCSV() {
 }
 
 onMounted(() => {
-  loadProblems();
+  mgr.loadProblems();
 });
 </script>
 
 <template>
   <div class="flex flex-col gap-4">
-    <ProblemSearchBar @search="onSearch" @reset="onReset" />
+    <ProblemSearchBar @search="mgr.onSearch" @reset="mgr.onReset" />
 
     <div class="card">
       <PrimeToolbar class="mb-4">
@@ -213,15 +58,17 @@ onMounted(() => {
               label="新增"
               icon="pi pi-plus"
               severity="primary"
-              @click="openNew"
+              @click="mgr.openNew"
             />
             <PrimeButton
               label="批量删除"
               icon="pi pi-trash"
               severity="danger"
               outlined
-              :disabled="!selectedProblems || selectedProblems.length === 0"
-              @click="confirmBatchDelete"
+              :disabled="
+                !mgr.selectedProblems || mgr.selectedProblems.length === 0
+              "
+              @click="mgr.confirmBatchDelete"
             />
           </div>
         </template>
@@ -237,24 +84,24 @@ onMounted(() => {
 
       <PrimeDataTable
         ref="dt"
-        v-model:selection="selectedProblems"
-        :value="problems"
+        v-model:selection="mgr.selectedProblems"
+        :value="mgr.problems"
         data-key="id"
-        :loading="loading"
+        :loading="mgr.loading"
         :paginator="true"
-        :rows="pageSize"
-        :total-records="totalRecords"
+        :rows="mgr.pageSize"
+        :total-records="mgr.totalRecords"
         :lazy="true"
-        :sort-field="sortField"
-        :sort-order="sortOrder"
+        :sort-field="mgr.sortField"
+        :sort-order="mgr.sortOrder"
         scrollable
         :row-hover="true"
         striped-rows
         paginator-template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         :rows-per-page-options="[5, 10, 20, 50]"
         current-page-report-template="共 {totalRecords} 条记录，当前第 {first} 到 {last} 条"
-        @page="onPage"
-        @sort="onSort"
+        @page="mgr.onPage"
+        @sort="mgr.onSort"
       >
         <PrimeColumn
           selection-mode="multiple"
@@ -304,8 +151,8 @@ onMounted(() => {
         >
           <template #body="{ data }">
             <PrimeTag
-              :value="difficultyLabels[data.difficulty]"
-              :severity="getDifficultySeverity(data.difficulty)"
+              :value="mgr.difficultyLabels[data.difficulty]"
+              :severity="mgr.getDifficultySeverity(data.difficulty)"
             />
           </template>
         </PrimeColumn>
@@ -376,7 +223,7 @@ onMounted(() => {
         >
           <template #body="{ data }">
             <span class="text-surface-500 dark:text-surface-400 text-sm">{{
-              formatDateTime(data.createTime)
+              mgr.formatDateTime(data.createTime)
             }}</span>
           </template>
         </PrimeColumn>
@@ -389,7 +236,7 @@ onMounted(() => {
         >
           <template #body="{ data }">
             <span class="text-surface-500 dark:text-surface-400 text-sm">{{
-              formatDateTime(data.lastModifiedTime)
+              mgr.formatDateTime(data.lastModifiedTime)
             }}</span>
           </template>
         </PrimeColumn>
@@ -402,8 +249,8 @@ onMounted(() => {
         >
           <template #body="{ data }">
             <PrimeTag
-              :value="accessLevelLabels[data.accessLevel]"
-              :severity="getAccessSeverity(data.accessLevel)"
+              :value="mgr.accessLevelLabels[data.accessLevel]"
+              :severity="mgr.getAccessSeverity(data.accessLevel)"
             />
           </template>
         </PrimeColumn>
@@ -423,7 +270,7 @@ onMounted(() => {
                 severity="secondary"
                 outlined
                 rounded
-                @click="openEdit(data)"
+                @click="mgr.openEdit(data)"
               />
               <PrimeButton
                 icon="pi pi-trash"
@@ -431,7 +278,7 @@ onMounted(() => {
                 severity="danger"
                 outlined
                 rounded
-                @click="confirmDelete(data)"
+                @click="mgr.confirmDelete(data)"
               />
             </div>
           </template>
@@ -440,16 +287,16 @@ onMounted(() => {
     </div>
 
     <ProblemFormDialog
-      v-model:visible="formDialogVisible"
-      v-model:edit-data="editData"
+      v-model:visible="mgr.formDialogVisible"
+      v-model:edit-data="mgr.editData"
       @saved="onSaved"
     />
 
     <ProblemDeleteDialog
-      v-model:visible="deleteDialogVisible"
-      :mode="deleteMode"
-      :problem="deleteTarget"
-      :batch-count="selectedProblems?.length || 0"
+      v-model:visible="mgr.deleteDialogVisible"
+      :mode="mgr.deleteMode"
+      :problem="mgr.deleteTarget"
+      :batch-count="mgr.selectedProblems?.length || 0"
       @confirm="onDeleteConfirm"
     />
   </div>
