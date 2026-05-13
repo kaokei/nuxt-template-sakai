@@ -139,14 +139,14 @@ onMounted(() => {
         <PrimeColumn
           field="owner"
           header="所有者"
-          style="min-width: 100px"
+          style="min-width: 110px"
           sortable
         />
 
         <PrimeColumn
           field="difficulty"
           header="难度"
-          style="min-width: 90px"
+          style="min-width: 100px"
           sortable
         >
           <template #body="{ data }">
@@ -157,7 +157,11 @@ onMounted(() => {
           </template>
         </PrimeColumn>
 
-        <PrimeColumn field="tags" header="标签" style="min-width: 200px">
+        <PrimeColumn
+          field="tags"
+          header="标签"
+          style="min-width: 200px; max-width: 320px"
+        >
           <template #body="{ data }">
             <div class="flex flex-wrap gap-1">
               <PrimeTag
@@ -185,7 +189,7 @@ onMounted(() => {
         <PrimeColumn
           field="submissions"
           header="提交次数"
-          style="min-width: 100px"
+          style="min-width: 110px"
           sortable
         >
           <template #body="{ data }">
@@ -196,7 +200,7 @@ onMounted(() => {
         <PrimeColumn
           field="timeLimit"
           header="时间限制"
-          style="min-width: 100px"
+          style="min-width: 110px"
           sortable
         >
           <template #body="{ data }">
@@ -207,7 +211,7 @@ onMounted(() => {
         <PrimeColumn
           field="memoryLimit"
           header="内存限制"
-          style="min-width: 100px"
+          style="min-width: 110px"
           sortable
         >
           <template #body="{ data }">
@@ -218,7 +222,7 @@ onMounted(() => {
         <PrimeColumn
           field="createTime"
           header="创建时间"
-          style="min-width: 160px"
+          style="min-width: 175px"
           sortable
         >
           <template #body="{ data }">
@@ -231,7 +235,7 @@ onMounted(() => {
         <PrimeColumn
           field="lastModifiedTime"
           header="最后修改"
-          style="min-width: 160px"
+          style="min-width: 175px"
           sortable
         >
           <template #body="{ data }">
@@ -244,7 +248,7 @@ onMounted(() => {
         <PrimeColumn
           field="accessLevel"
           header="访问权限"
-          style="min-width: 100px"
+          style="min-width: 120px"
           sortable
         >
           <template #body="{ data }">

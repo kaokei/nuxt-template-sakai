@@ -89,7 +89,7 @@ function handleReset() {
         option-value="value"
         placeholder="全部"
         show-clear
-        class="w-28"
+        class="w-32"
       />
     </div>
 
@@ -113,7 +113,7 @@ function handleReset() {
         :options="allTags"
         placeholder="选择标签"
         show-clear
-        class="min-w-48"
+        class="max-w-64 min-w-48"
         display="chip"
       />
     </div>
