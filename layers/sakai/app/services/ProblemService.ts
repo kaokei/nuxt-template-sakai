@@ -29,7 +29,7 @@ export interface ProblemQueryParams {
   page?: number;
   pageSize?: number;
   sortField?: string;
-  sortOrder?: 1 | -1;
+  sortOrder?: number;
 }
 
 export interface PageResult<T> {

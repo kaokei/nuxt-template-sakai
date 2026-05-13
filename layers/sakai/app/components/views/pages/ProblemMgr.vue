@@ -4,6 +4,10 @@ import ProblemFormDialog from '@sakai/components/views/pages/problem-mgr/Problem
 import ProblemSearchBar from '@sakai/components/views/pages/problem-mgr/ProblemSearchBar.vue';
 import type { Problem } from '@sakai/services/ProblemService';
 import { ProblemService } from '@sakai/services/ProblemService';
+import type {
+  DataTablePageEvent,
+  DataTableSortEvent,
+} from 'primevue/datatable';
 
 const problemService = useService(ProblemService);
 const toast = useToast();
@@ -19,7 +23,7 @@ const selectedProblems = ref<Problem[]>();
 const page = ref(1);
 const pageSize = ref(10);
 const sortField = ref('problemNumber');
-const sortOrder = ref<1 | -1>(1);
+const sortOrder = ref<number>(1);
 const searchParams = ref<Record<string, any>>({});
 
 // 弹窗状态
@@ -110,15 +114,15 @@ function onReset() {
   loadProblems();
 }
 
-function onPage(event: { page: number; first: number; rows: number }) {
+function onPage(event: DataTablePageEvent) {
   page.value = event.page + 1;
   pageSize.value = event.rows;
   loadProblems();
 }
 
-function onSort(event: { sortField: string; sortOrder: 1 | -1 }) {
-  sortField.value = event.sortField;
-  sortOrder.value = event.sortOrder;
+function onSort(event: DataTableSortEvent) {
+  sortField.value = event.sortField as string;
+  sortOrder.value = event.sortOrder!;
   loadProblems();
 }
 
