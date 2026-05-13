@@ -115,12 +115,14 @@ export class ProblemMgrService {
 
   // ==================== 搜索与重置 ====================
 
+  @autobind
   onSearch(params: Record<string, any>): void {
     this.searchParams = params;
     this.page = 1;
     this.loadProblems();
   }
 
+  @autobind
   onReset(): void {
     this.searchParams = {};
     this.page = 1;
@@ -129,12 +131,14 @@ export class ProblemMgrService {
 
   // ==================== 分页与排序 ====================
 
+  @autobind
   onPage(event: DataTablePageEvent): void {
     this.page = event.page + 1;
     this.pageSize = event.rows;
     this.loadProblems();
   }
 
+  @autobind
   onSort(event: DataTableSortEvent): void {
     this.sortField = event.sortField as string;
     this.sortOrder = event.sortOrder!;
@@ -143,11 +147,13 @@ export class ProblemMgrService {
 
   // ==================== 表单弹窗操作 ====================
 
+  @autobind
   openNew(): void {
     this.editData = null;
     this.formDialogVisible = true;
   }
 
+  @autobind
   openEdit(problem: Problem): void {
     this.editData = { ...problem };
     this.formDialogVisible = true;
@@ -161,12 +167,14 @@ export class ProblemMgrService {
 
   // ==================== 删除操作 ====================
 
+  @autobind
   confirmDelete(problem: Problem): void {
     this.deleteMode = 'single';
     this.deleteTarget = problem;
     this.deleteDialogVisible = true;
   }
 
+  @autobind
   confirmBatchDelete(): void {
     if (!this.selectedProblems || this.selectedProblems.length === 0) return;
     this.deleteMode = 'batch';

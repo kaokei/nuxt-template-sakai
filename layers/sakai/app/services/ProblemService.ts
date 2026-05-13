@@ -259,12 +259,21 @@ export class ProblemService {
         const valA = a[field as keyof Problem];
         const valB = b[field as keyof Problem];
 
-        const numA = valA instanceof Date ? valA.getTime() : Number(valA);
-        const numB = valB instanceof Date ? valB.getTime() : Number(valB);
+        if (valA instanceof Date && valB instanceof Date) {
+          return (valA.getTime() - valB.getTime()) * order;
+        }
 
-        if (numA < numB) return -1 * order;
-        if (numA > numB) return 1 * order;
-        return 0;
+        if (typeof valA === 'number' && typeof valB === 'number') {
+          return (valA - valB) * order;
+        }
+
+        if (typeof valA === 'string' && typeof valB === 'string') {
+          return valA.localeCompare(valB, 'zh-CN') * order;
+        }
+
+        const strA = String(valA ?? '');
+        const strB = String(valB ?? '');
+        return strA.localeCompare(strB, 'zh-CN') * order;
       });
     }
 
