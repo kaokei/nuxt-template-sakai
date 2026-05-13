@@ -450,10 +450,3 @@ onMounted(() => {
     />
   </div>
 </template>
-
-<style scoped>
-:deep(.p-datatable-scrollable .p-frozen-column) {
-  background-color: var(--p-surface-ground);
-  z-index: 2;
-}
-</style>

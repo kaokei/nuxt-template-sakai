@@ -165,3 +165,7 @@
 - 使用 Vue 3 Composition API + `<script setup>` 语法
 - 组件文件支持 `.vue` 和 `.tsx` 两种格式
 - 中文注释，英文变量名
+
+### PrimeDataTable 注意事项
+
+- `scrollable` 启用后，PrimeVue 内部 DOM 结构无法实现页面级 sticky 表头，不要用 CSS `position: sticky` 强行覆盖
