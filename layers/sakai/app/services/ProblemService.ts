@@ -186,17 +186,17 @@ export class ProblemService {
       this.problems.push({
         id,
         problemNumber: `OJ-${id}`,
-        title: titles[i],
-        owner: owners[i % owners.length],
-        difficulty: difficulties[i % 3],
+        title: titles[i]!,
+        owner: owners[i % owners.length]!,
+        difficulty: difficulties[i % 3]!,
         tags: randomSubset(allTags, 1, 4),
         acceptanceRate: parseFloat((Math.random() * 80 + 20).toFixed(1)),
         submissions: randomInt(100, 50000),
-        timeLimit: [500, 1000, 2000, 3000, 5000][randomInt(0, 4)],
-        memoryLimit: [64, 128, 256, 512, 1024][randomInt(0, 4)],
+        timeLimit: [500, 1000, 2000, 3000, 5000][randomInt(0, 4)]!,
+        memoryLimit: [64, 128, 256, 512, 1024][randomInt(0, 4)]!,
         createTime,
         lastModifiedTime,
-        accessLevel: accessLevels[i % 3],
+        accessLevel: accessLevels[i % 3]!,
         description: `这是题目「${titles[i]}」的详细描述。需要在规定时间和内存限制内完成算法实现。`,
       });
     }
@@ -253,17 +253,17 @@ export class ProblemService {
     }
 
     if (params.sortField) {
-      const field = params.sortField as keyof Problem;
       const order = params.sortOrder ?? 1;
       filtered.sort((a, b) => {
-        let valA = a[field];
-        let valB = b[field];
+        const field = params.sortField!;
+        const valA = a[field as keyof Problem];
+        const valB = b[field as keyof Problem];
 
-        if (valA instanceof Date) valA = valA.getTime() as any;
-        if (valB instanceof Date) valB = valB.getTime() as any;
+        const numA = valA instanceof Date ? valA.getTime() : Number(valA);
+        const numB = valB instanceof Date ? valB.getTime() : Number(valB);
 
-        if (valA < valB) return -1 * order;
-        if (valA > valB) return 1 * order;
+        if (numA < numB) return -1 * order;
+        if (numA > numB) return 1 * order;
         return 0;
       });
     }
@@ -294,7 +294,10 @@ export class ProblemService {
   ): Promise<Problem> {
     await delay(300);
 
-    const maxId = Math.max(...this.problems.map((p) => parseInt(p.id)), 1000);
+    const maxId = Math.max(
+      ...this.problems.map((p) => Number(p.id) || 0),
+      1000,
+    );
     const newId = `${maxId + 1}`;
     const now = new Date();
 
@@ -323,7 +326,7 @@ export class ProblemService {
       ...data,
       id,
       lastModifiedTime: new Date(),
-    };
+    } as Problem;
 
     return this.problems[index];
   }
