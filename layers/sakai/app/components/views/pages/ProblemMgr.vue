@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import ProblemDeleteDialog from '@sakai/components/views/pages/problem-mgr/ProblemDeleteDialog.vue';
+import ProblemFormDialog from '@sakai/components/views/pages/problem-mgr/ProblemFormDialog.vue';
+import ProblemSearchBar from '@sakai/components/views/pages/problem-mgr/ProblemSearchBar.vue';
 import type { Problem } from '@sakai/services/ProblemService';
 import { ProblemService } from '@sakai/services/ProblemService';
 
@@ -241,7 +244,7 @@ onMounted(() => {
         :sort-field="sortField"
         :sort-order="sortOrder"
         scrollable
-        scroll-height="calc(100vh - 320px)"
+        scrollHeight="600px"
         :row-hover="true"
         striped-rows
         paginator-template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
