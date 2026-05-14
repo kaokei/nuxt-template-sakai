@@ -80,7 +80,7 @@ export class ProblemService {
   async queryProblems(
     params: ProblemQueryParams = {},
   ): Promise<PageResult<Problem>> {
-    const query = new URLSearchParams();
+    const query: Record<string, string> = {};
     for (const [key, value] of Object.entries(params)) {
       if (
         value !== undefined &&
@@ -88,7 +88,7 @@ export class ProblemService {
         value !== '' &&
         !(Array.isArray(value) && value.length === 0)
       ) {
-        query.set(key, String(value));
+        query[key] = String(value);
       }
     }
     return $fetch('/api/problems', { query });
