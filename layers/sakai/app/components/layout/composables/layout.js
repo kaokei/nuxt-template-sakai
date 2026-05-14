@@ -9,6 +9,7 @@ const layoutConfig = reactive({
 const layoutState = reactive({
   staticMenuInactive: false,
   overlayMenuActive: false,
+  mobileMenuActive: false,
   profileSidebarVisible: false,
   configSidebarVisible: false,
   sidebarExpanded: false,

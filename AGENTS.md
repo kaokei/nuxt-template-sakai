@@ -188,21 +188,39 @@ layers/sakai/app/pages/demo/pages/crud/problem-mgr.vue  ← 页面入口
 
 - **ESLint** — 通过 `@nuxt/eslint` 模块集成
 - **Prettier** — 已配置，含 Tailwind CSS 排序插件和 import 排序插件
+- **TypeScript 类型检查** — 通过 `vue-tsc` 严格检查，**每次生成/修改代码后必须执行**
 - **Git Hooks** — Husky + lint-staged，提交前自动检查
 - **Commitizen** — 规范化提交信息（`pnpm commit`）
 - **Changeset** — 版本管理和发布
+
+### TypeScript 类型检查（强制）
+
+> ⚠️ **重要**：Nuxt 自动导入 + `skipLibCheck` 导致 IDE 的 LSP 无法可靠检测所有类型错误。必须通过 `vue-tsc` 命令行执行完整类型检查。
+
+- **每次生成或修改 `.vue` / `.ts` 文件后**，必须运行：
+  ```bash
+  pnpm typecheck
+  ```
+- 该命令等价于 `vue-tsc --noEmit -p .nuxt/tsconfig.app.json`，不可省略 `-p` 参数
+- 类型检查通过后（exit code 0）才能视为任务完成
+- 常见漏检场景：
+  - 服务类（`app/services/`）未 import 就在组件中使用
+  - `reactive()` 对象缺失运行时动态添加的属性声明
+  - `vue-router` 版本差异导致的类型不匹配
+  - 函数参数缺少类型标注导致隐式 `any`
 
 ---
 
 ## 六、常用命令
 
-| 命令            | 用途           |
-| --------------- | -------------- |
-| `pnpm dev`      | 启动开发服务器 |
-| `pnpm build`    | 构建生产版本   |
-| `pnpm lint:fix` | 修复 lint 问题 |
-| `pnpm commit`   | 规范化提交     |
-| `pnpm analyze`  | 构建分析       |
+| 命令             | 用途                |
+| ---------------- | ------------------- |
+| `pnpm dev`       | 启动开发服务器      |
+| `pnpm build`     | 构建生产版本        |
+| `pnpm typecheck` | TypeScript 类型检查 |
+| `pnpm lint:fix`  | 修复 lint 问题      |
+| `pnpm commit`    | 规范化提交          |
+| `pnpm analyze`   | 构建分析            |
 
 ---
 

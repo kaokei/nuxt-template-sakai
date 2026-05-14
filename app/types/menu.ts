@@ -12,6 +12,8 @@ export interface MenuItem {
   visible?: boolean;
   /** 是否禁用 */
   disabled?: boolean;
+  /** 是否为分隔线 */
+  separator?: boolean;
   /** 自定义 CSS class */
   class?: string;
   /** 子菜单激活路径前缀 */

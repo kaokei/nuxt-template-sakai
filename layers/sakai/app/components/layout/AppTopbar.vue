@@ -8,7 +8,7 @@ const menuService = useRootService(MenuService);
 const router = useRouter();
 
 // 系统选择器下拉菜单
-const systemMenu = ref<InstanceType<typeof PrimeMenu> | null>(null);
+const systemMenu = ref<{ toggle: (event: Event) => void } | null>(null);
 const systemMenuItems = computed(() =>
   menuService.systems.map((sys) => ({
     label: sys.name,

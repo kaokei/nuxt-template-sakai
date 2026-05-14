@@ -10,6 +10,7 @@
   "scripts": {
     "lint": "eslint . --ext .vue,.js,.ts,.jsx,.tsx",
     "lint:fix": "eslint . --ext .vue,.js,.ts,.jsx,.tsx --fix",
+    "typecheck": "vue-tsc --noEmit -p .nuxt/tsconfig.app.json",
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
@@ -60,6 +61,7 @@
     "@primevue/nuxt-module": "^4.5.4",
     "@rollup/plugin-babel": "^7.0.0",
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
+    "@types/lodash-es": "^4.17.12",
     "@types/node": "^25.3.0",
     "@vue/language-server": "^3.2.8",
     "commitizen": "^4.3.1",
@@ -74,7 +76,8 @@
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "typescript-language-server": "^5.2.0",
-    "vitest": "^4.1.0"
+    "vitest": "^4.1.0",
+    "vue-tsc": "^3.2.9"
   },
   "config": {
     "commitizen": {
