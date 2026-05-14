@@ -634,6 +634,123 @@ mocks/browser.ts
 | Service（业务逻辑）    | `handlers/problems.ts` 中各 handler 的函数体（分页/筛选/CRUD）            |
 | DAO / Database         | `data/problems.ts` 的 `generateProblems()` + handlers 中的 `let problems` |
 
+### 5.6 MSW 内部架构深度解析
+
+#### 为什么 `mocks/` 放在项目根目录而非 `app/` 下？
+
+| 原因                                | 说明                                                                                                               |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| **动态 import，不进 Nuxt 打包主图** | `await import('../../mocks/browser')` 实现代码分割，`mocks/` 作为独立 async chunk，Vite 编译但不打包进主 bundle    |
+| **非应用代码**                      | `mocks/` 是框架无关的纯 MSW + faker 代码，不依赖 Vue / Nuxt / DI 系统，可原封不动搬到 React 项目                   |
+| **避免 Nuxt 自动导入干扰**          | 放在 `app/` 下可能触发 Nuxt 的 composable / component 自动导入扫描，而 `mocks/` 里的 `http`、`msw` API 与 Vue 无关 |
+| **MSW 官方惯例**                    | 几乎所有 MSW 项目都把 `mocks/` 放在根目录                                                                          |
+
+#### `mocks/browser.ts` 与 `public/mockServiceWorker.js` 的区别
+
+这两个文件**不是同一个东西**，运行在不同线程：
+
+```
+┌─────────────────── 浏览器主线程 ──────────────────────┐
+│                                                         │
+│  mocks/browser.ts（编译后）                              │
+│  ┌─────────────────────────────────────┐               │
+│  │ setupWorker(...handlers)             │  ← 注册业务规则│
+│  │ worker.start()                       │               │
+│  │  ├─ 注册 Service Worker               │               │
+│  │  └─ 创建 MessageChannel 双向通道       │               │
+│  └──────────────┬──────────────────────┘               │
+│                 │  postMessage + MessageChannel          │
+│                 ▼                                        │
+├─────────────────── Service Worker 线程 ────────────────┤
+│                                                         │
+│  public/mockServiceWorker.js                            │
+│  ┌─────────────────────────────────────┐               │
+│  │ self.addEventListener('fetch', e => {│  ← 真正拦截请求 │
+│  │   // 拦截 → 转发到主线程 → 等结果      │               │
+│  │   // → 返回给页面                     │               │
+│  │ })                                   │               │
+│  └─────────────────────────────────────┘               │
+└─────────────────────────────────────────────────────────┘
+```
+
+| 维度                 | `mocks/browser.ts`                    | `public/mockServiceWorker.js`        |
+| -------------------- | ------------------------------------- | ------------------------------------ |
+| **运行位置**         | 主线程                                | Service Worker 线程                  |
+| **是否编译**         | ✅ Vite 编译（TypeScript → JS chunk） | ❌ 原样拷贝，不编译                  |
+| **加载方式**         | `await import('../../mocks/browser')` | `navigator.serviceWorker.register()` |
+| **可 import npm 包** | ✅（msw、faker 等）                   | ❌（仅原生浏览器 API，无打包）       |
+| **内容**             | 业务规则（handler 函数）              | 拦截引擎（fetch 事件监听 + 转发）    |
+| **修改频率**         | 频繁（开发中改业务逻辑）              | 从不（由 `npx msw init` 生成）       |
+
+#### MessageChannel 通信机制：handler 如何被 Service Worker 执行？
+
+`setupWorker(...handlers)` **并没有把 handler 函数发给 Service Worker**——`postMessage` 只能传 JSON，不能传函数。MSW 的实际做法是**反向转发**：
+
+```
+$fetch('/api/problems')
+        │
+        ▼
+  SW 拦截 fetch 事件（mockServiceWorker.js）
+        │
+        │  通过 MessageChannel 把原始请求发回主线程
+        ▼
+  主线程 MSW 客户端（setupWorker 内部代码）
+        │
+        │  遍历 handlers 数组，匹配到 http.get('/api/problems', ...)
+        │  调用你写的 resolver(request)，得到 Response
+        │
+        │  通过 MessageChannel 把 Response 发回 SW
+        ▼
+  SW: event.respondWith(response)
+        │
+        ▼
+  $fetch 拿到 mock 数据，渲染到页面
+```
+
+核心思路：**SW 只做转发代理，不做任何业务处理。** 真正的路由匹配、数据处理、状态修改全部在主线程完成。
+
+#### 为什么不把 handler 直接打包进 `mockServiceWorker.js`？
+
+| 方案                    | 效果                             | 代价   |
+| ----------------------- | -------------------------------- | ------ |
+| **打包进 SW**           | 省一次 postMessage 往返（< 1ms） | 见下方 |
+| **MessageChannel 转发** | 多 1 次线程通信                  | 零代价 |
+
+打包进 SW 的三个致命问题：
+
+**① HMR 不兼容（最大痛点）**
+
+SW 文件一旦注册，浏览器对它做**字节级比对**。你改一行 handler 代码 → SW 文件内容变了 → 浏览器触发 install → wait → activate 完整生命周期 → **必须关闭所有标签页重新打开**才能激活新 SW。
+
+MSW 的 MessageChannel 方案：Vite HMR 推送 → 主线程原地替换 handlers 数组 → SW 不受影响 → 新逻辑**即时生效，零刷新**。
+
+```
+打包进 SW 方案：改代码 → 重编译 → SW 进入 waiting →
+               手动 skipWaiting 或重启标签页 → 生效（10-30 秒）
+
+MessageChannel： 改代码 → HMR 推送 → 即时生效（< 1 秒）
+```
+
+**② 闭包状态无法序列化**
+
+```typescript
+let problems = generateProblems(60); // 主线程内存
+
+http.put('/api/problems/:id', async ({ params, request }) => {
+  problems[idx] = { ...problems[idx], ...body }; // 修改内存
+});
+```
+
+如果 handler 在 SW 里执行，`problems` 数组必须在 SW 中。SW 有自己的独立内存空间，**页面刷新后主线程重置，SW 不重置**——数据会持久残留，不符合 Demo "刷新即恢复"的预期。
+
+**③ SW 内无法 import npm 包**
+
+`public/` 目录文件原样拷贝，不走 Vite 编译。要 `import { HttpResponse } from 'msw'` 或 `import { fakerZH_CN } from '@faker-js/faker'`，需要为 SW 单独维护一套构建流程（独立 entry、tsconfig、rollup/webpack 配置）。
+
+#### 总结
+
+MSW 的架构本质上是一个**基于 MessageChannel 的请求代理**：SW 拦截 → 转发主线程执行 handler → 结果回传 SW → 返回给页面。这种设计牺牲了理论上的一次线程通信开销，换来了**开发体验（HMR）、状态一致性（共享主线程内存）、零配置（无需 SW 独立构建）**。
+
 ---
 
 ## 六、与生产环境的关系
