@@ -88,7 +88,8 @@ export class ProblemService {
         value !== '' &&
         !(Array.isArray(value) && value.length === 0)
       ) {
-        query[key] = String(value);
+        query[key] =
+          value instanceof Date ? value.toISOString() : String(value);
       }
     }
     return $fetch('/api/problems', { query });

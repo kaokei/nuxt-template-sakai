@@ -22,6 +22,22 @@ export const problemHandlers = [
       }
     });
 
+    // 时间范围筛选（单独处理，走 p.createTime 字段）
+    const dateFrom = searchParams.createTimeFrom;
+    const dateTo = searchParams.createTimeTo;
+    delete searchParams.createTimeFrom;
+    delete searchParams.createTimeTo;
+    if (dateFrom || dateTo) {
+      const fromMs = dateFrom ? Date.parse(dateFrom) : NaN;
+      const toMs = dateTo ? Date.parse(dateTo) : NaN;
+      filtered = filtered.filter((p) => {
+        const c = new Date(p.createTime).getTime();
+        if (!isNaN(fromMs) && c < fromMs) return false;
+        if (!isNaN(toMs) && c > toMs) return false;
+        return true;
+      });
+    }
+
     for (const [key, value] of Object.entries(searchParams)) {
       filtered = filtered.filter((p) => {
         const val = (p as unknown as Record<string, unknown>)[key];
