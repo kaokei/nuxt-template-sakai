@@ -6,7 +6,7 @@ import { ProblemService } from '@sakai/services/ProblemService';
 declareProviders([ProblemService, ProblemMgrService]);
 
 definePageMeta({
-  layout: 'sakai',
+  layout: 'sakai-sidebar',
 });
 </script>
 

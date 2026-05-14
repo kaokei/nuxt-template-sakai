@@ -2,7 +2,7 @@
 import SakaiUikitPanelsDoc from '@sakai/components/views/uikit/PanelsDoc.vue';
 
 definePageMeta({
-  layout: 'sakai',
+  layout: 'sakai-sidebar',
 });
 </script>
 

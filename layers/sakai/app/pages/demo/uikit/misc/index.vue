@@ -2,7 +2,7 @@
 import SakaiUikitMiscDoc from '@sakai/components/views/uikit/MiscDoc.vue';
 
 definePageMeta({
-  layout: 'sakai',
+  layout: 'sakai-sidebar',
 });
 </script>
 

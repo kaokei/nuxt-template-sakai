@@ -2,7 +2,7 @@
 import SakaiEmpty from '@sakai/components/views/pages/Empty.vue';
 
 definePageMeta({
-  layout: 'sakai',
+  layout: 'sakai-sidebar',
 });
 </script>
 

@@ -2,7 +2,7 @@
 import SakaiUikitChartDoc from '@sakai/components/views/uikit/ChartDoc.vue';
 
 definePageMeta({
-  layout: 'sakai',
+  layout: 'sakai-sidebar',
 });
 </script>
 

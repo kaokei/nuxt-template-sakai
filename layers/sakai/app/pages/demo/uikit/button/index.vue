@@ -2,7 +2,7 @@
 import SakaiUikitButtonDoc from '@sakai/components/views/uikit/ButtonDoc.vue';
 
 definePageMeta({
-  layout: 'sakai',
+  layout: 'sakai-sidebar',
 });
 </script>
 

@@ -2,7 +2,7 @@
 import SakaiUtilitiesBlocks from '@sakai/components/views/utilities/Blocks.vue';
 
 definePageMeta({
-  layout: 'sakai',
+  layout: 'sakai-sidebar',
 });
 </script>
 

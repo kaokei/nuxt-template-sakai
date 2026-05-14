@@ -2,7 +2,7 @@
 import SakaiUikitTableDoc from '@sakai/components/views/uikit/TableDoc.vue';
 
 definePageMeta({
-  layout: 'sakai',
+  layout: 'sakai-sidebar',
 });
 </script>
 

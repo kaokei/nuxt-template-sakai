@@ -2,7 +2,7 @@
 import SakaiUikitTimelineDoc from '@sakai/components/views/uikit/TimelineDoc.vue';
 
 definePageMeta({
-  layout: 'sakai',
+  layout: 'sakai-sidebar',
 });
 </script>
 

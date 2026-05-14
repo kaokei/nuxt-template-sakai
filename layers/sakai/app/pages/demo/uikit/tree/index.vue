@@ -2,7 +2,7 @@
 import SakaiUikitTreeDoc from '@sakai/components/views/uikit/TreeDoc.vue';
 
 definePageMeta({
-  layout: 'sakai',
+  layout: 'sakai-sidebar',
 });
 </script>
 

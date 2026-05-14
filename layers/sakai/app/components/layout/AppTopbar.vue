@@ -1,8 +1,27 @@
-<script setup>
+<script lang="ts" setup>
 import { useLayout } from '@sakai/components/layout/composables/layout';
+import { MenuService } from '~/services/menu.service';
 import AppConfigurator from './AppConfigurator.vue';
 
 const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
+const menuService = useRootService(MenuService);
+const router = useRouter();
+
+// 系统选择器下拉菜单
+const systemMenu = ref<InstanceType<typeof PrimeMenu> | null>(null);
+const systemMenuItems = computed(() =>
+  menuService.systems.map((sys) => ({
+    label: sys.name,
+    icon: sys.icon ?? 'pi pi-th-large',
+    command: () => {
+      menuService.switchSystem(sys.id, router);
+    },
+  })),
+);
+
+function toggleSystemMenu(event: Event) {
+  systemMenu.value?.toggle(event);
+}
 </script>
 
 <template>
@@ -46,6 +65,32 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
 
         <span>SAKAI</span>
       </router-link>
+    </div>
+
+    <!-- 系统选择器 -->
+    <div v-if="menuService.systems.length > 1" class="system-selector">
+      <PrimeButton
+        type="button"
+        class="system-selector-trigger"
+        @click="toggleSystemMenu"
+        aria-haspopup="true"
+        aria-controls="system-selector-menu"
+      >
+        <i
+          :class="['pi', menuService.currentSystem?.icon ?? 'pi pi-th-large']"
+          class="system-selector-icon"
+        />
+        <span class="system-selector-name">{{
+          menuService.currentSystem?.name ?? '选择系统'
+        }}</span>
+        <i class="pi pi-chevron-down system-selector-arrow" />
+      </PrimeButton>
+      <PrimeMenu
+        id="system-selector-menu"
+        ref="systemMenu"
+        :model="systemMenuItems"
+        :popup="true"
+      />
     </div>
 
     <div class="layout-topbar-actions">
@@ -111,3 +156,63 @@ const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
     </div>
   </div>
 </template>
+
+<style scoped>
+.system-selector {
+  display: flex;
+  align-items: center;
+  margin-left: 1rem;
+  position: relative;
+}
+
+.system-selector-trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--p-border-radius-md, 6px);
+  background: var(--p-surface-0, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--p-surface-200, rgba(255, 255, 255, 0.12));
+  color: var(--p-text-color, inherit);
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.system-selector-trigger:hover {
+  background: var(--p-surface-100, rgba(255, 255, 255, 0.08));
+  border-color: var(--p-surface-300, rgba(255, 255, 255, 0.2));
+}
+
+.system-selector-icon {
+  font-size: 1rem;
+  color: var(--p-primary-color, var(--primary-color));
+}
+
+.system-selector-name {
+  max-width: 10rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.system-selector-arrow {
+  font-size: 0.75rem;
+  opacity: 0.6;
+  margin-left: 0.25rem;
+}
+
+/* 深色模式适配 */
+:global(.app-dark) .system-selector-trigger {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+:global(.app-dark) .system-selector-trigger:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+</style>

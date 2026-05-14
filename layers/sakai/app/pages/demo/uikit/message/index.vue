@@ -2,7 +2,7 @@
 import SakaiUikitMessagesDoc from '@sakai/components/views/uikit/MessagesDoc.vue';
 
 definePageMeta({
-  layout: 'sakai',
+  layout: 'sakai-sidebar',
 });
 </script>
 

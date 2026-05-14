@@ -8,10 +8,7 @@ const { layoutConfig, layoutState, hideMobileMenu } = useLayout();
 
 const containerClass = computed(() => {
   return {
-    'layout-overlay':
-
-
-    layoutConfig.menuMode === 'overlay',
+    'layout-overlay': layoutConfig.menuMode === 'overlay',
     'layout-static': layoutConfig.menuMode === 'static',
     'layout-overlay-active': layoutState.overlayMenuActive,
     'layout-mobile-active': layoutState.mobileMenuActive,
@@ -32,6 +29,5 @@ const containerClass = computed(() => {
     </div>
     <div class="layout-mask animate-fadein" @click="hideMobileMenu" />
   </div>
-  <!-- 使用 Prime 前缀的 PrimeVue 组件 12123 -->
   <PrimeToast />
 </template>

@@ -2,7 +2,7 @@
 import SakaiUikitMenuDoc from '@sakai/components/views/uikit/MenuDoc.vue';
 
 definePageMeta({
-  layout: 'sakai',
+  layout: 'sakai-sidebar',
 });
 </script>
 

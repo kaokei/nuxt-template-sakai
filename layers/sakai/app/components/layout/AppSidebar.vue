@@ -1,11 +1,19 @@
-<script setup>
+<script lang="ts" setup>
 import { useLayout } from '@sakai/components/layout/composables/layout';
+import type { MenuItem } from '~/types/menu';
 import AppMenu from './AppMenu.vue';
+
+const props = defineProps<{
+  items?: MenuItem[];
+}>();
 
 const { layoutState, isDesktop, hasOpenOverlay } = useLayout();
 const route = useRoute();
 const sidebarRef = ref(null);
 let outsideClickListener = null;
+
+const menuService = useRootService(MenuService);
+const currentMenu = computed(() => props.items ?? menuService.currentMenu);
 
 watch(
   () => route.path,
@@ -61,6 +69,6 @@ onBeforeUnmount(() => {
 
 <template>
   <div ref="sidebarRef" class="layout-sidebar">
-    <AppMenu />
+    <AppMenu :items="currentMenu" />
   </div>
 </template>

@@ -2,7 +2,7 @@
 import SakaiDashboard from '@sakai/components/views/Dashboard.vue';
 
 definePageMeta({
-  layout: 'sakai',
+  layout: 'sakai-sidebar',
 });
 </script>
 

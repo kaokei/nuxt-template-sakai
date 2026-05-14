@@ -2,7 +2,7 @@
 import SakaiUikitFormLayout from '@sakai/components/views/uikit/FormLayout.vue';
 
 definePageMeta({
-  layout: 'sakai',
+  layout: 'sakai-sidebar',
 });
 </script>
 

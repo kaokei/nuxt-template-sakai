@@ -2,7 +2,7 @@
 import SakaiCrud from '@sakai/components/views/pages/Crud.vue';
 
 definePageMeta({
-  layout: 'sakai',
+  layout: 'sakai-sidebar',
 });
 </script>
 
