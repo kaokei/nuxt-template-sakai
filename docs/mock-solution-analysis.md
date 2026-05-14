@@ -392,18 +392,29 @@ faker-js（替换 randomInt/randomDate/randomChoice）
 
 ```
 ├── public/
-│   └── mockServiceWorker.js          # npx msw init 自动生成
+│   └── mockServiceWorker.js          # npx msw init 自动生成（MSW Service Worker 脚本，部署必需品）
 ├── mocks/
-│   ├── browser.ts                    # setupWorker(...handlers)
+│   ├── browser.ts                    # MSW Worker 入口，注册所有 handlers
 │   ├── handlers/
-│   │   ├── index.ts                  # 汇总所有 handlers
-│   │   └── problems.ts               # 题目 CRUD handlers
+│   │   ├── index.ts                  # handlers 聚合出口，新增 handler 模块需在此注册
+│   │   └── problems.ts               # 题目 CRUD handlers（相当于后端 Controller + Service 层）
 │   └── data/
-│       └── problems.ts               # faker-js 生成题目 mock 数据（seed 固定）
+│       └── problems.ts               # 数据模型定义（接口类型）+ faker-js 假数据生成器（seed 固定）
 ├── app/
 │   └── plugins/
-│       └── msw.client.ts             # 初始化 MSW（所有环境）
+│       └── msw.client.ts             # Nuxt 插件，浏览器端启动 MSW（.client 后缀 = 仅客户端执行）
 ```
+
+#### 各文件职责详解
+
+| 文件                          | 类比真实后端                | 具体职责                                                                                                             |
+| ----------------------------- | --------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `mocks/browser.ts`            | 应用启动器                  | 创建 MSW Worker，将 handlers 数组注册到拦截器。**一般无需修改。**                                                    |
+| `mocks/handlers/index.ts`     | 路由注册中心                | 聚合所有 handler 模块为一个数组导出。**新增业务模块时在此追加。**                                                    |
+| `mocks/handlers/problems.ts`  | **Controller + Service 层** | 定义 API 路由（GET/POST/PUT/DELETE）+ 完整业务逻辑（分页、排序、CRUD、筛选）。**自定义后端逻辑的核心文件。**         |
+| `mocks/data/problems.ts`      | **数据库表结构 + 种子数据** | 定义 `Problem` 接口（相当于 DDL）+ 用 faker 生成 60 条假数据（相当于 INSERT seed）。**新增业务数据模型时在此仿写。** |
+| `app/plugins/msw.client.ts`   | 中间件启动器                | `.client` 后缀确保仅在浏览器端执行（SSR 跳过）。Nuxt 启动时自动 `worker.start()`。**无需修改。**                     |
+| `public/mockServiceWorker.js` | Service Worker 运行时       | MSW 核心拦截脚本，由 `npx msw init` 生成，**不手写、不修改。**                                                       |
 
 ### 5.2 Problem Service 重构对比
 
@@ -460,6 +471,168 @@ export function generateProblems(count = 60): Problem[] {
   }));
 }
 ```
+
+### 5.4 自定义后端逻辑操作指南
+
+#### 修改现有接口逻辑
+
+直接编辑 **`mocks/handlers/problems.ts`**。例如修改列表查询的返回格式：
+
+```typescript
+http.get('/api/problems', async ({ request }) => {
+  // ... 筛选、排序、分页逻辑
+  // 修改返回格式：增加 page、pageSize 字段
+  return HttpResponse.json({ data, total, page, pageSize });
+});
+```
+
+#### 新增 API 接口（三步走）
+
+**第一步**：在 `mocks/data/` 下新建数据模型文件（可选，也可以直接在 handler 中造数据）
+
+```typescript
+// mocks/data/users.ts
+import { fakerZH_CN as faker } from '@faker-js/faker';
+
+export interface User {
+  id: string;
+  name: string;
+  role: 'admin' | 'user';
+  email: string;
+}
+
+export function generateUsers(count = 20): User[] {
+  return Array.from({ length: count }, () => ({
+    id: faker.string.uuid(),
+    name: faker.person.fullName(),
+    role: faker.helpers.arrayElement(['admin', 'user']),
+    email: faker.internet.email(),
+  }));
+}
+```
+
+**第二步**：在 `mocks/handlers/` 下新建 handler 文件
+
+```typescript
+// mocks/handlers/users.ts
+import { HttpResponse, delay, http } from 'msw';
+import { generateUsers } from '../data/users';
+
+let users = generateUsers(20);
+
+export const userHandlers = [
+  http.get('/api/users', async () => {
+    await delay(200);
+    return HttpResponse.json(users);
+  }),
+
+  http.post('/api/users', async ({ request }) => {
+    const body = await request.json();
+    const created = { id: crypto.randomUUID(), ...body };
+    users.unshift(created);
+    await delay(300);
+    return HttpResponse.json(created, { status: 201 });
+  }),
+];
+```
+
+**第三步**：在 `mocks/handlers/index.ts` 中注册
+
+```typescript
+import { problemHandlers } from './problems';
+import { userHandlers } from './users';
+
+// ← 新增 import
+
+export const handlers = [
+  ...problemHandlers,
+  ...userHandlers, // ← 追加到数组
+];
+```
+
+注册完成后无需重启，Vite HMR 会自动生效。
+
+### 5.5 mocks/data 文件夹深度解析
+
+`mocks/data/` 扮演的是 **"内存数据库"** 的角色，它提供三样东西：
+
+#### ① 数据结构定义（相当于数据库的 DDL）
+
+```typescript
+export interface Problem {
+  id: string;
+  problemNumber: string; // 题目编号
+  title: string; // 标题
+  difficulty: 'Easy' | 'Medium' | 'Hard';
+  tags: string[]; // 标签
+  acceptanceRate: number; // 通过率
+  submissions: number; // 提交数
+  createTime: string; // 创建时间
+  // ... 更多字段
+}
+```
+
+这个接口同时被 **handlers（后端）** 和 **前端 Vue 组件** 共享，保证数据契约一致。
+
+#### ② 业务常量（相当于字典表/枚举）
+
+```typescript
+const ALL_TAGS = ['数组', '字符串', '哈希表', '动态规划', '贪心', ...];  // 20 个算法标签
+const TITLE_PREFIXES = ['两数之和', '最长子串', '中位数查找', ...];      // 24 个题目标题前缀
+const DIFFICULTIES = ['Easy', 'Medium', 'Hard'];                        // 难度枚举
+```
+
+这些常量提供逼真的中文数据素材，handlers 中获取选项列表（如标签下拉框、难度筛选）时也依赖它们。
+
+#### ③ 假数据生成器（相当于数据库的 INSERT seed）
+
+```typescript
+faker.seed(2026); // 固定随机种子：每次生成一模一样的数据，方便截图和回归验证
+
+export function generateProblems(count = 60): Problem[] {
+  return Array.from({ length: count }, (_, i) => ({
+    id: faker.string.uuid(),
+    title: `${faker.helpers.arrayElement(TITLE_PREFIXES)} ${faker.number.int({ min: 1, max: 999 })}`,
+    owner: faker.person.fullName(), // 生成中文姓名
+    tags: faker.helpers.arrayElements(ALL_TAGS, { min: 1, max: 4 }),
+    // ... 每个字段都由 faker 随机生成
+  }));
+}
+```
+
+在 handlers 中被调用：
+
+```typescript
+// mocks/handlers/problems.ts 第 5 行
+let problems = generateProblems(60); // ← 相当于 "SELECT * FROM problems" 的结果加载到内存
+```
+
+#### 数据流全景
+
+```
+mocks/data/problems.ts
+    ├── Problem 接口           ← 表结构（DDL）
+    ├── ALL_TAGS 等常量        ← 字典/枚举
+    └── generateProblems()     ← 种子数据生成器
+              ↓ 被 import
+mocks/handlers/problems.ts
+    let problems = generateProblems(60)   ← "数据库加载到内存"
+    http.get/post/put/delete 操作该数组   ← "SQL CRUD 操作"
+              ↓ 被 import
+mocks/handlers/index.ts
+    export handlers = [...problemHandlers]  ← 注册路由
+              ↓ 被 import
+mocks/browser.ts
+    setupWorker(...handlers)               ← 启动拦截器
+```
+
+**关键理解**：当你说 "相当于后端 API"，真正等价于后端三层架构的映射是：
+
+| 真实后端三层           | mocks 对应                                                                |
+| ---------------------- | ------------------------------------------------------------------------- |
+| Controller（路由分发） | `handlers/problems.ts` 中的 `http.get/post/put/delete`                    |
+| Service（业务逻辑）    | `handlers/problems.ts` 中各 handler 的函数体（分页/筛选/CRUD）            |
+| DAO / Database         | `data/problems.ts` 的 `generateProblems()` + handlers 中的 `let problems` |
 
 ---
 
