@@ -1,4 +1,5 @@
 import { deptHandlers } from './depts';
+import { dictHandlers } from './dict';
 import { menuHandlers } from './menus';
 import { problemHandlers } from './problems';
 import { roleHandlers } from './roles';
@@ -10,4 +11,5 @@ export const handlers = [
   ...menuHandlers,
   ...deptHandlers,
   ...roleHandlers,
+  ...dictHandlers,
 ];

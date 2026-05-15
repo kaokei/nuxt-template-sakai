@@ -265,3 +265,17 @@ layers/sakai/app/pages/demo/pages/crud/problem-mgr.vue  ← 页面入口
 ### PrimeDataTable 注意事项
 
 - `scrollable` 启用后，PrimeVue 内部 DOM 结构无法实现页面级 sticky 表头，不要用 CSS `position: sticky` 强行覆盖
+
+---
+
+## 八、调试与截图规范
+
+### Playwright 临时文件
+
+使用 Playwright 进行页面验证时，产生的临时文件（截图、控制台日志、页面快照等）**必须**存放于 `.playwright-mcp/` 目录中，**禁止**直接放在项目根目录。
+
+- 截图文件：`.playwright-mcp/*.png`
+- 控制台日志：`.playwright-mcp/console-*.log`
+- 页面快照：`.playwright-mcp/page-*.yml`
+
+> `.playwright-mcp/` 已加入 `.gitignore`，不会被提交到版本库。
