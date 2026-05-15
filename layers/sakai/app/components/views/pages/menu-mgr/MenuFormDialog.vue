@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import {
-  MenuService,
+  MenuAdminService,
   type Menu,
   type SelectOption,
-} from '@sakai/services/MenuService';
+} from '@sakai/services/MenuAdminService';
 
 const visible = defineModel<boolean>('visible', { required: true });
 const editData = defineModel<Menu | null>('editData', { default: null });
@@ -12,7 +12,7 @@ const emit = defineEmits<{
   saved: [];
 }>();
 
-const menuService = useService(MenuService);
+const menuAdminService = useService(MenuAdminService);
 const submitted = ref(false);
 const parentOptions = ref<SelectOption[]>([]);
 
@@ -93,7 +93,7 @@ function resetForm() {
 watch(visible, async (isVisible) => {
   if (isVisible) {
     submitted.value = false;
-    parentOptions.value = await menuService.getParentOptions();
+    parentOptions.value = await menuAdminService.getParentOptions();
     if (editData.value) {
       form.value = {
         parentId: editData.value.parentId,
@@ -135,9 +135,9 @@ async function handleSave() {
     }
 
     if (isEdit.value && editData.value) {
-      await menuService.updateMenu(editData.value.id, payload);
+      await menuAdminService.updateMenu(editData.value.id, payload);
     } else {
-      await menuService.createMenu(payload);
+      await menuAdminService.createMenu(payload);
     }
     visible.value = false;
     emit('saved');

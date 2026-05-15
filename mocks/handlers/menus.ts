@@ -58,6 +58,17 @@ function buildParentOptions(
   return result;
 }
 
+/** 获取指定菜单的所有祖先 ID */
+function getAncestorIds(id: string, list: Menu[]): string[] {
+  const ancestors: string[] = [];
+  let current = list.find((m) => m.id === id);
+  while (current?.parentId) {
+    ancestors.push(current.parentId);
+    current = list.find((m) => m.id === current!.parentId);
+  }
+  return ancestors;
+}
+
 function generateNextId(): string {
   let maxNum = 0;
   for (const m of menus) {
@@ -79,9 +90,16 @@ export const menuHandlers = [
     let result = [...menus];
 
     if (keyword) {
-      result = result.filter((m) =>
-        m.name.toLowerCase().includes(keyword.toLowerCase()),
-      );
+      const kw = keyword.toLowerCase();
+      const matched = result.filter((m) => m.name.toLowerCase().includes(kw));
+      const keepIds = new Set(matched.map((m) => m.id));
+      // 补全祖先节点，确保匹配的子节点在树中可见
+      for (const m of matched) {
+        for (const ancestorId of getAncestorIds(m.id, result)) {
+          keepIds.add(ancestorId);
+        }
+      }
+      result = result.filter((m) => keepIds.has(m.id));
     }
 
     await delay(200);

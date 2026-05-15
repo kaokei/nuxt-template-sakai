@@ -1,5 +1,5 @@
-import type { Menu, MenuTreeNode } from '@sakai/services/MenuAdminService';
-import { MenuAdminService } from '@sakai/services/MenuAdminService';
+import type { Dept, DeptTreeNode } from '@sakai/services/DeptService';
+import { DeptService } from '@sakai/services/DeptService';
 import type { TreeTableSortEvent } from 'primevue/treetable';
 
 export interface DeleteResult {
@@ -13,12 +13,12 @@ export interface SaveResult {
 }
 
 @Injectable()
-export class MenuMgrService {
-  @Inject(MenuAdminService)
-  private menuAdminService!: MenuAdminService;
+export class DeptMgrService {
+  @Inject(DeptService)
+  private deptService!: DeptService;
 
-  treeNodes: MenuTreeNode[] = [];
-  allMenus: Menu[] = [];
+  treeNodes: DeptTreeNode[] = [];
+  allDepts: Dept[] = [];
   loading = false;
   selectedNodes: Record<string, any> = {};
   keyword = '';
@@ -27,29 +27,14 @@ export class MenuMgrService {
   expandedKeys: Record<string, boolean> = {};
 
   formDialogVisible = false;
-  editData: Menu | null = null;
+  editData: Dept | null = null;
   deleteDialogVisible = false;
-  deleteTarget: MenuTreeNode | null = null;
-
-  readonly typeLabels: Record<string, string> = {
-    directory: '目录',
-    menu: '菜单',
-    button: '按钮',
-  };
+  deleteTarget: DeptTreeNode | null = null;
 
   readonly statusLabels: Record<string, string> = {
     active: '启用',
     inactive: '禁用',
   };
-
-  getTypeSeverity(type: string): 'info' | 'success' | 'warn' {
-    const map: Record<string, 'info' | 'success' | 'warn'> = {
-      directory: 'info',
-      menu: 'success',
-      button: 'warn',
-    };
-    return map[type] || 'info';
-  }
 
   getStatusSeverity(status: string): 'success' | 'danger' {
     const map: Record<string, 'success' | 'danger'> = {
@@ -70,35 +55,33 @@ export class MenuMgrService {
     return `${y}-${m}-${day} ${h}:${min}`;
   }
 
-  private buildTree(menus: Menu[]): MenuTreeNode[] {
-    function buildChildren(parentId: string | null): MenuTreeNode[] {
-      return menus
-        .filter((m) => m.parentId === parentId)
+  private buildTree(depts: Dept[]): DeptTreeNode[] {
+    function buildChildren(parentId: string | null): DeptTreeNode[] {
+      return depts
+        .filter((d) => d.parentId === parentId)
         .sort((a, b) => a.order - b.order)
-        .map((m) => ({
-          key: m.id,
-          data: m,
-          name: m.name,
-          type: m.type,
-          order: m.order,
-          route: m.route,
-          permission: m.permission,
-          visible: m.visible,
-          status: m.status,
-          createTime: m.createTime,
-          icon: m.icon,
-          children: buildChildren(m.id),
+        .map((d) => ({
+          key: d.id,
+          data: d,
+          name: d.name,
+          leader: d.leader,
+          phone: d.phone,
+          email: d.email,
+          order: d.order,
+          status: d.status,
+          createTime: d.createTime,
+          children: buildChildren(d.id),
         }));
     }
     return buildChildren(null);
   }
 
-  async loadMenus(keyword?: string): Promise<void> {
+  async loadDepts(keyword?: string): Promise<void> {
     this.loading = true;
     try {
       const k = typeof keyword === 'string' ? keyword : this.keyword;
-      this.allMenus = await this.menuAdminService.queryMenus(k);
-      this.treeNodes = this.buildTree(this.allMenus);
+      this.allDepts = await this.deptService.queryDepts(k);
+      this.treeNodes = this.buildTree(this.allDepts);
       this.expandedKeys = this.computeDefaultExpandedKeys(this.treeNodes);
     } finally {
       this.loading = false;
@@ -106,7 +89,7 @@ export class MenuMgrService {
   }
 
   private computeDefaultExpandedKeys(
-    nodes: MenuTreeNode[],
+    nodes: DeptTreeNode[],
   ): Record<string, boolean> {
     const keys: Record<string, boolean> = {};
     for (const node of nodes) {
@@ -120,7 +103,7 @@ export class MenuMgrService {
     return keys;
   }
 
-  sortTree(nodes: MenuTreeNode[]): MenuTreeNode[] {
+  sortTree(nodes: DeptTreeNode[]): DeptTreeNode[] {
     const sorted = [...nodes].sort((a, b) => {
       const valA = (a as Record<string, any>)[this.sortField];
       const valB = (b as Record<string, any>)[this.sortField];
@@ -144,13 +127,13 @@ export class MenuMgrService {
   @autobind
   onSearch(searchKeyword: string): void {
     this.keyword = searchKeyword;
-    this.loadMenus(searchKeyword);
+    this.loadDepts(searchKeyword);
   }
 
   @autobind
   onReset(): void {
     this.keyword = '';
-    this.loadMenus();
+    this.loadDepts();
   }
 
   @autobind
@@ -167,19 +150,19 @@ export class MenuMgrService {
   }
 
   @autobind
-  openEdit(menu: Menu): void {
-    this.editData = { ...menu };
+  openEdit(dept: Dept): void {
+    this.editData = { ...dept };
     this.formDialogVisible = true;
   }
 
   onSaved(): SaveResult {
     const isEdit = !!this.editData;
-    this.loadMenus();
+    this.loadDepts();
     return { success: true, isEdit };
   }
 
   @autobind
-  confirmDelete(node: MenuTreeNode): void {
+  confirmDelete(node: DeptTreeNode): void {
     this.deleteTarget = node;
     this.deleteDialogVisible = true;
   }
@@ -205,19 +188,17 @@ export class MenuMgrService {
 
   async onDeleteConfirm(): Promise<DeleteResult> {
     if (this.deleteTarget) {
-      const result = await this.menuAdminService.deleteMenu(
-        this.deleteTarget.key,
-      );
+      const result = await this.deptService.deleteDept(this.deleteTarget.key);
       this.deleteDialogVisible = false;
-      this.loadMenus();
-      return { success: true, message: `已删除 ${result.deletedCount} 个菜单` };
+      this.loadDepts();
+      return { success: true, message: `已删除 ${result.deletedCount} 个部门` };
     }
 
     const ids = this.getSelectedIds();
-    const deletedCount = await this.menuAdminService.deleteMenus(ids);
+    const deletedCount = await this.deptService.deleteDepts(ids);
     this.selectedNodes = {};
     this.deleteDialogVisible = false;
-    this.loadMenus();
-    return { success: true, message: `已删除 ${deletedCount} 个菜单` };
+    this.loadDepts();
+    return { success: true, message: `已删除 ${deletedCount} 个部门` };
   }
 }

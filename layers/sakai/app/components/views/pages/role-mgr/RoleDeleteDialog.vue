@@ -1,10 +1,11 @@
 <script lang="ts" setup>
-import type { MenuTreeNode } from '@sakai/services/MenuAdminService';
+import type { Role } from '@sakai/services/RoleService';
 
 const visible = defineModel<boolean>('visible', { required: true });
 
 const props = defineProps<{
-  node: MenuTreeNode | null;
+  mode: 'single' | 'batch';
+  role: Role | null;
   batchCount: number;
 }>();
 
@@ -12,13 +13,18 @@ const emit = defineEmits<{
   confirm: [];
 }>();
 
-const title = computed(() => (props.node ? '删除确认' : '批量删除确认'));
+const title = computed(() =>
+  props.mode === 'batch' ? '批量删除确认' : '删除确认',
+);
 
 const message = computed(() => {
-  if (props.node) {
-    return `确定要删除菜单「${props.node.data.name}」吗？其所有子菜单也将被级联删除。此操作不可撤销。`;
+  if (props.mode === 'batch') {
+    return `确定要删除选中的 ${props.batchCount} 个角色吗？此操作不可撤销。`;
   }
-  return `确定要删除选中的 ${props.batchCount} 个菜单及其子菜单吗？此操作不可撤销。`;
+  if (props.role) {
+    return `确定要删除角色「${props.role.name}」吗？此操作不可撤销。`;
+  }
+  return '确定要删除该角色吗？此操作不可撤销。';
 });
 </script>
 

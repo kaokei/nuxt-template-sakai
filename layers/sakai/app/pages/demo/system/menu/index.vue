@@ -2,9 +2,9 @@
 import MenuDeleteDialog from '@sakai/components/views/pages/menu-mgr/MenuDeleteDialog.vue';
 import MenuFormDialog from '@sakai/components/views/pages/menu-mgr/MenuFormDialog.vue';
 import { MenuMgrService } from '@sakai/services/MenuMgrService';
-import { MenuService } from '@sakai/services/MenuService';
+import { MenuAdminService } from '@sakai/services/MenuAdminService';
 
-declareProviders([MenuService, MenuMgrService]);
+declareProviders([MenuAdminService, MenuMgrService]);
 
 const mgr = useService(MenuMgrService);
 const toast = useToast();

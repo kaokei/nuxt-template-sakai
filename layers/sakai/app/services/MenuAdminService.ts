@@ -52,7 +52,7 @@ export interface SaveResult {
 // ==================== 菜单数据服务 ====================
 
 @Injectable()
-export class MenuService {
+export class MenuAdminService {
   /** 查询菜单列表（扁平数组） */
   async queryMenus(keyword?: string): Promise<Menu[]> {
     const query: Record<string, string> = {};

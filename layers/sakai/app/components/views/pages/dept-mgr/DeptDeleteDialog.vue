@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import type { MenuTreeNode } from '@sakai/services/MenuAdminService';
+import type { DeptTreeNode } from '@sakai/services/DeptService';
 
 const visible = defineModel<boolean>('visible', { required: true });
 
 const props = defineProps<{
-  node: MenuTreeNode | null;
+  node: DeptTreeNode | null;
   batchCount: number;
 }>();
 
@@ -16,9 +16,9 @@ const title = computed(() => (props.node ? '删除确认' : '批量删除确认'
 
 const message = computed(() => {
   if (props.node) {
-    return `确定要删除菜单「${props.node.data.name}」吗？其所有子菜单也将被级联删除。此操作不可撤销。`;
+    return `确定要删除部门「${props.node.data.name}」吗？其所有子部门也将被级联删除。此操作不可撤销。`;
   }
-  return `确定要删除选中的 ${props.batchCount} 个菜单及其子菜单吗？此操作不可撤销。`;
+  return `确定要删除选中的 ${props.batchCount} 个部门及其子部门吗？此操作不可撤销。`;
 });
 </script>
 
