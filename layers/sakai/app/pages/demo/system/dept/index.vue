@@ -95,7 +95,7 @@ onMounted(() => {
     </div>
 
     <!-- 工具栏 + 表格 -->
-    <div class="card !p-4">
+    <div class="card p-4!">
       <PrimeToolbar class="mb-4">
         <template #start>
           <div class="flex gap-2">

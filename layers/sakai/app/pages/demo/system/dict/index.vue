@@ -89,7 +89,7 @@ onMounted(() => {
   <div class="flex flex-col gap-4">
     <DictSearchBar @search="mgr.onSearch" @reset="mgr.onReset" />
 
-    <div class="card !p-4">
+    <div class="card p-4!">
       <PrimeToolbar class="mb-4">
         <template #start>
           <div class="flex gap-2">
@@ -262,129 +262,123 @@ onMounted(() => {
         </PrimeColumn>
 
         <template #expansion="{ data: typeData }">
-          <div class="p-4">
-            <PrimeDataTable
-              :value="mgr.getDataByType(typeData.code)"
-              data-key="id"
-              striped-rows
+          <PrimeDataTable
+            :value="mgr.getDataByType(typeData.code)"
+            data-key="id"
+            striped-rows
+          >
+            <PrimeColumn
+              field="label"
+              header="字典标签"
+              style="min-width: 120px"
             >
-              <PrimeColumn
-                field="label"
-                header="字典标签"
-                style="min-width: 120px"
-              >
-                <template #body="{ data }">
-                  <span class="font-medium">{{ data.label }}</span>
-                </template>
-              </PrimeColumn>
+              <template #body="{ data }">
+                <span class="font-medium">{{ data.label }}</span>
+              </template>
+            </PrimeColumn>
 
-              <PrimeColumn
-                field="value"
-                header="字典键值"
-                style="min-width: 100px"
-              >
-                <template #body="{ data }">
-                  <PrimeTag :value="data.value" severity="info" />
-                </template>
-              </PrimeColumn>
+            <PrimeColumn
+              field="value"
+              header="字典键值"
+              style="min-width: 100px"
+            >
+              <template #body="{ data }">
+                <PrimeTag :value="data.value" severity="info" />
+              </template>
+            </PrimeColumn>
 
-              <PrimeColumn
-                field="valueType"
-                header="值类型"
-                style="min-width: 80px"
-              >
-                <template #body="{ data }">
-                  <PrimeTag
-                    :value="data.valueType === 'number' ? '数字' : '字符串'"
-                    :severity="data.valueType === 'number' ? 'warn' : 'info'"
+            <PrimeColumn
+              field="valueType"
+              header="值类型"
+              style="min-width: 80px"
+            >
+              <template #body="{ data }">
+                <PrimeTag
+                  :value="data.valueType === 'number' ? '数字' : '字符串'"
+                  :severity="data.valueType === 'number' ? 'warn' : 'info'"
+                />
+              </template>
+            </PrimeColumn>
+
+            <PrimeColumn
+              field="extValue"
+              header="扩展值"
+              style="min-width: 100px"
+            >
+              <template #body="{ data }">
+                <span
+                  v-if="data.extValue"
+                  class="text-surface-500 dark:text-surface-400 font-mono text-sm"
+                  >{{ data.extValue }}</span
+                >
+                <span
+                  v-else
+                  class="text-surface-300 dark:text-surface-600 text-sm"
+                  >--</span
+                >
+              </template>
+            </PrimeColumn>
+
+            <PrimeColumn field="order" header="排序" style="min-width: 80px" />
+
+            <PrimeColumn
+              field="listClass"
+              header="回显样式"
+              style="min-width: 100px"
+            >
+              <template #body="{ data }">
+                <PrimeTag
+                  :value="data.listClass || '默认'"
+                  :severity="mgr.listClassSeverity[data.listClass]"
+                />
+              </template>
+            </PrimeColumn>
+
+            <PrimeColumn
+              field="isDefault"
+              header="是否默认"
+              style="min-width: 90px"
+            >
+              <template #body="{ data }">
+                <PrimeTag
+                  :value="data.isDefault ? '是' : '否'"
+                  :severity="data.isDefault ? 'success' : 'secondary'"
+                />
+              </template>
+            </PrimeColumn>
+
+            <PrimeColumn field="status" header="状态" style="min-width: 80px">
+              <template #body="{ data }">
+                <PrimeTag
+                  :value="mgr.statusLabels[data.status] || data.status"
+                  :severity="mgr.getStatusSeverity(data.status)"
+                />
+              </template>
+            </PrimeColumn>
+
+            <PrimeColumn header="操作" style="min-width: 100px">
+              <template #body="{ data }">
+                <div class="flex gap-1">
+                  <PrimeButton
+                    icon="pi pi-pencil"
+                    size="small"
+                    severity="secondary"
+                    outlined
+                    rounded
+                    @click="mgr.openEditData(data)"
                   />
-                </template>
-              </PrimeColumn>
-
-              <PrimeColumn
-                field="extValue"
-                header="扩展值"
-                style="min-width: 100px"
-              >
-                <template #body="{ data }">
-                  <span
-                    v-if="data.extValue"
-                    class="text-surface-500 dark:text-surface-400 font-mono text-sm"
-                    >{{ data.extValue }}</span
-                  >
-                  <span
-                    v-else
-                    class="text-surface-300 dark:text-surface-600 text-sm"
-                    >--</span
-                  >
-                </template>
-              </PrimeColumn>
-
-              <PrimeColumn
-                field="order"
-                header="排序"
-                style="min-width: 80px"
-              />
-
-              <PrimeColumn
-                field="listClass"
-                header="回显样式"
-                style="min-width: 100px"
-              >
-                <template #body="{ data }">
-                  <PrimeTag
-                    :value="data.listClass || '默认'"
-                    :severity="mgr.listClassSeverity[data.listClass]"
+                  <PrimeButton
+                    icon="pi pi-trash"
+                    size="small"
+                    severity="danger"
+                    outlined
+                    rounded
+                    @click="mgr.confirmDeleteData(data)"
                   />
-                </template>
-              </PrimeColumn>
-
-              <PrimeColumn
-                field="isDefault"
-                header="是否默认"
-                style="min-width: 90px"
-              >
-                <template #body="{ data }">
-                  <PrimeTag
-                    :value="data.isDefault ? '是' : '否'"
-                    :severity="data.isDefault ? 'success' : 'secondary'"
-                  />
-                </template>
-              </PrimeColumn>
-
-              <PrimeColumn field="status" header="状态" style="min-width: 80px">
-                <template #body="{ data }">
-                  <PrimeTag
-                    :value="mgr.statusLabels[data.status] || data.status"
-                    :severity="mgr.getStatusSeverity(data.status)"
-                  />
-                </template>
-              </PrimeColumn>
-
-              <PrimeColumn header="操作" style="min-width: 100px">
-                <template #body="{ data }">
-                  <div class="flex gap-1">
-                    <PrimeButton
-                      icon="pi pi-pencil"
-                      size="small"
-                      severity="secondary"
-                      outlined
-                      rounded
-                      @click="mgr.openEditData(data)"
-                    />
-                    <PrimeButton
-                      icon="pi pi-trash"
-                      size="small"
-                      severity="danger"
-                      outlined
-                      rounded
-                      @click="mgr.confirmDeleteData(data)"
-                    />
-                  </div>
-                </template>
-              </PrimeColumn>
-            </PrimeDataTable>
-          </div>
+                </div>
+              </template>
+            </PrimeColumn>
+          </PrimeDataTable>
         </template>
       </PrimeDataTable>
     </div>
