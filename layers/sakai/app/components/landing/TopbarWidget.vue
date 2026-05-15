@@ -113,10 +113,14 @@ function smoothScroll(id) {
         label="Login"
         text
         as="router-link"
-        to="/demo/auth/login"
+        to="/demo/showcase/auth/login"
         rounded
       ></PrimeButton>
-      <PrimeButton label="Register" to="/demo/auth/login" rounded></PrimeButton>
+      <PrimeButton
+        label="Register"
+        to="/demo/showcase/auth/login"
+        rounded
+      ></PrimeButton>
     </div>
   </div>
 </template>
