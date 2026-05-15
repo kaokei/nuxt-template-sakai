@@ -35,7 +35,11 @@ useSeoMeta({
         severity="info"
         href="https://github.com/kaokei/nuxt-template-sakai"
       />
-      <PrimeButton label="查看demo" as="router-link" to="/demo/" />
+      <PrimeButton
+        label="查看demo"
+        as="router-link"
+        to="/demo/workbench/workplace"
+      />
     </div>
   </div>
 </template>

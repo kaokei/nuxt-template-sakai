@@ -4,6 +4,7 @@ import AppSidebar from '@sakai/components/layout/AppSidebar.vue';
 import AppTopMenu from '@sakai/components/layout/AppTopMenu.vue';
 import AppTopbar from '@sakai/components/layout/AppTopbar.vue';
 import { useLayout } from '@sakai/components/layout/composables/layout';
+import { MenuService } from '~/services/menu.service';
 
 const { layoutState, hideMobileMenu } = useLayout();
 const menuService = useRootService(MenuService);
