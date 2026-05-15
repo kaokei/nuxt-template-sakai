@@ -1,6 +1,6 @@
 import type { MenuItem, SystemConfig } from '~/types/menu';
 
-const demoMenuItems: MenuItem[] = [
+const menuItems: MenuItem[] = [
   {
     label: 'Home',
     items: [
@@ -137,74 +137,6 @@ const demoMenuItems: MenuItem[] = [
     ],
   },
   {
-    label: '系统管理',
-    icon: 'pi pi-fw pi-cog',
-    items: [
-      { label: '用户管理', icon: 'pi pi-fw pi-user', to: '/demo/system/user' },
-      { label: '角色管理', icon: 'pi pi-fw pi-users', to: '/demo/system/role' },
-      { label: '菜单管理', icon: 'pi pi-fw pi-bars', to: '/demo/system/menu' },
-      {
-        label: '部门管理',
-        icon: 'pi pi-fw pi-sitemap',
-        to: '/demo/system/dept',
-      },
-      { label: '字典管理', icon: 'pi pi-fw pi-book', to: '/demo/system/dict' },
-    ],
-  },
-  {
-    label: '系统监控',
-    icon: 'pi pi-fw pi-desktop',
-    items: [
-      {
-        label: '登录日志',
-        icon: 'pi pi-fw pi-sign-in',
-        to: '/demo/monitor/login-log',
-      },
-      {
-        label: '操作日志',
-        icon: 'pi pi-fw pi-history',
-        to: '/demo/monitor/oper-log',
-      },
-      {
-        label: '在线用户',
-        icon: 'pi pi-fw pi-circle-fill',
-        to: '/demo/monitor/online-user',
-      },
-    ],
-  },
-  {
-    label: '工作台',
-    icon: 'pi pi-fw pi-chart-bar',
-    items: [
-      {
-        label: '分析页',
-        icon: 'pi pi-fw pi-chart-line',
-        to: '/demo/workbench/analysis',
-      },
-      {
-        label: '工作台',
-        icon: 'pi pi-fw pi-th-large',
-        to: '/demo/workbench/workplace',
-      },
-    ],
-  },
-  {
-    label: '通知中心',
-    icon: 'pi pi-fw pi-bell',
-    items: [
-      {
-        label: '通知列表',
-        icon: 'pi pi-fw pi-envelope',
-        to: '/demo/notify/list',
-      },
-      {
-        label: '公告管理',
-        icon: 'pi pi-fw pi-megaphone',
-        to: '/demo/notify/announce',
-      },
-    ],
-  },
-  {
     label: 'Get Started',
     path: '/start',
     items: [
@@ -223,12 +155,12 @@ const demoMenuItems: MenuItem[] = [
   },
 ];
 
-export const demoSystem: SystemConfig = {
-  id: 'demo',
-  name: '演示',
+export const demoShowcaseConfig: SystemConfig = {
+  id: 'demo-showcase',
+  name: 'UI 展示',
   icon: 'pi pi-palette',
   routePrefix: '/demo',
-  homeRoute: '/demo/workbench/workplace',
+  homeRoute: '/demo/uikit/button',
   defaultLayout: 'sakai-sidebar',
-  menuItems: demoMenuItems,
+  menuItems,
 };
