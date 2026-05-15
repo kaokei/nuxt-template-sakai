@@ -1,3 +1,4 @@
 import { problemHandlers } from './problems';
+import { userHandlers } from './users';
 
-export const handlers = [...problemHandlers];
+export const handlers = [...problemHandlers, ...userHandlers];
