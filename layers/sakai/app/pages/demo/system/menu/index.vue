@@ -115,24 +115,6 @@ onMounted(() => {
             />
           </div>
         </template>
-        <template #end>
-          <div class="flex gap-2">
-            <PrimeButton
-              label="展开全部"
-              icon="pi pi-angle-double-down"
-              severity="secondary"
-              text
-              @click="expandAll"
-            />
-            <PrimeButton
-              label="折叠全部"
-              icon="pi pi-angle-double-up"
-              severity="secondary"
-              text
-              @click="collapseAll"
-            />
-          </div>
-        </template>
       </PrimeToolbar>
 
       <PrimeTreeTable
@@ -149,10 +131,32 @@ onMounted(() => {
         <PrimeColumn
           :expander="true"
           field="name"
-          header="菜单名称"
           :frozen="true"
-          style="min-width: 200px"
+          style="min-width: 220px"
         >
+          <template #header>
+            <div class="flex items-center gap-1">
+              <span>菜单名称</span>
+              <PrimeButton
+                icon="pi pi-angle-double-down"
+                size="small"
+                severity="secondary"
+                text
+                rounded
+                v-tooltip.top="'展开全部'"
+                @click="expandAll"
+              />
+              <PrimeButton
+                icon="pi pi-angle-double-up"
+                size="small"
+                severity="secondary"
+                text
+                rounded
+                v-tooltip.top="'折叠全部'"
+                @click="collapseAll"
+              />
+            </div>
+          </template>
           <template #body="{ node }">
             <div class="flex items-center gap-2">
               <NuxtIcon
