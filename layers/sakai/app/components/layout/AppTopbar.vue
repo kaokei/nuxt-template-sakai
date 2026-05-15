@@ -28,6 +28,7 @@ function toggleSystemMenu(event: Event) {
   <div class="layout-topbar">
     <div class="layout-topbar-logo-container">
       <button
+        v-if="menuService.currentLayout !== 'sakai-topnav'"
         class="layout-menu-button layout-topbar-action"
         @click="toggleMenu"
       >

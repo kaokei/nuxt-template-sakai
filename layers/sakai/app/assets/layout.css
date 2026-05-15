@@ -138,7 +138,7 @@ a {
   align-items: center;
 }
 .layout-topbar .layout-topbar-logo-container {
-  width: 20rem;
+  width: auto;
   display: flex;
   align-items: center;
 }

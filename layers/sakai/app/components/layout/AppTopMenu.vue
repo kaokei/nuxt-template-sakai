@@ -371,8 +371,8 @@ watch(
 }
 
 .layout-topmenu-mobile-panel {
-  position: absolute;
-  top: 100%;
+  position: fixed;
+  top: 4rem;
   left: 0;
   width: 100%;
   background-color: var(--surface-overlay);
