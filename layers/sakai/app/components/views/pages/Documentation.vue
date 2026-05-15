@@ -6,31 +6,31 @@
       Sakai is an application template for Vue based on the
       <a
         href="https://nuxt.com/docs/4.x/getting-started/installation"
-        class="font-medium text-primary hover:underline"
+        class="text-primary font-medium hover:underline"
         >nuxt</a
       >, the recommended way to start a <strong>Nuxt-powered</strong> Vue
       projects. To get started, clone the
       <a
         href="https://github.com/kaokei/nuxt-template-sakai"
-        class="font-medium text-primary hover:underline"
+        class="text-primary font-medium hover:underline"
         >repository</a
       >
       from GitHub and install the dependencies with npm or yarn.
     </p>
     <pre class="app-code">
 <code>git clone https://github.com/kaokei/nuxt-template-sakai
-npm install
-npm run dev</code></pre>
+pnpm install
+pnpm dev</code></pre>
 
     <p class="mb-4 text-lg">
       Navigate to
-      <i class="px-2 py-1 text-base not-italic bg-highlight rounded-border"
-        >http://localhost:5173/</i
+      <i class="bg-highlight rounded-border px-2 py-1 text-base not-italic"
+        >http://localhost:3000/</i
       >
       to view the application in your local environment.
     </p>
 
-    <pre class="app-code"><code>npm run dev</code></pre>
+    <pre class="app-code"><code>pnpm dev</code></pre>
 
     <div class="mb-4 text-xl font-semibold">Structure</div>
     <p class="mb-4 text-lg">
@@ -40,23 +40,23 @@ npm run dev</code></pre>
     </p>
     <ul class="mb-4 list-disc pl-8 text-lg leading-normal">
       <li>
-        <span class="font-medium text-primary">src/layout</span>: Main layout
+        <span class="text-primary font-medium">src/layout</span>: Main layout
         files, needs to be present.
       </li>
       <li>
-        <span class="font-medium text-primary">src/views</span>: Demo pages like
+        <span class="text-primary font-medium">src/views</span>: Demo pages like
         Dashboard.
       </li>
       <li>
-        <span class="font-medium text-primary">public/demo</span>: Assets used
+        <span class="text-primary font-medium">public/demo</span>: Assets used
         in demos
       </li>
       <li>
-        <span class="font-medium text-primary">src/assets/demo</span>: Styles
+        <span class="text-primary font-medium">src/assets/demo</span>: Styles
         used in demos
       </li>
       <li>
-        <span class="font-medium text-primary">src/assets/layout</span>: SCSS
+        <span class="text-primary font-medium">src/assets/layout</span>: SCSS
         files of the main layout
       </li>
     </ul>
@@ -64,11 +64,11 @@ npm run dev</code></pre>
     <div class="mb-4 text-xl font-semibold">Menu</div>
     <p class="mb-4 text-lg">
       Main menu is defined at
-      <span class="px-2 py-1 text-base not-italic bg-highlight rounded-border"
+      <span class="bg-highlight rounded-border px-2 py-1 text-base not-italic"
         >src/layout/AppMenu.vue</span
       >
       file. Update the
-      <i class="px-2 py-1 text-base not-italic bg-highlight rounded-border"
+      <i class="bg-highlight rounded-border px-2 py-1 text-base not-italic"
         >model</i
       >
       property to define your own menu items.
@@ -77,7 +77,7 @@ npm run dev</code></pre>
     <div class="mb-4 text-xl font-semibold">Layout Composable</div>
     <p class="mb-4 text-lg">
       The
-      <span class="px-2 py-1 text-base not-italic bg-highlight rounded-border"
+      <span class="bg-highlight rounded-border px-2 py-1 text-base not-italic"
         >src/layout/composables/layout.js</span
       >
       is a composable that manages the layout state changes including dark mode,
@@ -96,7 +96,7 @@ npm run dev</code></pre>
     <p class="mb-4 text-lg">
       CSS variables used in the template derive their values from the PrimeVue
       styled mode presets, use the files under
-      <span class="px-2 py-1 text-base not-italic bg-highlight rounded-border"
+      <span class="bg-highlight rounded-border px-2 py-1 text-base not-italic"
         >assets/layout/_variables.scss</span
       >
       to customize according to your requirements.
@@ -111,12 +111,12 @@ npm run dev</code></pre>
 
     <p class="mb-4 text-lg">Add Prime related libraries to the project.</p>
     <pre class="app-code">
-<code>npm install primevue @primevue/themes tailwindcss-primeui primeicons
-npm install --save-dev @primevue/nuxt-module</code></pre>
+<code>pnpm add primevue @primevue/themes tailwindcss-primeui primeicons
+pnpm add --save-dev @primevue/nuxt-module</code></pre>
 
     <p class="mb-4 text-lg">
       Add PrimeVue-Nuxt module to
-      <span class="px-2 py-1 text-base not-italic bg-highlight rounded-border"
+      <span class="bg-highlight rounded-border px-2 py-1 text-base not-italic"
         >nuxt.config.js</span
       >
     </p>
@@ -129,7 +129,7 @@ npm install --save-dev @primevue/nuxt-module</code></pre>
       Install
       <a
         href="https://tailwindcss.com/docs/guides/nuxtjs"
-        class="font-medium text-primary hover:underline"
+        class="text-primary font-medium hover:underline"
         >Tailwind CSS</a
       >
       with Nuxt using official documentation.
@@ -137,11 +137,11 @@ npm install --save-dev @primevue/nuxt-module</code></pre>
 
     <p class="mb-4 text-lg">
       Add
-      <span class="px-2 py-1 text-base not-italic bg-highlight rounded-border"
+      <span class="bg-highlight rounded-border px-2 py-1 text-base not-italic"
         >tailwindcss-primeui</span
       >
       package as a plugin to
-      <span class="px-2 py-1 text-base not-italic bg-highlight rounded-border"
+      <span class="bg-highlight rounded-border px-2 py-1 text-base not-italic"
         >tailwind.config.js</span
       >
     </p>
@@ -150,7 +150,7 @@ npm install --save-dev @primevue/nuxt-module</code></pre>
 
     <p class="mb-4 text-lg">
       Add PrimeVue to in
-      <span class="px-2 py-1 text-base not-italic bg-highlight rounded-border"
+      <span class="bg-highlight rounded-border px-2 py-1 text-base not-italic"
         >nuxt.config.js</span
       >
     </p>
@@ -170,15 +170,15 @@ primevue: {
 
     <p class="mb-4 text-lg">
       Copy
-      <span class="px-2 py-1 text-base not-italic bg-highlight rounded-border"
+      <span class="bg-highlight rounded-border px-2 py-1 text-base not-italic"
         >src/assets</span
       >
       folder and paste them to
-      <span class="px-2 py-1 text-base not-italic bg-highlight rounded-border"
+      <span class="bg-highlight rounded-border px-2 py-1 text-base not-italic"
         >assets</span
       >
       folder to your Nuxt project. And add to
-      <span class="px-2 py-1 text-base not-italic bg-highlight rounded-border"
+      <span class="bg-highlight rounded-border px-2 py-1 text-base not-italic"
         >nuxt.config.js</span
       >
     </p>
@@ -187,7 +187,7 @@ primevue: {
 
     <p class="mb-4 text-lg">
       Change
-      <span class="px-2 py-1 text-base not-italic bg-highlight rounded-border"
+      <span class="bg-highlight rounded-border px-2 py-1 text-base not-italic"
         >app.vue</span
       >
     </p>
@@ -200,7 +200,7 @@ primevue: {
 
     <p class="mb-4 text-lg">
       Create
-      <span class="px-2 py-1 text-base not-italic bg-highlight rounded-border"
+      <span class="bg-highlight rounded-border px-2 py-1 text-base not-italic"
         >layouts/default.vue</span
       >
       and paste this code:
@@ -216,19 +216,19 @@ import AppLayout from './AppLayout.vue';
 
     <p class="mb-4 text-lg">
       Create
-      <span class="px-2 py-1 text-base not-italic bg-highlight rounded-border"
+      <span class="bg-highlight rounded-border px-2 py-1 text-base not-italic"
         >layouts</span
       >
       folder and copy
-      <span class="px-2 py-1 text-base not-italic bg-highlight rounded-border"
+      <span class="bg-highlight rounded-border px-2 py-1 text-base not-italic"
         >src/layout</span
       >
       folder and paste them. And then create
-      <span class="px-2 py-1 text-base not-italic bg-highlight rounded-border"
+      <span class="bg-highlight rounded-border px-2 py-1 text-base not-italic"
         >composables/use-layout.vue</span
       >
       and replace it with
-      <span class="px-2 py-1 text-base not-italic bg-highlight rounded-border"
+      <span class="bg-highlight rounded-border px-2 py-1 text-base not-italic"
         >src/layout/composables/layout.js</span
       >. Then remove this line:
     </p>
@@ -238,29 +238,29 @@ import AppLayout from './AppLayout.vue';
     <p class="mb-4 text-lg">As a final step, copy the following folders:</p>
     <ul class="mb-4 list-disc pl-8 text-lg leading-normal">
       <li>
-        <span class="font-medium text-primary">public/demo</span>
-        <i class="pi pi-arrow-right text-sm! mr-1"></i>
-        <span class="font-medium text-primary">public</span>
+        <span class="text-primary font-medium">public/demo</span>
+        <i class="pi pi-arrow-right mr-1 text-sm!"></i>
+        <span class="text-primary font-medium">public</span>
       </li>
       <li>
-        <span class="font-medium text-primary">src/components</span>
-        <i class="pi pi-arrow-right text-sm! mr-1"></i>
-        <span class="font-medium text-primary">components</span>
+        <span class="text-primary font-medium">src/components</span>
+        <i class="pi pi-arrow-right mr-1 text-sm!"></i>
+        <span class="text-primary font-medium">components</span>
       </li>
       <li>
-        <span class="font-medium text-primary">src/service</span>
-        <i class="pi pi-arrow-right text-sm! mr-1"></i>
-        <span class="font-medium text-primary">service</span>
+        <span class="text-primary font-medium">src/service</span>
+        <i class="pi pi-arrow-right mr-1 text-sm!"></i>
+        <span class="text-primary font-medium">service</span>
       </li>
       <li>
-        <span class="font-medium text-primary">src/views/uikit</span>
-        <i class="pi pi-arrow-right text-sm! mr-1"></i>
-        <span class="font-medium text-primary">pages/uikit</span>
+        <span class="text-primary font-medium">src/views/uikit</span>
+        <i class="pi pi-arrow-right mr-1 text-sm!"></i>
+        <span class="text-primary font-medium">pages/uikit</span>
       </li>
       <li>
-        <span class="font-medium text-primary">src/views/pages</span>
-        <i class="pi pi-arrow-right text-sm! mr-1"></i>
-        <span class="font-medium text-primary">pages</span>
+        <span class="text-primary font-medium">src/views/pages</span>
+        <i class="pi pi-arrow-right mr-1 text-sm!"></i>
+        <span class="text-primary font-medium">pages</span>
       </li>
     </ul>
   </div>

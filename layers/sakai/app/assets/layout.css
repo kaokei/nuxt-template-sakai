@@ -114,6 +114,11 @@ a {
   transition: margin-left var(--layout-section-transition-duration);
 }
 
+.layout-wrapper.layout-topnav .layout-main-container,
+.layout-wrapper.layout-mix .layout-main-container {
+  padding-top: 9rem; /* 4rem(topbar) + 3rem(topmenu) + 2rem(breathing) */
+}
+
 .layout-main {
   flex: 1 1 auto;
   padding-bottom: 2rem;

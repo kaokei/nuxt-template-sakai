@@ -9,11 +9,23 @@ export default defineNuxtPlugin(() => {
   declareRootProviders([MenuService]);
 
   const menuService = useRootService(MenuService);
-  menuService.registerSystems([
-    demoSystemConfig,
-    demoMonitorConfig,
-    demoWorkbenchConfig,
-    demoNotifyConfig,
-    demoShowcaseConfig,
-  ]);
+  const route = useRoute();
+  menuService.registerSystems(
+    [
+      demoSystemConfig,
+      demoMonitorConfig,
+      demoWorkbenchConfig,
+      demoNotifyConfig,
+      demoShowcaseConfig,
+    ],
+    route.path,
+  );
+
+  // 路由变化时自动同步当前系统
+  watch(
+    () => route.path,
+    (path) => {
+      menuService.matchRoute(path);
+    },
+  );
 });

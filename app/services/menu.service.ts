@@ -24,10 +24,23 @@ export class MenuService {
       | 'sakai-mix';
   }
 
-  registerSystems(configs: SystemConfig[]) {
+  registerSystems(configs: SystemConfig[], currentRoute?: string) {
     this.systems = configs;
-    if (!this.currentSystemId && configs.length > 0 && configs[0]) {
+    if (currentRoute) {
+      this.matchRoute(currentRoute);
+    } else if (!this.currentSystemId && configs[0]) {
       this.currentSystemId = configs[0].id;
+    }
+  }
+
+  matchRoute(currentRoute: string) {
+    if (this.systems.length === 0) return;
+    const sorted = [...this.systems].sort(
+      (a, b) => b.routePrefix.length - a.routePrefix.length,
+    );
+    const matched = sorted.find((s) => currentRoute.startsWith(s.routePrefix));
+    if (matched) {
+      this.currentSystemId = matched.id;
     }
   }
 
