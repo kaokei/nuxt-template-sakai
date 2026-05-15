@@ -10,6 +10,8 @@ const layoutState = reactive({
   staticMenuInactive: false,
   overlayMenuActive: false,
   mobileMenuActive: false,
+  /** 顶部菜单移动端展开状态（仅 sakai-topnav 布局移动端使用） */
+  topMenuMobileActive: false,
   profileSidebarVisible: false,
   configSidebarVisible: false,
   sidebarExpanded: false,
@@ -56,10 +58,19 @@ export function useLayout() {
     layoutState.mobileMenuActive = false;
   };
 
+  const toggleTopMenu = () => {
+    layoutState.topMenuMobileActive = !layoutState.topMenuMobileActive;
+  };
+
+  const hideTopMenu = () => {
+    layoutState.topMenuMobileActive = false;
+  };
+
   const changeMenuMode = (event) => {
     layoutConfig.menuMode = event.value;
     layoutState.staticMenuInactive = false;
     layoutState.mobileMenuActive = false;
+    layoutState.topMenuMobileActive = false;
     layoutState.sidebarExpanded = false;
     layoutState.menuHoverActive = false;
     layoutState.anchored = false;
@@ -78,6 +89,8 @@ export function useLayout() {
     toggleConfigSidebar,
     toggleMenu,
     hideMobileMenu,
+    toggleTopMenu,
+    hideTopMenu,
     changeMenuMode,
     isDesktop,
     hasOpenOverlay,

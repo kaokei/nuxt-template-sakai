@@ -8,10 +8,7 @@ const props = defineProps<{
 
 const route = useRoute();
 const router = useRouter();
-const { layoutState, isDesktop } = useLayout();
-
-/** 移动端菜单是否展开 */
-const mobileMenuOpen = ref(false);
+const { layoutState, toggleTopMenu } = useLayout();
 
 /** 将自定义 MenuItem 转换为 PrimeVue Menubar 所需的模型格式 */
 function toPrimeMenuModel(items: MenuItem[]): any[] {
@@ -30,7 +27,7 @@ function toPrimeMenuModel(items: MenuItem[]): any[] {
         model.command = () => {
           router.push(item.to!);
           // 导航后关闭移动端菜单
-          mobileMenuOpen.value = false;
+          layoutState.topMenuMobileActive = false;
         };
       }
 
@@ -63,21 +60,11 @@ function isItemActive(item: MenuItem): boolean {
   return false;
 }
 
-/** 切换移动端菜单 */
-function toggleMobileMenu() {
-  mobileMenuOpen.value = !mobileMenuOpen.value;
-}
-
-/** 点击遮罩关闭移动端菜单 */
-function closeMobileMenu() {
-  mobileMenuOpen.value = false;
-}
-
 /** 监听路由变化，关闭移动端菜单 */
 watch(
   () => route.path,
   () => {
-    mobileMenuOpen.value = false;
+    layoutState.topMenuMobileActive = false;
   },
 );
 </script>
@@ -114,18 +101,13 @@ watch(
       </PrimeMenubar>
     </div>
 
-    <!-- 移动端：汉堡菜单按钮 + 下拉面板 -->
+    <!-- 移动端：下拉面板（由导航栏按钮触发） -->
     <div class="layout-topmenu-mobile">
-      <button
-        class="layout-topmenu-hamburger layout-topbar-action"
-        @click="toggleMobileMenu"
-        :aria-label="mobileMenuOpen ? '关闭菜单' : '打开菜单'"
-      >
-        <i :class="mobileMenuOpen ? 'pi pi-times' : 'pi pi-bars'" />
-      </button>
-
       <Transition name="layout-topmenu-slide">
-        <div v-if="mobileMenuOpen" class="layout-topmenu-mobile-panel">
+        <div
+          v-if="layoutState.topMenuMobileActive"
+          class="layout-topmenu-mobile-panel"
+        >
           <ul class="layout-topmenu-mobile-list">
             <template v-for="item in items" :key="item.label">
               <li
@@ -157,7 +139,7 @@ watch(
                           'layout-topmenu-mobile-link-active':
                             isItemActive(child),
                         }"
-                        @click="closeMobileMenu"
+                        @click="toggleTopMenu"
                       >
                         <i
                           v-if="child.icon"
@@ -171,7 +153,7 @@ watch(
                         :href="child.url"
                         :target="child.target"
                         class="layout-topmenu-mobile-link"
-                        @click="closeMobileMenu"
+                        @click="toggleTopMenu"
                       >
                         <i
                           v-if="child.icon"
@@ -192,7 +174,7 @@ watch(
                   :class="{
                     'layout-topmenu-mobile-link-active': isItemActive(item),
                   }"
-                  @click="closeMobileMenu"
+                  @click="toggleTopMenu"
                 >
                   <i
                     v-if="item.icon"
@@ -208,7 +190,7 @@ watch(
                   :href="item.url"
                   :target="item.target"
                   class="layout-topmenu-mobile-link"
-                  @click="closeMobileMenu"
+                  @click="toggleTopMenu"
                 >
                   <i
                     v-if="item.icon"
@@ -226,9 +208,9 @@ watch(
       <!-- 遮罩层 -->
       <Transition name="layout-topmenu-fade">
         <div
-          v-if="mobileMenuOpen"
+          v-if="layoutState.topMenuMobileActive"
           class="layout-topmenu-mask"
-          @click="closeMobileMenu"
+          @click="toggleTopMenu"
         />
       </Transition>
     </div>

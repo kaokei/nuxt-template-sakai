@@ -106,5 +106,12 @@
         display: block;
       }
     }
+
+    /* topnav 布局移动端：顶部菜单栏被隐藏，内容区仅需留出 topbar 高度 */
+    &.layout-topnav {
+      .layout-main-container {
+        padding-top: 6rem;
+      }
+    }
   }
 }

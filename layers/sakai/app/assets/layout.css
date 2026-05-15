@@ -488,6 +488,9 @@ a {
     margin-left: 0;
     padding-left: 2rem;
   }
+  .layout-wrapper.layout-topnav .layout-main-container {
+    padding-top: 6rem;
+  }
   .layout-wrapper .layout-sidebar {
     transform: translateX(-100%);
     left: 0;

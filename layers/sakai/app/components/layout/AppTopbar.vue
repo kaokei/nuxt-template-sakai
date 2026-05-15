@@ -3,9 +3,19 @@ import { useLayout } from '@sakai/components/layout/composables/layout';
 import { MenuService } from '~/services/menu.service';
 import AppConfigurator from './AppConfigurator.vue';
 
-const { toggleMenu, toggleDarkMode, isDarkTheme } = useLayout();
+const { toggleMenu, toggleTopMenu, toggleDarkMode, isDarkTheme } = useLayout();
 const menuService = useRootService(MenuService);
 const router = useRouter();
+
+/** 是否移动端视口（响应式，联动窗口 resize） */
+const isMobileView = ref(window.innerWidth <= 991);
+onMounted(() => {
+  const handler = () => {
+    isMobileView.value = window.innerWidth <= 991;
+  };
+  window.addEventListener('resize', handler);
+  onUnmounted(() => window.removeEventListener('resize', handler));
+});
 
 // 系统选择器下拉菜单
 const systemMenu = ref<{ toggle: (event: Event) => void } | null>(null);
@@ -28,9 +38,13 @@ function toggleSystemMenu(event: Event) {
   <div class="layout-topbar">
     <div class="layout-topbar-logo-container">
       <button
-        v-if="menuService.currentLayout !== 'sakai-topnav'"
+        v-if="menuService.currentLayout !== 'sakai-topnav' || isMobileView"
         class="layout-menu-button layout-topbar-action"
-        @click="toggleMenu"
+        @click="
+          menuService.currentLayout === 'sakai-topnav'
+            ? toggleTopMenu()
+            : toggleMenu()
+        "
       >
         <i class="pi pi-bars"></i>
       </button>
