@@ -116,6 +116,74 @@
 | `declareAppProviders([...], app)` | App 级          | Nuxt 插件（通过 `declareAppProvidersPlugin`） | 主题服务、应用级状态                                    |
 | `declareRootProviders([...])`     | 全局级          | Nuxt 插件                                     | 日志、全局配置等单例服务                                |
 
+#### 服务作用域判定原则
+
+> 每次创建新服务时，**必须**按以下流程判定其作用域并绑定，避免遗漏注册导致 "No matching binding found" 错误。
+
+```
+新建服务后，按以下优先级判定作用域：
+
+1. 是否被多个页面使用？
+   └─ 是 → 是否被跨层级使用（composable、中间件、其他插件）？
+          └─ 是 → declareRootProviders（全局级，放入 app/plugins/*.provider.ts）
+          └─ 否 → 考虑 declareAppProviders 或页面级
+   └─ 否 → 进入步骤 2
+
+2. 是否为单一页面或页面树内部使用的服务？
+   └─ 是 → declareProviders（页面级，在页面入口 .vue 文件最顶部调用）
+   └─ 否 → 进入步骤 3
+
+3. 是否为某个组件独立使用的服务（如弹窗独有状态）？
+   └─ 是 → 在该组件自身的 <script setup> 中 declareProviders
+   └─ 否 → 重新审视步骤 1-3
+```
+
+**全局服务判定特征**（满足任意一条即为全局）：
+
+| 特征                                        | 示例                            |
+| ------------------------------------------- | ------------------------------- |
+| 持有应用级状态（用户身份、主题、配置）      | `UserService`、`StorageService` |
+| 被 composable 引用，composable 可跨页面调用 | `FeatureFlagService`            |
+| 封装第三方基础设施（路由、存储、日志）      | `RouterService`                 |
+| 被多个页面入口或插件依赖                    | `MenuService`                   |
+
+**当前已注册的全局服务清单**（`app/plugins/` 下）：
+
+| 插件文件                      | 注册的服务                                       |
+| ----------------------------- | ------------------------------------------------ |
+| `menu.provider.ts`            | `MenuService`                                    |
+| `feature-flag.provider.ts`    | `FeatureFlagService`                             |
+| `global-services.provider.ts` | `RouterService`、`StorageService`、`UserService` |
+
+**页面级服务判定特征**：
+
+| 特征                                   | 示例                                     |
+| -------------------------------------- | ---------------------------------------- |
+| 仅该页面使用，包含页面专属的 CRUD 操作 | `UserService`（sakai 层）、`DeptService` |
+| 包含页面 UI 状态（分页、弹窗、选中行） | `UserMgrService`、`DeptMgrService`       |
+| 页面级数据缓存，不同页面不共享         | `DictService`、`RoleService`             |
+
+**常见反模式**（禁止）：
+
+```
+❌ 创建了 @Injectable() 服务但忘记在任何地方调用 declareXXX()
+   → 运行时错误：No matching binding found for token: XxxService
+
+❌ 被 composable 引用的服务只注册在某个页面中
+   → 其他页面调用该 composable 时报错
+
+❌ 在多个页面重复 declareProviders 同一个全局服务
+   → 每次创建新实例，状态不共享，且浪费内存
+```
+
+**新服务创建检查清单**：
+
+- [ ] 确认服务作用域（全局 / 页面 / 组件）
+- [ ] 在正确位置调用 `declareXXX()`
+- [ ] 若为全局服务，确认已在 `app/plugins/*.provider.ts` 中注册
+- [ ] `@Injectable()` 装饰器已添加
+- [ ] `@Inject()` 依赖的其他服务已在该作用域或更高级别注册
+
 #### 页面入口绑定（推荐模式）
 
 ```
