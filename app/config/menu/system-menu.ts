@@ -14,6 +14,11 @@ const menuItems: MenuItem[] = [
         to: '/demo/system/dept',
       },
       { label: '字典管理', icon: 'pi pi-fw pi-book', to: '/demo/system/dict' },
+      {
+        label: '功能开关',
+        icon: 'pi pi-fw pi-flag',
+        to: '/demo/system/feature-flag',
+      },
     ],
   },
 ];
