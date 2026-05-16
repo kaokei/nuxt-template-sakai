@@ -4,7 +4,7 @@ import { MenuService } from '~/services/menu.service';
 import AppConfigurator from './AppConfigurator.vue';
 
 const { toggleMenu, toggleTopMenu, toggleDarkMode, isDarkTheme } = useLayout();
-const menuService = useRootService(MenuService);
+const menuService = useService(MenuService);
 const router = useRouter();
 
 /** 是否移动端视口（响应式，联动窗口 resize） */

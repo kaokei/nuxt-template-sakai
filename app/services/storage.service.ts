@@ -1,3 +1,4 @@
+@Injectable()
 export class StorageService {
   private getItem(key: string) {
     const data = localStorage.getItem(key) as string;

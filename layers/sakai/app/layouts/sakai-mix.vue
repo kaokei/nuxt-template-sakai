@@ -7,7 +7,7 @@ import { useLayout } from '@sakai/components/layout/composables/layout';
 import { MenuService } from '~/services/menu.service';
 
 const { layoutState, hideMobileMenu } = useLayout();
-const menuService = useRootService(MenuService);
+const menuService = useService(MenuService);
 const route = useRoute();
 
 const topMenuItems = computed(() => menuService.currentMenu);

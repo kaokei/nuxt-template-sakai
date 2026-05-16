@@ -1,9 +1,6 @@
 <script lang="ts" setup>
 import { useSeoMeta } from '#imports';
-import { StorageService } from '../services/storage.service';
 import { UserService } from '../services/user.service';
-
-declareProviders([UserService, StorageService]);
 
 const userService = useService(UserService);
 

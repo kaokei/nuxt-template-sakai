@@ -1,5 +1,6 @@
 import qs from 'query-string';
 
+@Injectable()
 export class RouterService {
   public route: any;
   public router: any;

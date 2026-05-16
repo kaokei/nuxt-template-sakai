@@ -13,7 +13,7 @@ const route = useRoute();
 const sidebarRef = ref<HTMLElement | null>(null);
 let outsideClickListener: ((e: MouseEvent) => void) | null = null;
 
-const menuService = useRootService(MenuService);
+const menuService = useService(MenuService);
 const currentMenu = computed(() => props.items ?? menuService.currentMenu);
 
 watch(
