@@ -5,6 +5,7 @@ export interface Dept {
   name: string;
   parentId: string | null;
   leader: string;
+  leaderId: string;
   phone: string;
   email: string;
   order: number;
@@ -64,6 +65,14 @@ export class DeptService {
     } catch {
       return undefined;
     }
+  }
+
+  /** 获取部门下拉选项（平铺，用于角色等页面的部门多选） */
+  async getDeptOptions(): Promise<SelectOption[]> {
+    const res = await $fetch<{ data: { deptOptions: SelectOption[] } }>(
+      '/api/depts/options',
+    );
+    return res.data.deptOptions;
   }
 
   /** 获取上级部门选项 */

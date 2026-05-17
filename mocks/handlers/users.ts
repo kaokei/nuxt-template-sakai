@@ -81,6 +81,9 @@ export const userHandlers = [
       { label: '启用', value: 'active' },
       { label: '禁用', value: 'inactive' },
     ];
+    const userOptions = users
+      .filter((u) => u.status === 'active')
+      .map((u) => ({ label: u.nickName, value: u.id }));
 
     await delay(150);
     return HttpResponse.json({
@@ -88,6 +91,7 @@ export const userHandlers = [
       roleOptions,
       genderOptions,
       statusOptions,
+      userOptions,
     });
   }),
 

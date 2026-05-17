@@ -96,8 +96,9 @@ export const deptHandlers = [
   // ⚠️ 必须在 /api/depts/:id 之前，避免 options 被当作 id 匹配
   http.get('/api/depts/options', async () => {
     const parentOptions = buildParentOptions(depts);
+    const deptOptions = depts.map((d) => ({ label: d.name, value: d.id }));
     await delay(150);
-    return HttpResponse.json({ data: { parentOptions } });
+    return HttpResponse.json({ data: { parentOptions, deptOptions } });
   }),
 
   // 查询单条部门
@@ -118,6 +119,7 @@ export const deptHandlers = [
       name: body.name ?? '',
       parentId: body.parentId ?? null,
       leader: body.leader ?? '',
+      leaderId: body.leaderId ?? '',
       phone: body.phone ?? '',
       email: body.email ?? '',
       order: body.order ?? 0,

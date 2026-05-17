@@ -2,6 +2,7 @@
 import type { Menu } from '@sakai/services/MenuAdminService';
 import { MenuAdminService } from '@sakai/services/MenuAdminService';
 import { RoleService, type Role } from '@sakai/services/RoleService';
+import { DeptService, type SelectOption } from '@sakai/services/DeptService';
 
 const visible = defineModel<boolean>('visible', { required: true });
 const editData = defineModel<Role | null>('editData', { default: null });
@@ -12,6 +13,7 @@ const emit = defineEmits<{
 
 const roleService = useService(RoleService);
 const menuAdminService = useService(MenuAdminService);
+const deptService = useService(DeptService);
 const submitted = ref(false);
 
 const dataScopeOptions = [
@@ -39,6 +41,7 @@ const form = ref({
 
 const isEdit = computed(() => !!editData.value);
 const isCustomScope = computed(() => form.value.dataScope === 'custom');
+const deptOptions = ref<SelectOption[]>([]);
 
 // 菜单权限树
 const menuTreeNodes = ref<any[]>([]);
@@ -62,9 +65,10 @@ onMounted(async () => {
   menuTreeNodes.value = buildMenuTree(allMenus.value, null);
 });
 
-watch(visible, (isVisible) => {
+watch(visible, async (isVisible) => {
   if (isVisible) {
     submitted.value = false;
+    deptOptions.value = await deptService.getDeptOptions();
     if (editData.value) {
       form.value = {
         name: editData.value.name,
@@ -210,17 +214,18 @@ async function handleSave() {
         </div>
       </div>
 
-      <!-- 自定义数据权限：部门选择占位 -->
+      <!-- 自定义数据权限：部门多选 -->
       <div v-if="isCustomScope">
         <label class="mb-2 block text-sm font-medium">选择部门</label>
-        <PrimeInputText
-          :placeholder="'此处未来将接入部门选择器'"
-          disabled
+        <PrimeMultiSelect
+          v-model="form.deptIds"
+          :options="deptOptions"
+          option-label="label"
+          option-value="value"
+          placeholder="请选择部门"
+          display="chip"
           fluid
         />
-        <small class="text-surface-400"
-          >自定义数据权限时，请在部门管理中选择具体部门</small
-        >
       </div>
 
       <!-- 菜单权限树 -->

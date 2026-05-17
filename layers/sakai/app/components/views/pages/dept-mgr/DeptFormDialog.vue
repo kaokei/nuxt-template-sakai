@@ -4,6 +4,7 @@ import {
   type Dept,
   type SelectOption,
 } from '@sakai/services/DeptService';
+import { UserService } from '@sakai/services/UserService';
 
 const visible = defineModel<boolean>('visible', { required: true });
 const editData = defineModel<Dept | null>('editData', { default: null });
@@ -13,8 +14,10 @@ const emit = defineEmits<{
 }>();
 
 const deptService = useService(DeptService);
+const userService = useService(UserService);
 const submitted = ref(false);
 const parentOptions = ref<SelectOption[]>([]);
+const leaderOptions = ref<SelectOption[]>([]);
 
 const statusOptions = [
   { label: '启用', value: 'active' },
@@ -27,6 +30,7 @@ const form = ref({
   parentId: null as string | null,
   name: '',
   leader: '',
+  leaderId: '',
   phone: '',
   email: '',
   order: 0,
@@ -39,6 +43,7 @@ function resetForm() {
     parentId: null,
     name: '',
     leader: '',
+    leaderId: '',
     phone: '',
     email: '',
     order: 0,
@@ -51,11 +56,13 @@ watch(visible, async (isVisible) => {
   if (isVisible) {
     submitted.value = false;
     parentOptions.value = await deptService.getParentOptions();
+    leaderOptions.value = await userService.getUserSelectOptions();
     if (editData.value) {
       form.value = {
         parentId: editData.value.parentId,
         name: editData.value.name,
         leader: editData.value.leader,
+        leaderId: editData.value.leaderId ?? '',
         phone: editData.value.phone,
         email: editData.value.email,
         order: editData.value.order,
@@ -72,6 +79,14 @@ async function handleSave() {
   submitted.value = true;
 
   if (!form.value.name.trim()) return;
+
+  // 从选项中找到选中用户的名称，写入 leader 字段
+  if (form.value.leaderId) {
+    const selected = leaderOptions.value.find(
+      (o) => o.value === form.value.leaderId,
+    );
+    form.value.leader = selected?.label ?? '';
+  }
 
   try {
     if (isEdit.value && editData.value) {
@@ -128,9 +143,14 @@ async function handleSave() {
       <div class="grid grid-cols-2 gap-4">
         <div>
           <label class="mb-2 block text-sm font-medium">负责人</label>
-          <PrimeInputText
-            v-model.trim="form.leader"
-            placeholder="输入负责人"
+          <PrimeSelect
+            v-model="form.leaderId"
+            :options="leaderOptions"
+            option-label="label"
+            option-value="value"
+            placeholder="请选择负责人"
+            show-clear
+            filter
             fluid
           />
         </div>

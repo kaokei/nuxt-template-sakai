@@ -3,8 +3,9 @@ import DeptDeleteDialog from '@sakai/components/views/pages/dept-mgr/DeptDeleteD
 import DeptFormDialog from '@sakai/components/views/pages/dept-mgr/DeptFormDialog.vue';
 import { DeptMgrService } from '@sakai/services/DeptMgrService';
 import { DeptService } from '@sakai/services/DeptService';
+import { UserService } from '@sakai/services/UserService';
 
-declareProviders([DeptService, DeptMgrService]);
+declareProviders([DeptService, DeptMgrService, UserService]);
 
 const mgr = useService(DeptMgrService);
 const toast = useToast();

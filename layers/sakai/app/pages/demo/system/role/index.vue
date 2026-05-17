@@ -2,11 +2,12 @@
 import RoleDeleteDialog from '@sakai/components/views/pages/role-mgr/RoleDeleteDialog.vue';
 import RoleFormDialog from '@sakai/components/views/pages/role-mgr/RoleFormDialog.vue';
 import RoleSearchBar from '@sakai/components/views/pages/role-mgr/RoleSearchBar.vue';
+import { DeptService } from '@sakai/services/DeptService';
 import { MenuAdminService } from '@sakai/services/MenuAdminService';
 import { RoleMgrService } from '@sakai/services/RoleMgrService';
 import { RoleService } from '@sakai/services/RoleService';
 
-declareProviders([RoleService, RoleMgrService, MenuAdminService]);
+declareProviders([RoleService, RoleMgrService, MenuAdminService, DeptService]);
 
 const mgr = useService(RoleMgrService);
 const toast = useToast();

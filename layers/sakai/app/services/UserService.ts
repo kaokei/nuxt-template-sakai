@@ -44,6 +44,7 @@ export interface UserOptions {
   roleOptions: SelectOption[];
   genderOptions: SelectOption[];
   statusOptions: SelectOption[];
+  userOptions: SelectOption[];
 }
 
 @Injectable()
@@ -78,6 +79,11 @@ export class UserService {
 
   async getUserOptions(): Promise<UserOptions> {
     return this.loadOptions();
+  }
+
+  async getUserSelectOptions(): Promise<SelectOption[]> {
+    const opts = await this.loadOptions();
+    return opts.userOptions;
   }
 
   async queryUsers(params: UserQueryParams = {}): Promise<PageResult<User>> {
