@@ -17,7 +17,16 @@ const deptService = useService(DeptService);
 const userService = useService(UserService);
 const submitted = ref(false);
 const parentOptions = ref<SelectOption[]>([]);
-const leaderOptions = ref<SelectOption[]>([]);
+const leaderSuggestions = ref<SelectOption[]>([]);
+const selectedLeader = ref<SelectOption | null>(null);
+
+async function searchLeader(event: { query: string }) {
+  if (!event.query.trim()) {
+    leaderSuggestions.value = [];
+    return;
+  }
+  leaderSuggestions.value = await userService.searchUserOptions(event.query);
+}
 
 const statusOptions = [
   { label: '启用', value: 'active' },
@@ -50,13 +59,13 @@ function resetForm() {
     status: 'active',
     remark: '',
   };
+  selectedLeader.value = null;
 }
 
 watch(visible, async (isVisible) => {
   if (isVisible) {
     submitted.value = false;
     parentOptions.value = await deptService.getParentOptions();
-    leaderOptions.value = await userService.getUserSelectOptions();
     if (editData.value) {
       form.value = {
         parentId: editData.value.parentId,
@@ -69,6 +78,13 @@ watch(visible, async (isVisible) => {
         status: editData.value.status,
         remark: editData.value.remark,
       };
+      // 编辑时用已有 leader 信息预填 AutoComplete 显示
+      if (editData.value.leaderId && editData.value.leader) {
+        selectedLeader.value = {
+          label: editData.value.leader,
+          value: editData.value.leaderId,
+        };
+      }
     } else {
       resetForm();
     }
@@ -80,12 +96,10 @@ async function handleSave() {
 
   if (!form.value.name.trim()) return;
 
-  // 从选项中找到选中用户的名称，写入 leader 字段
-  if (form.value.leaderId) {
-    const selected = leaderOptions.value.find(
-      (o) => o.value === form.value.leaderId,
-    );
-    form.value.leader = selected?.label ?? '';
+  // 从 AutoComplete 选中结果提取用户信息
+  if (selectedLeader.value) {
+    form.value.leaderId = selectedLeader.value.value;
+    form.value.leader = selectedLeader.value.label;
   }
 
   try {
@@ -143,15 +157,14 @@ async function handleSave() {
       <div class="grid grid-cols-2 gap-4">
         <div>
           <label class="mb-2 block text-sm font-medium">负责人</label>
-          <PrimeSelect
-            v-model="form.leaderId"
-            :options="leaderOptions"
+          <PrimeAutoComplete
+            v-model="selectedLeader"
+            :suggestions="leaderSuggestions"
             option-label="label"
-            option-value="value"
-            placeholder="请选择负责人"
-            show-clear
-            filter
+            placeholder="输入姓名搜索"
+            force-selection
             fluid
+            @complete="searchLeader"
           />
         </div>
 

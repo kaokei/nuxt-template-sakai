@@ -81,9 +81,6 @@ export const userHandlers = [
       { label: '启用', value: 'active' },
       { label: '禁用', value: 'inactive' },
     ];
-    const userOptions = users
-      .filter((u) => u.status === 'active')
-      .map((u) => ({ label: u.nickName, value: u.id }));
 
     await delay(150);
     return HttpResponse.json({
@@ -91,8 +88,31 @@ export const userHandlers = [
       roleOptions,
       genderOptions,
       statusOptions,
-      userOptions,
     });
+  }),
+
+  // 模糊搜索用户（用于部门负责人等选择场景，最多返回10条）
+  // ⚠️ 必须在 /api/users/:id 之前，避免 search 被当作 id 匹配
+  http.get('/api/users/search', async ({ request }) => {
+    const url = new URL(request.url);
+    const keyword = (url.searchParams.get('keyword') || '').toLowerCase();
+
+    let filtered = users.filter((u) => u.status === 'active');
+    if (keyword) {
+      filtered = filtered.filter(
+        (u) =>
+          u.nickName.toLowerCase().includes(keyword) ||
+          u.userName.toLowerCase().includes(keyword),
+      );
+    }
+
+    const result = filtered.slice(0, 10).map((u) => ({
+      label: `${u.nickName}（${u.deptName}）`,
+      value: u.id,
+    }));
+
+    await delay(200);
+    return HttpResponse.json(result);
   }),
 
   // 查询单条
