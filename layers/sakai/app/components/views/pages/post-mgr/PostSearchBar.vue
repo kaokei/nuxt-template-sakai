@@ -4,10 +4,14 @@ const emit = defineEmits<{
   reset: [];
 }>();
 
-const searchForm = ref({
+const searchForm = ref<{
+  name: string;
+  code: string;
+  status: string | null;
+}>({
   name: '',
   code: '',
-  status: '',
+  status: null,
 });
 
 const statusOptions = [
@@ -18,7 +22,11 @@ const statusOptions = [
 function handleSearch() {
   const params: Record<string, any> = {};
   Object.entries(searchForm.value).forEach(([key, value]) => {
-    if (typeof value === 'string' && value !== '') {
+    if (
+      key === 'status'
+        ? value != null && value !== ''
+        : typeof value === 'string' && value !== ''
+    ) {
       params[key] = value;
     }
   });
@@ -29,7 +37,7 @@ function handleReset() {
   searchForm.value = {
     name: '',
     code: '',
-    status: '',
+    status: null,
   };
   emit('reset');
 }
@@ -66,7 +74,7 @@ function handleReset() {
         :options="statusOptions"
         option-label="label"
         option-value="value"
-        placeholder="全部"
+        placeholder="选择状态"
         show-clear
       />
     </div>

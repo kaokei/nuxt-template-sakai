@@ -23,8 +23,8 @@ export class BackupMgrService {
 
   // ==================== 搜索参数 ====================
   searchName = '';
-  searchStatus = '';
-  searchType = '';
+  searchStatus: string | null = null;
+  searchType: string | null = null;
 
   // ==================== 弹窗状态 ====================
   formDialogVisible = false;
@@ -81,7 +81,11 @@ export class BackupMgrService {
   async loadBackups(): Promise<void> {
     this.loading = true;
     try {
-      const result = await this.backupService.queryBackups({});
+      const result = await this.backupService.queryBackups({
+        name: this.searchName || undefined,
+        status: this.searchStatus || undefined,
+        type: this.searchType || undefined,
+      });
       this.backups = result.data;
       this.totalRecords = result.total;
     } finally {
@@ -100,8 +104,8 @@ export class BackupMgrService {
   @autobind
   onReset(): void {
     this.searchName = '';
-    this.searchStatus = '';
-    this.searchType = '';
+    this.searchStatus = null;
+    this.searchType = null;
     this.loadBackups();
   }
 

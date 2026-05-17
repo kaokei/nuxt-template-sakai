@@ -43,6 +43,12 @@ export class JobService {
     }
   }
 
+  async create(
+    data: Omit<Job, 'id' | 'createTime' | 'lastRunTime' | 'nextRunTime'>,
+  ): Promise<Job> {
+    return $fetch<Job>('/api/jobs', { method: 'POST', body: data });
+  }
+
   async update(id: string, data: Partial<Job>): Promise<Job> {
     return $fetch<Job>(`/api/jobs/${id}`, {
       method: 'PUT',

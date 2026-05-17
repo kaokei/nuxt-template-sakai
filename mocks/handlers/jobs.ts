@@ -134,4 +134,45 @@ export const jobsHandlers = [
 
     return HttpResponse.json({ message: '已恢复', job: updated });
   }),
+
+  http.post('/api/jobs', async ({ request }) => {
+    const body = (await request.json()) as Record<string, unknown>;
+
+    if (!body.name && !body.className) {
+      return HttpResponse.json(
+        { message: '任务名称和类名必填' },
+        { status: 400 },
+      );
+    }
+
+    const newJob: Job = {
+      id: Date.now().toString(36),
+      name: (body.name as string) ?? '',
+      group: (body.group as string) ?? '',
+      cron: (body.cron as string) ?? '',
+      className: (body.className as string) ?? '',
+      methodName: (body.methodName as string) ?? '',
+      params: (body.params as string) ?? '',
+      status: (body.status as 'running' | 'paused') ?? 'paused',
+      lastRunTime: '',
+      nextRunTime: '',
+      createTime: new Date().toISOString(),
+      remark: (body.remark as string) ?? '',
+    };
+
+    jobs.unshift(newJob);
+    return HttpResponse.json(newJob, { status: 201 });
+  }),
+
+  http.delete('/api/jobs/:id', async ({ params }) => {
+    const { id } = params;
+    const index = jobs.findIndex((j) => j.id === id);
+
+    if (index === -1) {
+      return HttpResponse.json({ message: '任务不存在' }, { status: 404 });
+    }
+
+    jobs.splice(index, 1);
+    return HttpResponse.json({ message: '删除成功' });
+  }),
 ];

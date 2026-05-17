@@ -137,13 +137,13 @@ onMounted(() => {
         <PrimeSelect
           v-model="mgr.searchStatus"
           :options="[
-            { label: '全部', value: '' },
             { label: '运行中', value: 'running' },
             { label: '已暂停', value: 'paused' },
           ]"
           option-label="label"
           option-value="value"
           placeholder="选择状态"
+          show-clear
         />
       </div>
 

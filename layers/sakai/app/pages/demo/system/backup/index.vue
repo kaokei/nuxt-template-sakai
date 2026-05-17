@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { BackupMgrService } from '@sakai/services/BackupMgrService';
 import { BackupService } from '@sakai/services/BackupService';
+import type { Backup } from '~/types/backup';
 
 declareProviders([BackupService, BackupMgrService]);
 
@@ -9,6 +10,15 @@ const toast = useToast();
 
 definePageMeta({ layout: 'sakai-sidebar' });
 useSeoMeta({ title: '数据备份管理' });
+
+// ==================== 查看备份详情 ====================
+const viewDialogVisible = ref(false);
+const viewData = ref<Backup | null>(null);
+
+function openView(backup: Backup) {
+  viewData.value = backup;
+  viewDialogVisible.value = true;
+}
 
 // ==================== 新建备份表单 ====================
 const formSubmitted = ref(false);
@@ -127,7 +137,7 @@ onMounted(() => {
           :options="statusOptions"
           option-label="label"
           option-value="value"
-          placeholder="全部"
+          placeholder="选择状态"
           show-clear
         />
       </div>
@@ -139,7 +149,7 @@ onMounted(() => {
           :options="searchTypeOptions"
           option-label="label"
           option-value="value"
-          placeholder="全部"
+          placeholder="选择状态"
           show-clear
         />
       </div>
@@ -267,14 +277,24 @@ onMounted(() => {
           :exportable="false"
         >
           <template #body="{ data }">
-            <PrimeButton
-              icon="pi pi-trash"
-              size="small"
-              severity="danger"
-              outlined
-              rounded
-              @click="mgr.openDelete(data)"
-            />
+            <div class="flex gap-1">
+              <PrimeButton
+                icon="pi pi-eye"
+                size="small"
+                severity="info"
+                outlined
+                rounded
+                @click="openView(data)"
+              />
+              <PrimeButton
+                icon="pi pi-trash"
+                size="small"
+                severity="danger"
+                outlined
+                rounded
+                @click="mgr.openDelete(data)"
+              />
+            </div>
           </template>
         </PrimeColumn>
       </PrimeDataTable>
@@ -372,6 +392,67 @@ onMounted(() => {
           icon="pi pi-trash"
           severity="danger"
           @click="handleDeleteConfirm"
+        />
+      </template>
+    </PrimeDialog>
+
+    <!-- 查看备份详情弹窗（只读） -->
+    <PrimeDialog
+      v-model:visible="viewDialogVisible"
+      header="备份详情"
+      :modal="true"
+      :style="{ width: '560px' }"
+      :draggable="false"
+    >
+      <div v-if="viewData" class="flex flex-col gap-4">
+        <div class="flex flex-col gap-1">
+          <span class="text-surface-500 text-sm font-medium">备份名称</span>
+          <span class="text-base">{{ viewData.name }}</span>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="flex flex-col gap-1">
+            <span class="text-surface-500 text-sm font-medium">文件名</span>
+            <span class="font-mono text-sm">{{
+              viewData.fileName || '--'
+            }}</span>
+          </div>
+          <div class="flex flex-col gap-1">
+            <span class="text-surface-500 text-sm font-medium">文件大小</span>
+            <span>{{ mgr.formatFileSize(viewData.fileSize) }}</span>
+          </div>
+          <div class="flex flex-col gap-1">
+            <span class="text-surface-500 text-sm font-medium">类型</span>
+            <PrimeTag
+              :value="mgr.typeLabels[viewData.type] || viewData.type"
+              :severity="viewData.type === 'full' ? 'info' : 'secondary'"
+            />
+          </div>
+          <div class="flex flex-col gap-1">
+            <span class="text-surface-500 text-sm font-medium">状态</span>
+            <PrimeTag
+              :value="mgr.statusLabels[viewData.status] || viewData.status"
+              :severity="mgr.getStatusSeverity(viewData.status)"
+            />
+          </div>
+        </div>
+        <div class="flex flex-col gap-1">
+          <span class="text-surface-500 text-sm font-medium">创建时间</span>
+          <span>{{ mgr.formatDateTime(viewData.createTime) }}</span>
+        </div>
+        <div class="flex flex-col gap-1">
+          <span class="text-surface-500 text-sm font-medium">备注</span>
+          <span class="text-surface-600 text-sm">{{
+            viewData.remark || '无'
+          }}</span>
+        </div>
+      </div>
+
+      <template #footer>
+        <PrimeButton
+          label="关闭"
+          icon="pi pi-times"
+          severity="secondary"
+          @click="viewDialogVisible = false"
         />
       </template>
     </PrimeDialog>

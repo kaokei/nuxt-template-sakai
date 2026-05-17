@@ -77,6 +77,8 @@ async function handleSave() {
 
     if (isEdit.value && editData.value) {
       await jobService.update(editData.value.id, payload);
+    } else {
+      await jobService.create(payload as any);
     }
     visible.value = false;
     emit('saved');

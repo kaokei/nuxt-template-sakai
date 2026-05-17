@@ -30,14 +30,14 @@ export class JobMgrService {
   // ==================== 搜索参数 ====================
   searchName = '';
   searchGroup = '';
-  searchStatus: '' | 'running' | 'paused' = '';
+  searchStatus: '' | 'running' | 'paused' | null = null;
 
   // ==================== 工具函数 ====================
 
-  getStatusSeverity(status: string): 'success' | 'warning' | 'danger' {
-    const map: Record<string, 'success' | 'warning' | 'danger'> = {
+  getStatusSeverity(status: string): 'success' | 'warn' | 'danger' {
+    const map: Record<string, 'success' | 'warn' | 'danger'> = {
       running: 'success',
-      paused: 'warning',
+      paused: 'warn',
     };
     return map[status] || 'danger';
   }
@@ -85,9 +85,12 @@ export class JobMgrService {
   async save(data: Partial<Job>): Promise<SaveResult> {
     if (this.editData) {
       await this.jobService.update(this.editData.id, data);
-      return { success: true, isEdit: true };
+    } else {
+      await this.jobService.create(
+        data as Omit<Job, 'id' | 'createTime' | 'lastRunTime' | 'nextRunTime'>,
+      );
     }
-    return { success: true, isEdit: false };
+    return { success: true, isEdit: !!this.editData };
   }
 
   onSaved(): SaveResult {
@@ -125,7 +128,7 @@ export class JobMgrService {
   async onReset(): Promise<void> {
     this.searchName = '';
     this.searchGroup = '';
-    this.searchStatus = '';
+    this.searchStatus = null;
     await this.loadJobs();
   }
 
