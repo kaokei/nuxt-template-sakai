@@ -5,9 +5,62 @@ import type { SysParam } from '../data/sys-params';
 let sysParams: SysParam[] = [...SYS_PARAM_LIST];
 
 export const sysParamHandlers = [
-  http.get('/api/sys-params', async () => {
+  http.get('/api/sys-params', async ({ request }) => {
+    const url = new URL(request.url);
+    const name = url.searchParams.get('name');
+    const key = url.searchParams.get('key');
+    const type = url.searchParams.get('type');
+    const status = url.searchParams.get('status');
+    const sortField = url.searchParams.get('sortField');
+    const sortOrder = url.searchParams.get('sortOrder');
+    const page = parseInt(url.searchParams.get('page') || '1', 10);
+    const pageSize = parseInt(url.searchParams.get('pageSize') || '10', 10);
+
+    let filtered = [...sysParams];
+
+    if (name) {
+      filtered = filtered.filter((p) =>
+        p.name.toLowerCase().includes(name.toLowerCase()),
+      );
+    }
+
+    if (key) {
+      filtered = filtered.filter((p) =>
+        p.key.toLowerCase().includes(key.toLowerCase()),
+      );
+    }
+
+    if (type) {
+      filtered = filtered.filter((p) => p.type === type);
+    }
+
+    if (status) {
+      filtered = filtered.filter((p) => p.status === status);
+    }
+
+    if (sortField) {
+      const order = sortOrder === '-1' ? -1 : 1;
+      filtered.sort((a, b) => {
+        const aVal = a[sortField as keyof SysParam];
+        const bVal = b[sortField as keyof SysParam];
+        if (aVal == null) return 1;
+        if (bVal == null) return -1;
+        if (typeof aVal === 'string' && typeof bVal === 'string') {
+          return order * aVal.localeCompare(bVal, 'zh-CN');
+        }
+        if (aVal < bVal) return -1 * order;
+        if (aVal > bVal) return 1 * order;
+        return 0;
+      });
+    }
+
+    const total = filtered.length;
+
+    const start = (page - 1) * pageSize;
+    const paged = filtered.slice(start, start + pageSize);
+
     await delay(150);
-    return HttpResponse.json({ data: sysParams, total: sysParams.length });
+    return HttpResponse.json({ data: paged, total });
   }),
 
   http.post('/api/sys-params', async ({ request }) => {

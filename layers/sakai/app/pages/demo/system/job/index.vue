@@ -144,7 +144,6 @@ onMounted(() => {
           option-label="label"
           option-value="value"
           placeholder="选择状态"
-          class="w-28"
         />
       </div>
 

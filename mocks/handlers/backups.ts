@@ -5,9 +5,55 @@ import type { Backup } from '../data/backups';
 let backups: Backup[] = [...BACKUP_LIST];
 
 export const backupHandlers = [
-  http.get('/api/backups', async () => {
+  http.get('/api/backups', async ({ request }) => {
+    const url = new URL(request.url);
+    const name = url.searchParams.get('name');
+    const type = url.searchParams.get('type');
+    const status = url.searchParams.get('status');
+    const sortField = url.searchParams.get('sortField');
+    const sortOrder = url.searchParams.get('sortOrder');
+    const page = parseInt(url.searchParams.get('page') || '1', 10);
+    const pageSize = parseInt(url.searchParams.get('pageSize') || '10', 10);
+
+    let filtered = [...backups];
+
+    if (name) {
+      filtered = filtered.filter((b) =>
+        b.name.toLowerCase().includes(name.toLowerCase()),
+      );
+    }
+
+    if (type) {
+      filtered = filtered.filter((b) => b.type === type);
+    }
+
+    if (status) {
+      filtered = filtered.filter((b) => b.status === status);
+    }
+
+    if (sortField) {
+      const order = sortOrder === '-1' ? -1 : 1;
+      filtered.sort((a, b) => {
+        const aVal = a[sortField as keyof Backup];
+        const bVal = b[sortField as keyof Backup];
+        if (aVal == null) return 1;
+        if (bVal == null) return -1;
+        if (typeof aVal === 'string' && typeof bVal === 'string') {
+          return order * aVal.localeCompare(bVal, 'zh-CN');
+        }
+        if (aVal < bVal) return -1 * order;
+        if (aVal > bVal) return 1 * order;
+        return 0;
+      });
+    }
+
+    const total = filtered.length;
+
+    const start = (page - 1) * pageSize;
+    const paged = filtered.slice(start, start + pageSize);
+
     await delay(150);
-    return HttpResponse.json({ data: backups, total: backups.length });
+    return HttpResponse.json({ data: paged, total });
   }),
 
   http.post('/api/backups', async ({ request }) => {
