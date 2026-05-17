@@ -32,14 +32,22 @@ export interface UserOptions {
 }
 
 export const DEPT_LIST = [
-  { id: 'dept-001', name: '技术部' },
-  { id: 'dept-002', name: '产品部' },
-  { id: 'dept-003', name: '设计部' },
-  { id: 'dept-004', name: '市场部' },
-  { id: 'dept-005', name: '销售部' },
-  { id: 'dept-006', name: '人事部' },
-  { id: 'dept-007', name: '财务部' },
-  { id: 'dept-008', name: '行政部' },
+  { id: 'dept-001', name: '总公司' },
+  { id: 'dept-002', name: '技术部' },
+  { id: 'dept-003', name: '前端组' },
+  { id: 'dept-004', name: '后端组' },
+  { id: 'dept-005', name: '测试组' },
+  { id: 'dept-006', name: '产品部' },
+  { id: 'dept-007', name: '产品一组' },
+  { id: 'dept-008', name: '产品二组' },
+  { id: 'dept-009', name: '设计部' },
+  { id: 'dept-010', name: '市场部' },
+  { id: 'dept-011', name: '销售部' },
+  { id: 'dept-012', name: '华东区' },
+  { id: 'dept-013', name: '华南区' },
+  { id: 'dept-014', name: '人事部' },
+  { id: 'dept-015', name: '财务部' },
+  { id: 'dept-016', name: '行政部' },
 ];
 
 export const ROLE_LIST = [

@@ -12,16 +12,14 @@ const searchForm = ref({
   userName: '',
   nickName: '',
   phone: '',
-  deptId: '',
+  deptId: null as string | null,
   status: '',
   createTimeRange: null as Date[] | null,
 });
 
-const deptOptions = ref<SelectOption[]>([]);
 const statusOptions = ref<SelectOption[]>([]);
 
 onMounted(async () => {
-  deptOptions.value = await userService.getDeptOptions();
   statusOptions.value = await userService.getStatusOptions();
 });
 
@@ -49,7 +47,7 @@ function handleReset() {
     userName: '',
     nickName: '',
     phone: '',
-    deptId: '',
+    deptId: null as string | null,
     status: '',
     createTimeRange: null,
   };
@@ -93,14 +91,7 @@ function handleReset() {
 
     <div class="flex items-center gap-2">
       <label class="text-sm font-medium whitespace-nowrap">部门</label>
-      <PrimeSelect
-        v-model="searchForm.deptId"
-        :options="deptOptions"
-        option-label="label"
-        option-value="value"
-        placeholder="全部"
-        show-clear
-      />
+      <DeptPicker v-model="searchForm.deptId" placeholder="全部" class="w-52" />
     </div>
 
     <div class="flex items-center gap-2">
