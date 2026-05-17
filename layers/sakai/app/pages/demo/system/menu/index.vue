@@ -101,7 +101,7 @@ onMounted(() => {
           <div class="flex gap-2">
             <PrimeButton
               v-permission="'system:menu:add'"
-              label="新增"
+              label="新增一级菜单"
               icon="pi pi-plus"
               severity="primary"
               @click="mgr.openNew"
@@ -246,13 +246,25 @@ onMounted(() => {
           header="操作"
           :frozen="true"
           align-frozen="right"
-          style="width: 120px"
+          style="width: 160px"
           :exportable="false"
         >
           <template #body="{ node }">
             <div class="flex gap-1">
               <PrimeButton
+                v-if="node.data.type !== 'button'"
+                v-permission="'system:menu:add'"
+                v-tooltip.top="'新增子菜单'"
+                icon="pi pi-plus-circle"
+                size="small"
+                severity="primary"
+                text
+                rounded
+                @click="mgr.openNewChild(node.data)"
+              />
+              <PrimeButton
                 v-permission="'system:menu:edit'"
+                v-tooltip.top="'编辑'"
                 icon="pi pi-pencil"
                 size="small"
                 severity="secondary"
@@ -262,6 +274,7 @@ onMounted(() => {
               />
               <PrimeButton
                 v-permission="'system:menu:delete'"
+                v-tooltip.top="'删除'"
                 icon="pi pi-trash"
                 size="small"
                 severity="danger"
@@ -278,6 +291,7 @@ onMounted(() => {
     <MenuFormDialog
       v-model:visible="mgr.formDialogVisible"
       v-model:edit-data="mgr.editData"
+      :default-parent-id="mgr.newMenuParentId"
       @saved="onSaved"
     />
 

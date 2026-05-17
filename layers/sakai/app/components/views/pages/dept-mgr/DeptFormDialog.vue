@@ -8,6 +8,10 @@ import {
 const visible = defineModel<boolean>('visible', { required: true });
 const editData = defineModel<Dept | null>('editData', { default: null });
 
+const props = defineProps<{
+  defaultParentId?: string | null;
+}>();
+
 const emit = defineEmits<{
   saved: [];
 }>();
@@ -15,6 +19,7 @@ const emit = defineEmits<{
 const deptService = useService(DeptService);
 const submitted = ref(false);
 const selectedLeader = ref<SelectOption | null>(null);
+const parentName = ref('根部门');
 
 const statusOptions = [
   { label: '启用', value: 'active' },
@@ -65,6 +70,10 @@ watch(visible, async (isVisible) => {
         status: editData.value.status,
         remark: editData.value.remark,
       };
+      parentName.value = editData.value.parentId
+        ? (await deptService.getDeptById(editData.value.parentId))?.name ||
+          editData.value.parentId
+        : '根部门';
       // 编辑时用已有 leader 信息预填 AutoComplete 显示
       if (editData.value.leaderId && editData.value.leader) {
         selectedLeader.value = {
@@ -74,6 +83,14 @@ watch(visible, async (isVisible) => {
       }
     } else {
       resetForm();
+      if (props.defaultParentId) {
+        form.value.parentId = props.defaultParentId;
+        parentName.value =
+          (await deptService.getDeptById(props.defaultParentId))?.name ||
+          props.defaultParentId;
+      } else {
+        parentName.value = '根部门';
+      }
     }
   }
 });
@@ -114,7 +131,7 @@ async function handleSave() {
     <div class="flex flex-col gap-4">
       <div>
         <label class="mb-2 block text-sm font-medium">上级部门</label>
-        <DeptPicker v-model="form.parentId" placeholder="根部门" />
+        <PrimeInputText :model-value="parentName" readonly disabled fluid />
       </div>
 
       <div>

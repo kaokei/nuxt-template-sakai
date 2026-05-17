@@ -13,21 +13,21 @@ const menuItems: MenuItem[] = [
         icon: 'pi pi-fw pi-sitemap',
         to: '/demo/system/dept',
       },
-      { label: '字典管理', icon: 'pi pi-fw pi-book', to: '/demo/system/dict' },
-      {
-        label: '功能开关',
-        icon: 'pi pi-fw pi-flag',
-        to: '/demo/system/feature-flag',
-      },
       {
         label: '岗位管理',
         icon: 'pi pi-fw pi-id-card',
         to: '/demo/system/post',
       },
+      { label: '字典管理', icon: 'pi pi-fw pi-book', to: '/demo/system/dict' },
       {
         label: '参数配置',
         icon: 'pi pi-fw pi-sliders-h',
         to: '/demo/system/sys-param',
+      },
+      {
+        label: '功能开关',
+        icon: 'pi pi-fw pi-flag',
+        to: '/demo/system/feature-flag',
       },
       { label: '定时任务', icon: 'pi pi-fw pi-clock', to: '/demo/system/job' },
       {

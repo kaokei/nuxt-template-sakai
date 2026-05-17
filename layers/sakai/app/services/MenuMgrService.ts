@@ -28,6 +28,8 @@ export class MenuMgrService {
 
   formDialogVisible = false;
   editData: Menu | null = null;
+  /** 新增子菜单时预选的父级菜单 ID */
+  newMenuParentId: string | null = null;
   deleteDialogVisible = false;
   deleteTarget: MenuTreeNode | null = null;
 
@@ -163,6 +165,14 @@ export class MenuMgrService {
   @autobind
   openNew(): void {
     this.editData = null;
+    this.newMenuParentId = null;
+    this.formDialogVisible = true;
+  }
+
+  @autobind
+  openNewChild(parentMenu: Menu): void {
+    this.editData = null;
+    this.newMenuParentId = parentMenu.id;
     this.formDialogVisible = true;
   }
 

@@ -102,7 +102,7 @@ onMounted(() => {
           <div class="flex gap-2">
             <PrimeButton
               v-permission="'system:dept:add'"
-              label="新增"
+              label="新增一级部门"
               icon="pi pi-plus"
               severity="primary"
               @click="mgr.openNew"
@@ -209,13 +209,24 @@ onMounted(() => {
           header="操作"
           :frozen="true"
           align-frozen="right"
-          style="width: 120px"
+          style="width: 160px"
           :exportable="false"
         >
           <template #body="{ node }">
             <div class="flex gap-1">
               <PrimeButton
+                v-permission="'system:dept:add'"
+                v-tooltip.top="'新增子部门'"
+                icon="pi pi-plus-circle"
+                size="small"
+                severity="primary"
+                text
+                rounded
+                @click="mgr.openNewChild(node.data)"
+              />
+              <PrimeButton
                 v-permission="'system:dept:edit'"
+                v-tooltip.top="'编辑'"
                 icon="pi pi-pencil"
                 size="small"
                 severity="secondary"
@@ -225,6 +236,7 @@ onMounted(() => {
               />
               <PrimeButton
                 v-permission="'system:dept:delete'"
+                v-tooltip.top="'删除'"
                 icon="pi pi-trash"
                 size="small"
                 severity="danger"
@@ -241,6 +253,7 @@ onMounted(() => {
     <DeptFormDialog
       v-model:visible="mgr.formDialogVisible"
       v-model:edit-data="mgr.editData"
+      :default-parent-id="mgr.newDeptParentId"
       @saved="onSaved"
     />
 

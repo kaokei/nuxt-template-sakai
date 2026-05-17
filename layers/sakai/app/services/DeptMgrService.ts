@@ -28,6 +28,7 @@ export class DeptMgrService {
 
   formDialogVisible = false;
   editData: Dept | null = null;
+  newDeptParentId: string | null = null;
   deleteDialogVisible = false;
   deleteTarget: DeptTreeNode | null = null;
 
@@ -146,6 +147,14 @@ export class DeptMgrService {
   @autobind
   openNew(): void {
     this.editData = null;
+    this.newDeptParentId = null;
+    this.formDialogVisible = true;
+  }
+
+  @autobind
+  openNewChild(parentDept: Dept): void {
+    this.editData = null;
+    this.newDeptParentId = parentDept.id;
     this.formDialogVisible = true;
   }
 

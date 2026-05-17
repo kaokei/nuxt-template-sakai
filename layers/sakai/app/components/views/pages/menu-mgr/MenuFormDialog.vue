@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import {
-  MenuAdminService,
-  type Menu,
-  type SelectOption,
-} from '@sakai/services/MenuAdminService';
+import { MenuAdminService, type Menu } from '@sakai/services/MenuAdminService';
 
 const visible = defineModel<boolean>('visible', { required: true });
 const editData = defineModel<Menu | null>('editData', { default: null });
+
+const props = defineProps<{
+  defaultParentId?: string | null;
+}>();
 
 const emit = defineEmits<{
   saved: [];
@@ -14,7 +14,7 @@ const emit = defineEmits<{
 
 const menuAdminService = useService(MenuAdminService);
 const submitted = ref(false);
-const parentOptions = ref<SelectOption[]>([]);
+const parentName = ref('根菜单');
 
 const ICON_OPTIONS = [
   { label: '首页', value: 'i-lucide:home' },
@@ -93,7 +93,6 @@ function resetForm() {
 watch(visible, async (isVisible) => {
   if (isVisible) {
     submitted.value = false;
-    parentOptions.value = await menuAdminService.getParentOptions();
     if (editData.value) {
       form.value = {
         parentId: editData.value.parentId,
@@ -109,8 +108,20 @@ watch(visible, async (isVisible) => {
         cache: editData.value.cache,
         visible: editData.value.visible,
       };
+      parentName.value = editData.value.parentId
+        ? (await menuAdminService.getMenuById(editData.value.parentId))?.name ||
+          editData.value.parentId
+        : '根菜单';
     } else {
       resetForm();
+      if (props.defaultParentId) {
+        form.value.parentId = props.defaultParentId;
+        parentName.value =
+          (await menuAdminService.getMenuById(props.defaultParentId))?.name ||
+          props.defaultParentId;
+      } else {
+        parentName.value = '根菜单';
+      }
     }
   }
 });
@@ -159,15 +170,7 @@ async function handleSave() {
       <div class="grid grid-cols-2 gap-4">
         <div>
           <label class="mb-2 block text-sm font-medium">上级菜单</label>
-          <PrimeSelect
-            v-model="form.parentId"
-            :options="parentOptions"
-            option-label="label"
-            option-value="value"
-            placeholder="根菜单"
-            show-clear
-            fluid
-          />
+          <PrimeInputText :model-value="parentName" readonly disabled fluid />
         </div>
 
         <div>
