@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { User } from '@sakai/services/UserService';
 import { UserService, type SelectOption } from '@sakai/services/UserService';
+import { DeptService } from '@sakai/services/DeptService';
 
 const visible = defineModel<boolean>('visible', { required: true });
 const editData = defineModel<User | null>('editData', { default: null });
@@ -10,6 +11,7 @@ const emit = defineEmits<{
 }>();
 
 const userService = useService(UserService);
+const deptService = useService(DeptService);
 const submitted = ref(false);
 
 const form = ref({
@@ -25,14 +27,12 @@ const form = ref({
   remark: '',
 });
 
-const deptOptions = ref<SelectOption[]>([]);
 const roleOptions = ref<SelectOption[]>([]);
 const genderOptions = ref<SelectOption[]>([]);
 const statusOptions = ref<SelectOption[]>([]);
 const isEdit = computed(() => !!editData.value);
 
 onMounted(async () => {
-  deptOptions.value = await userService.getDeptOptions();
   roleOptions.value = await userService.getRoleOptions();
   genderOptions.value = await userService.getGenderOptions();
   statusOptions.value = await userService.getStatusOptions();
@@ -90,11 +90,12 @@ async function handleSave() {
       .map((id) => roleOptions.value.find((opt) => opt.value === id)?.label)
       .filter((name): name is string => !!name);
 
-    // 从 deptOptions 中获取 deptName
-    const deptOption = deptOptions.value.find(
-      (opt) => opt.value === form.value.deptId,
-    );
-    const deptName = deptOption?.label || '';
+    // 查询 deptName
+    let deptName = '';
+    if (form.value.deptId) {
+      const dept = await deptService.getDeptById(form.value.deptId);
+      deptName = dept?.name ?? '';
+    }
 
     const payload: Record<string, any> = {
       userName: form.value.userName.trim(),
@@ -227,15 +228,7 @@ async function handleSave() {
       <div class="grid grid-cols-2 gap-4">
         <div>
           <label class="mb-2 block text-sm font-medium">所属部门</label>
-          <PrimeSelect
-            v-model="form.deptId"
-            :options="deptOptions"
-            option-label="label"
-            option-value="value"
-            placeholder="选择部门"
-            show-clear
-            fluid
-          />
+          <DeptPicker v-model="form.deptId" placeholder="选择部门" />
         </div>
 
         <div>

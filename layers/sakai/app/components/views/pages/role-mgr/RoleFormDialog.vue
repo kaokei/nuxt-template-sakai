@@ -192,10 +192,10 @@ async function handleSave() {
         </div>
 
         <div>
-          <label class="mb-2 block text-sm font-medium">数据权限范围</label>
+          <label class="mb-2 block text-sm font-medium">状态</label>
           <PrimeSelect
-            v-model="form.dataScope"
-            :options="dataScopeOptions"
+            v-model="form.status"
+            :options="statusOptions"
             option-label="label"
             option-value="value"
             fluid
@@ -203,10 +203,10 @@ async function handleSave() {
         </div>
 
         <div>
-          <label class="mb-2 block text-sm font-medium">状态</label>
+          <label class="mb-2 block text-sm font-medium">数据权限范围</label>
           <PrimeSelect
-            v-model="form.status"
-            :options="statusOptions"
+            v-model="form.dataScope"
+            :options="dataScopeOptions"
             option-label="label"
             option-value="value"
             fluid

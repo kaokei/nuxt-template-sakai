@@ -2,10 +2,11 @@
 import UserDeleteDialog from '@sakai/components/views/pages/user-mgr/UserDeleteDialog.vue';
 import UserFormDialog from '@sakai/components/views/pages/user-mgr/UserFormDialog.vue';
 import UserSearchBar from '@sakai/components/views/pages/user-mgr/UserSearchBar.vue';
+import { DeptService } from '@sakai/services/DeptService';
 import { UserMgrService } from '@sakai/services/UserMgrService';
 import { UserService } from '@sakai/services/UserService';
 
-declareProviders([UserService, UserMgrService]);
+declareProviders([UserService, UserMgrService, DeptService]);
 
 const mgr = useService(UserMgrService);
 const toast = useToast();

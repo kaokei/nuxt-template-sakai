@@ -4,7 +4,6 @@ import {
   type Dept,
   type SelectOption,
 } from '@sakai/services/DeptService';
-import { UserService } from '@sakai/services/UserService';
 
 const visible = defineModel<boolean>('visible', { required: true });
 const editData = defineModel<Dept | null>('editData', { default: null });
@@ -14,19 +13,8 @@ const emit = defineEmits<{
 }>();
 
 const deptService = useService(DeptService);
-const userService = useService(UserService);
 const submitted = ref(false);
-const parentOptions = ref<SelectOption[]>([]);
-const leaderSuggestions = ref<SelectOption[]>([]);
 const selectedLeader = ref<SelectOption | null>(null);
-
-async function searchLeader(event: { query: string }) {
-  if (!event.query.trim()) {
-    leaderSuggestions.value = [];
-    return;
-  }
-  leaderSuggestions.value = await userService.searchUserOptions(event.query);
-}
 
 const statusOptions = [
   { label: '启用', value: 'active' },
@@ -65,7 +53,6 @@ function resetForm() {
 watch(visible, async (isVisible) => {
   if (isVisible) {
     submitted.value = false;
-    parentOptions.value = await deptService.getParentOptions();
     if (editData.value) {
       form.value = {
         parentId: editData.value.parentId,
@@ -127,15 +114,7 @@ async function handleSave() {
     <div class="flex flex-col gap-4">
       <div>
         <label class="mb-2 block text-sm font-medium">上级部门</label>
-        <PrimeSelect
-          v-model="form.parentId"
-          :options="parentOptions"
-          option-label="label"
-          option-value="value"
-          placeholder="根部门"
-          show-clear
-          fluid
-        />
+        <DeptPicker v-model="form.parentId" placeholder="根部门" />
       </div>
 
       <div>
@@ -157,15 +136,7 @@ async function handleSave() {
       <div class="grid grid-cols-2 gap-4">
         <div>
           <label class="mb-2 block text-sm font-medium">负责人</label>
-          <PrimeAutoComplete
-            v-model="selectedLeader"
-            :suggestions="leaderSuggestions"
-            option-label="label"
-            placeholder="输入姓名搜索"
-            force-selection
-            fluid
-            @complete="searchLeader"
-          />
+          <UserPicker v-model="selectedLeader" />
         </div>
 
         <div>

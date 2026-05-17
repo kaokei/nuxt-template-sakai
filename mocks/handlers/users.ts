@@ -1,5 +1,6 @@
 import { HttpResponse, delay, http } from 'msw';
-import { ALL_USERS, DEPT_LIST, ROLE_LIST } from '../data/users';
+import { ROLE_LIST } from '../data/roles';
+import { ALL_USERS, DEPT_LIST } from '../data/users';
 import type { User } from '../data/users';
 
 let users = [...ALL_USERS];
@@ -107,7 +108,7 @@ export const userHandlers = [
     }
 
     const result = filtered.slice(0, 10).map((u) => ({
-      label: `${u.nickName}（${u.deptName}）`,
+      label: u.nickName,
       value: u.id,
     }));
 
