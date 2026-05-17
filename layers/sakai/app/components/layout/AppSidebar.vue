@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { useLayout } from '@sakai/components/layout/composables/layout';
 import { MenuService } from '~/services/menu.service';
+import { AuthService } from '~/services/auth.service';
 import type { MenuItem } from '~/types/menu';
 import AppMenu from './AppMenu.vue';
 
@@ -14,7 +15,16 @@ const sidebarRef = ref<HTMLElement | null>(null);
 let outsideClickListener: ((e: MouseEvent) => void) | null = null;
 
 const menuService = useService(MenuService);
-const currentMenu = computed(() => props.items ?? menuService.currentMenu);
+const authService = useService(AuthService);
+
+// 根据用户权限过滤菜单：外部传入 items 时过滤传入的，否则过滤当前系统菜单
+const currentMenu = computed(() => {
+  const permissions = authService.getPermissions();
+  if (props.items) {
+    return menuService.filterMenuByPermission(props.items, permissions);
+  }
+  return menuService.getFilteredMenus(permissions);
+});
 
 watch(
   () => route.path,

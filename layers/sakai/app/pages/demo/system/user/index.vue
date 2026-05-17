@@ -61,6 +61,7 @@ onMounted(() => {
         <template #start>
           <div class="flex gap-2">
             <PrimeButton
+              v-permission="'system:user:add'"
               label="新增"
               icon="pi pi-plus"
               severity="primary"
@@ -234,6 +235,7 @@ onMounted(() => {
           <template #body="{ data }">
             <div class="flex gap-1">
               <PrimeButton
+                v-permission="'system:user:edit'"
                 icon="pi pi-pencil"
                 size="small"
                 severity="secondary"
@@ -242,6 +244,7 @@ onMounted(() => {
                 @click="mgr.openEdit(data)"
               />
               <PrimeButton
+                v-permission="'system:user:delete'"
                 icon="pi pi-trash"
                 size="small"
                 severity="danger"

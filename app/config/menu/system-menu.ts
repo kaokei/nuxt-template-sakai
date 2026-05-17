@@ -19,6 +19,22 @@ const menuItems: MenuItem[] = [
         icon: 'pi pi-fw pi-flag',
         to: '/demo/system/feature-flag',
       },
+      {
+        label: '岗位管理',
+        icon: 'pi pi-fw pi-id-card',
+        to: '/demo/system/post',
+      },
+      {
+        label: '参数配置',
+        icon: 'pi pi-fw pi-sliders-h',
+        to: '/demo/system/sys-param',
+      },
+      { label: '定时任务', icon: 'pi pi-fw pi-clock', to: '/demo/system/job' },
+      {
+        label: '数据备份',
+        icon: 'pi pi-fw pi-database',
+        to: '/demo/system/backup',
+      },
     ],
   },
 ];

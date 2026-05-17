@@ -1,26 +1,25 @@
 <script lang="ts" setup>
-import RoleDeleteDialog from '@sakai/components/views/pages/role-mgr/RoleDeleteDialog.vue';
-import RoleFormDialog from '@sakai/components/views/pages/role-mgr/RoleFormDialog.vue';
-import RoleSearchBar from '@sakai/components/views/pages/role-mgr/RoleSearchBar.vue';
-import { MenuAdminService } from '@sakai/services/MenuAdminService';
-import { RoleMgrService } from '@sakai/services/RoleMgrService';
-import { RoleService } from '@sakai/services/RoleService';
+import SysParamDeleteDialog from '@sakai/components/views/pages/sys-param-mgr/SysParamDeleteDialog.vue';
+import SysParamFormDialog from '@sakai/components/views/pages/sys-param-mgr/SysParamFormDialog.vue';
+import SysParamSearchBar from '@sakai/components/views/pages/sys-param-mgr/SysParamSearchBar.vue';
+import { SysParamMgrService } from '@sakai/services/SysParamMgrService';
+import { SysParamService } from '@sakai/services/SysParamService';
 
-declareProviders([RoleService, RoleMgrService, MenuAdminService]);
+declareProviders([SysParamService, SysParamMgrService]);
 
-const mgr = useService(RoleMgrService);
+const mgr = useService(SysParamMgrService);
 const toast = useToast();
 const dt = ref();
 
 definePageMeta({ layout: 'sakai-sidebar' });
-useSeoMeta({ title: '角色管理' });
+useSeoMeta({ title: '参数配置' });
 
 function onSaved() {
   const result = mgr.onSaved();
   toast.add({
     severity: 'success',
     summary: '成功',
-    detail: result.isEdit ? '角色已更新' : '角色已创建',
+    detail: result.isEdit ? '参数已更新' : '参数已创建',
     life: 3000,
   });
 }
@@ -49,20 +48,20 @@ function exportCSV() {
 }
 
 onMounted(() => {
-  mgr.loadRoles();
+  mgr.loadParams();
 });
 </script>
 
 <template>
   <div class="flex flex-col gap-4">
-    <RoleSearchBar @search="mgr.onSearch" @reset="mgr.onReset" />
+    <SysParamSearchBar @search="mgr.search" @reset="mgr.onReset" />
 
     <div class="card p-4!">
       <PrimeToolbar class="mb-4">
         <template #start>
           <div class="flex gap-2">
             <PrimeButton
-              v-permission="'system:role:add'"
+              v-permission="'system:param:add'"
               label="新增"
               icon="pi pi-plus"
               severity="primary"
@@ -73,7 +72,7 @@ onMounted(() => {
               icon="pi pi-trash"
               severity="danger"
               outlined
-              :disabled="!mgr.selectedRoles || mgr.selectedRoles.length === 0"
+              :disabled="!mgr.selectedParams || mgr.selectedParams.length === 0"
               @click="mgr.confirmBatchDelete"
             />
           </div>
@@ -90,8 +89,8 @@ onMounted(() => {
 
       <PrimeDataTable
         ref="dt"
-        v-model:selection="mgr.selectedRoles"
-        :value="mgr.roles"
+        v-model:selection="mgr.selectedParams"
+        :value="mgr.params"
         data-key="id"
         :loading="mgr.loading"
         :paginator="true"
@@ -126,7 +125,7 @@ onMounted(() => {
 
         <PrimeColumn
           field="name"
-          header="角色名称"
+          header="参数名称"
           :frozen="true"
           style="min-width: 130px"
           sortable
@@ -137,38 +136,39 @@ onMounted(() => {
         </PrimeColumn>
 
         <PrimeColumn
-          field="code"
-          header="权限字符"
-          :frozen="true"
-          style="min-width: 130px"
+          field="key"
+          header="参数键"
+          style="min-width: 150px"
           sortable
         >
           <template #body="{ data }">
-            <span class="font-mono text-sm font-semibold">{{ data.code }}</span>
+            <span class="font-mono text-sm">{{ data.key }}</span>
           </template>
         </PrimeColumn>
 
-        <PrimeColumn
-          field="order"
-          header="显示顺序"
-          style="min-width: 100px"
-          sortable
-        >
+        <PrimeColumn field="value" header="参数值" style="min-width: 150px">
           <template #body="{ data }">
-            <span>{{ data.order }}</span>
+            <span>{{ data.value }}</span>
           </template>
         </PrimeColumn>
 
-        <PrimeColumn
-          field="dataScope"
-          header="数据权限"
-          style="min-width: 140px"
-        >
+        <PrimeColumn field="type" header="类型" style="min-width: 100px">
           <template #body="{ data }">
             <PrimeTag
-              :value="mgr.dataScopeLabels[data.dataScope] || data.dataScope"
-              :severity="mgr.getDataScopeSeverity(data.dataScope)"
+              :value="mgr.typeLabels[data.type] || data.type"
+              severity="info"
             />
+          </template>
+        </PrimeColumn>
+
+        <PrimeColumn
+          field="group"
+          header="分组"
+          style="min-width: 120px"
+          sortable
+        >
+          <template #body="{ data }">
+            <span>{{ data.group || '--' }}</span>
           </template>
         </PrimeColumn>
 
@@ -183,6 +183,17 @@ onMounted(() => {
               :value="mgr.statusLabels[data.status] || data.status"
               :severity="mgr.getStatusSeverity(data.status)"
             />
+          </template>
+        </PrimeColumn>
+
+        <PrimeColumn
+          field="sort"
+          header="排序"
+          style="min-width: 80px"
+          sortable
+        >
+          <template #body="{ data }">
+            <span>{{ data.sort }}</span>
           </template>
         </PrimeColumn>
 
@@ -209,7 +220,6 @@ onMounted(() => {
           <template #body="{ data }">
             <div class="flex gap-1">
               <PrimeButton
-                v-permission="'system:role:edit'"
                 icon="pi pi-pencil"
                 size="small"
                 severity="secondary"
@@ -218,7 +228,6 @@ onMounted(() => {
                 @click="mgr.openEdit(data)"
               />
               <PrimeButton
-                v-permission="'system:role:delete'"
                 icon="pi pi-trash"
                 size="small"
                 severity="danger"
@@ -232,17 +241,17 @@ onMounted(() => {
       </PrimeDataTable>
     </div>
 
-    <RoleFormDialog
+    <SysParamFormDialog
       v-model:visible="mgr.formDialogVisible"
       v-model:edit-data="mgr.editData"
       @saved="onSaved"
     />
 
-    <RoleDeleteDialog
+    <SysParamDeleteDialog
       v-model:visible="mgr.deleteDialogVisible"
       :mode="mgr.deleteMode"
-      :role="mgr.deleteTarget"
-      :batch-count="mgr.selectedRoles?.length || 0"
+      :param="mgr.deleteTarget"
+      :batch-count="mgr.selectedParams?.length || 0"
       @confirm="onDeleteConfirm"
     />
   </div>

@@ -10,6 +10,8 @@ export interface User {
   avatar: string;
   deptId: string;
   deptName: string;
+  postId?: string;
+  postName?: string;
   roleIds: string[];
   roleNames: string[];
   status: 'active' | 'inactive';

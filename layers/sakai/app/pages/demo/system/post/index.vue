@@ -1,26 +1,25 @@
 <script lang="ts" setup>
-import RoleDeleteDialog from '@sakai/components/views/pages/role-mgr/RoleDeleteDialog.vue';
-import RoleFormDialog from '@sakai/components/views/pages/role-mgr/RoleFormDialog.vue';
-import RoleSearchBar from '@sakai/components/views/pages/role-mgr/RoleSearchBar.vue';
-import { MenuAdminService } from '@sakai/services/MenuAdminService';
-import { RoleMgrService } from '@sakai/services/RoleMgrService';
-import { RoleService } from '@sakai/services/RoleService';
+import PostDeleteDialog from '@sakai/components/views/pages/post-mgr/PostDeleteDialog.vue';
+import PostFormDialog from '@sakai/components/views/pages/post-mgr/PostFormDialog.vue';
+import PostSearchBar from '@sakai/components/views/pages/post-mgr/PostSearchBar.vue';
+import { PostMgrService } from '@sakai/services/PostMgrService';
+import { PostService } from '@sakai/services/PostService';
 
-declareProviders([RoleService, RoleMgrService, MenuAdminService]);
+declareProviders([PostService, PostMgrService]);
 
-const mgr = useService(RoleMgrService);
+const mgr = useService(PostMgrService);
 const toast = useToast();
 const dt = ref();
 
 definePageMeta({ layout: 'sakai-sidebar' });
-useSeoMeta({ title: '角色管理' });
+useSeoMeta({ title: '岗位管理' });
 
 function onSaved() {
   const result = mgr.onSaved();
   toast.add({
     severity: 'success',
     summary: '成功',
-    detail: result.isEdit ? '角色已更新' : '角色已创建',
+    detail: result.isEdit ? '岗位已更新' : '岗位已创建',
     life: 3000,
   });
 }
@@ -49,23 +48,23 @@ function exportCSV() {
 }
 
 onMounted(() => {
-  mgr.loadRoles();
+  mgr.loadPosts();
 });
 </script>
 
 <template>
   <div class="flex flex-col gap-4">
-    <RoleSearchBar @search="mgr.onSearch" @reset="mgr.onReset" />
+    <PostSearchBar @search="mgr.onSearch" @reset="mgr.onReset" />
 
     <div class="card p-4!">
       <PrimeToolbar class="mb-4">
         <template #start>
           <div class="flex gap-2">
             <PrimeButton
-              v-permission="'system:role:add'"
               label="新增"
               icon="pi pi-plus"
               severity="primary"
+              v-permission="'system:post:add'"
               @click="mgr.openNew"
             />
             <PrimeButton
@@ -73,7 +72,8 @@ onMounted(() => {
               icon="pi pi-trash"
               severity="danger"
               outlined
-              :disabled="!mgr.selectedRoles || mgr.selectedRoles.length === 0"
+              :disabled="!mgr.selectedPosts || mgr.selectedPosts.length === 0"
+              v-permission="'system:post:remove'"
               @click="mgr.confirmBatchDelete"
             />
           </div>
@@ -90,8 +90,8 @@ onMounted(() => {
 
       <PrimeDataTable
         ref="dt"
-        v-model:selection="mgr.selectedRoles"
-        :value="mgr.roles"
+        v-model:selection="mgr.selectedPosts"
+        :value="mgr.posts"
         data-key="id"
         :loading="mgr.loading"
         :paginator="true"
@@ -126,7 +126,7 @@ onMounted(() => {
 
         <PrimeColumn
           field="name"
-          header="角色名称"
+          header="岗位名称"
           :frozen="true"
           style="min-width: 130px"
           sortable
@@ -138,8 +138,7 @@ onMounted(() => {
 
         <PrimeColumn
           field="code"
-          header="权限字符"
-          :frozen="true"
+          header="岗位编码"
           style="min-width: 130px"
           sortable
         >
@@ -149,26 +148,13 @@ onMounted(() => {
         </PrimeColumn>
 
         <PrimeColumn
-          field="order"
-          header="显示顺序"
-          style="min-width: 100px"
+          field="sort"
+          header="排序"
+          style="min-width: 80px"
           sortable
         >
           <template #body="{ data }">
-            <span>{{ data.order }}</span>
-          </template>
-        </PrimeColumn>
-
-        <PrimeColumn
-          field="dataScope"
-          header="数据权限"
-          style="min-width: 140px"
-        >
-          <template #body="{ data }">
-            <PrimeTag
-              :value="mgr.dataScopeLabels[data.dataScope] || data.dataScope"
-              :severity="mgr.getDataScopeSeverity(data.dataScope)"
-            />
+            <span>{{ data.sort }}</span>
           </template>
         </PrimeColumn>
 
@@ -209,21 +195,21 @@ onMounted(() => {
           <template #body="{ data }">
             <div class="flex gap-1">
               <PrimeButton
-                v-permission="'system:role:edit'"
                 icon="pi pi-pencil"
                 size="small"
                 severity="secondary"
                 outlined
                 rounded
+                v-permission="'system:post:edit'"
                 @click="mgr.openEdit(data)"
               />
               <PrimeButton
-                v-permission="'system:role:delete'"
                 icon="pi pi-trash"
                 size="small"
                 severity="danger"
                 outlined
                 rounded
+                v-permission="'system:post:remove'"
                 @click="mgr.confirmDelete(data)"
               />
             </div>
@@ -232,17 +218,17 @@ onMounted(() => {
       </PrimeDataTable>
     </div>
 
-    <RoleFormDialog
+    <PostFormDialog
       v-model:visible="mgr.formDialogVisible"
       v-model:edit-data="mgr.editData"
       @saved="onSaved"
     />
 
-    <RoleDeleteDialog
+    <PostDeleteDialog
       v-model:visible="mgr.deleteDialogVisible"
       :mode="mgr.deleteMode"
-      :role="mgr.deleteTarget"
-      :batch-count="mgr.selectedRoles?.length || 0"
+      :post="mgr.deleteTarget"
+      :batch-count="mgr.selectedPosts?.length || 0"
       @confirm="onDeleteConfirm"
     />
   </div>

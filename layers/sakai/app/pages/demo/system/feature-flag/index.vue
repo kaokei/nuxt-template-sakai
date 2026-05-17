@@ -296,6 +296,7 @@ onMounted(() => {
       <PrimeToolbar class="mb-4">
         <template #start>
           <PrimeButton
+            v-permission="'system:feature-flag:add'"
             label="新增开关"
             icon="pi pi-plus"
             severity="primary"
@@ -456,6 +457,7 @@ onMounted(() => {
           <template #body="{ data }">
             <div class="flex gap-1">
               <PrimeButton
+                v-permission="'system:feature-flag:edit'"
                 icon="pi pi-pencil"
                 size="small"
                 severity="secondary"
@@ -464,6 +466,7 @@ onMounted(() => {
                 @click="mgr.openEdit(data)"
               />
               <PrimeButton
+                v-permission="'system:feature-flag:delete'"
                 icon="pi pi-trash"
                 size="small"
                 severity="danger"
