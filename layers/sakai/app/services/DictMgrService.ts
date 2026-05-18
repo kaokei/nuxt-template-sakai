@@ -24,7 +24,7 @@ export class DictMgrService {
   searchParams: Record<string, any> = {};
 
   // 展开行管理
-  expandedRows: DictType[] = [];
+  expandedRows: Record<string, boolean> = {};
   // 已加载的字典数据缓存 { typeCode: DictData[] }
   private dataCache: Record<string, DictData[]> = {};
 
@@ -166,7 +166,11 @@ export class DictMgrService {
 
   @autobind
   expandAll(): void {
-    this.expandedRows = [...this.dictTypes];
+    const expanded: Record<string, boolean> = {};
+    for (const type of this.dictTypes) {
+      expanded[type.id] = true;
+    }
+    this.expandedRows = expanded;
     for (const type of this.dictTypes) {
       if (!this.dataCache[type.code]) {
         this.loadDataByType(type.code);
@@ -176,7 +180,7 @@ export class DictMgrService {
 
   @autobind
   collapseAll(): void {
-    this.expandedRows = [];
+    this.expandedRows = {};
   }
 
   // ==================== 字典类型表单操作 ====================
