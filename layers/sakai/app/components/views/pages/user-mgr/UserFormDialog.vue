@@ -2,6 +2,7 @@
 import type { User } from '@sakai/services/UserService';
 import { UserService, type SelectOption } from '@sakai/services/UserService';
 import { DeptService } from '@sakai/services/DeptService';
+import { PostService } from '@sakai/services/PostService';
 
 const visible = defineModel<boolean>('visible', { required: true });
 const editData = defineModel<User | null>('editData', { default: null });
@@ -12,6 +13,7 @@ const emit = defineEmits<{
 
 const userService = useService(UserService);
 const deptService = useService(DeptService);
+const postService = useService(PostService);
 const submitted = ref(false);
 
 const form = ref({
@@ -22,6 +24,7 @@ const form = ref({
   email: '',
   gender: 'male' as User['gender'],
   deptId: '',
+  postId: null as string | null,
   roleIds: [] as string[],
   status: 'active' as User['status'],
   remark: '',
@@ -30,12 +33,18 @@ const form = ref({
 const roleOptions = ref<SelectOption[]>([]);
 const genderOptions = ref<SelectOption[]>([]);
 const statusOptions = ref<SelectOption[]>([]);
+const postOptions = ref<SelectOption[]>([]);
 const isEdit = computed(() => !!editData.value);
 
 onMounted(async () => {
   roleOptions.value = await userService.getRoleOptions();
   genderOptions.value = await userService.getGenderOptions();
   statusOptions.value = await userService.getStatusOptions();
+  const postResult = await postService.getList({ pageSize: 100 });
+  postOptions.value = postResult.data.map((p) => ({
+    label: p.name,
+    value: p.id,
+  }));
 });
 
 watch(visible, (isVisible) => {
@@ -50,6 +59,7 @@ watch(visible, (isVisible) => {
         email: editData.value.email || '',
         gender: editData.value.gender,
         deptId: editData.value.deptId || '',
+        postId: editData.value.postId || null,
         roleIds: [...editData.value.roleIds],
         status: editData.value.status,
         remark: editData.value.remark || '',
@@ -63,6 +73,7 @@ watch(visible, (isVisible) => {
         email: '',
         gender: 'male',
         deptId: '',
+        postId: null,
         roleIds: [],
         status: 'active',
         remark: '',
@@ -105,6 +116,9 @@ async function handleSave() {
       gender: form.value.gender,
       deptId: form.value.deptId || undefined,
       deptName: deptName || undefined,
+      postId: form.value.postId || undefined,
+      postName: postOptions.value.find((o) => o.value === form.value.postId)
+        ?.label,
       roleIds: form.value.roleIds,
       roleNames,
       status: form.value.status,
@@ -229,6 +243,19 @@ async function handleSave() {
         <div>
           <label class="mb-2 block text-sm font-medium">所属部门</label>
           <DeptPicker v-model="form.deptId" placeholder="选择部门" />
+        </div>
+
+        <div>
+          <label class="mb-2 block text-sm font-medium">岗位</label>
+          <PrimeSelect
+            v-model="form.postId"
+            :options="postOptions"
+            option-label="label"
+            option-value="value"
+            placeholder="选择岗位"
+            show-clear
+            fluid
+          />
         </div>
 
         <div>

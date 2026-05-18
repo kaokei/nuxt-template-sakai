@@ -57,7 +57,6 @@ function handleReset() {
         option-value="value"
         placeholder="选择类型"
         show-clear
-        class="w-36"
       />
     </div>
 

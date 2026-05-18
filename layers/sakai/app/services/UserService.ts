@@ -8,6 +8,8 @@ export interface User {
   avatar: string;
   deptId: string;
   deptName: string;
+  postId?: string;
+  postName?: string;
   roleIds: string[];
   roleNames: string[];
   status: 'active' | 'inactive';
@@ -25,6 +27,7 @@ export interface UserQueryParams {
   phone?: string;
   status?: string;
   deptId?: string;
+  postId?: string;
   createTimeFrom?: string;
   createTimeTo?: string;
 }

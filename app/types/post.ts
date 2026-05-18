@@ -1,4 +1,4 @@
-/** 岗位 */
+/** 岗位（公司级独立实体，不属于特定部门） */
 export interface Post {
   id: string;
   name: string;

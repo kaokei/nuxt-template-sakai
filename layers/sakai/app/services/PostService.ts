@@ -7,6 +7,7 @@ export interface PostQueryParams {
   sortField?: string;
   sortOrder?: number;
   name?: string;
+  code?: string;
   status?: string;
 }
 

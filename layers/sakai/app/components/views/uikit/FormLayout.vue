@@ -72,11 +72,19 @@ const dropdownItem = ref(null);
           <div class="flex flex-wrap items-start gap-4">
             <div class="field">
               <label for="firstname1" class="sr-only">Firstname</label>
-              <PrimeInputText id="firstname1" type="text" placeholder="Firstname" />
+              <PrimeInputText
+                id="firstname1"
+                type="text"
+                placeholder="Firstname"
+              />
             </div>
             <div class="field">
               <label for="lastname1" class="sr-only">Lastname</label>
-              <PrimeInputText id="lastname1" type="text" placeholder="Lastname" />
+              <PrimeInputText
+                id="lastname1"
+                type="text"
+                placeholder="Lastname"
+              />
             </div>
             <PrimeButton label="Submit" :fluid="false"></PrimeButton>
           </div>
@@ -120,7 +128,7 @@ const dropdownItem = ref(null);
               :options="dropdownItems"
               optionLabel="name"
               placeholder="Select One"
-              class="w-full"
+              fluid
             ></PrimeSelect>
           </div>
           <div class="flex w-full flex-wrap gap-2">

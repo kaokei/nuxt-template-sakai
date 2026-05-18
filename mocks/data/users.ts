@@ -1,4 +1,5 @@
 import { fakerZH_CN as faker } from '@faker-js/faker';
+import { POST_LIST } from './posts';
 
 export interface User {
   id: string;
@@ -75,6 +76,12 @@ export function generateUsers(count = 55): User[] {
     const dept = faker.helpers.arrayElement(DEPT_LIST);
     const roles = faker.helpers.arrayElements(ROLE_LIST, { min: 1, max: 3 });
 
+    // 分配岗位：从全部岗位中随机选一个，80% 概率分配
+    const post = faker.helpers.maybe(
+      () => faker.helpers.arrayElement(POST_LIST),
+      { probability: 0.8 },
+    );
+
     return {
       id: faker.string.uuid(),
       userName,
@@ -85,6 +92,8 @@ export function generateUsers(count = 55): User[] {
       avatar: `https://i.pravatar.cc/150?u=${userName}`,
       deptId: dept.id,
       deptName: dept.name,
+      postId: post?.id,
+      postName: post?.name,
       roleIds: roles.map((r) => r.id),
       roleNames: roles.map((r) => r.name),
       status: faker.helpers.weightedArrayElement([

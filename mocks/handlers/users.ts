@@ -142,6 +142,8 @@ export const userHandlers = [
         body.avatar ?? `https://i.pravatar.cc/150?u=${body.userName ?? 'user'}`,
       deptId: body.deptId ?? '',
       deptName: body.deptName ?? '',
+      postId: body.postId,
+      postName: body.postName,
       roleIds: body.roleIds ?? [],
       roleNames: body.roleNames ?? [],
       status: body.status ?? 'active',

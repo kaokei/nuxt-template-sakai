@@ -11,7 +11,7 @@ export interface Post {
 export const POST_LIST: Post[] = [
   {
     id: 'post-001',
-    name: '技术总监(CTO)',
+    name: '技术总监',
     code: 'chiefTechnologyOfficer',
     sort: 1,
     status: 'active',

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { UserService, type SelectOption } from '@sakai/services/UserService';
+import { PostService } from '@sakai/services/PostService';
 
 const emit = defineEmits<{
   search: [params: Record<string, any>];
@@ -7,20 +8,28 @@ const emit = defineEmits<{
 }>();
 
 const userService = useService(UserService);
+const postService = useService(PostService);
 
 const searchForm = ref({
   userName: '',
   nickName: '',
   phone: '',
   deptId: null as string | null,
+  postId: null as string | null,
   status: '',
   createTimeRange: null as Date[] | null,
 });
 
 const statusOptions = ref<SelectOption[]>([]);
+const postOptions = ref<SelectOption[]>([]);
 
 onMounted(async () => {
   statusOptions.value = await userService.getStatusOptions();
+  const postResult = await postService.getList({ pageSize: 100 });
+  postOptions.value = postResult.data.map((p) => ({
+    label: p.name,
+    value: p.id,
+  }));
 });
 
 function handleSearch() {
@@ -48,6 +57,7 @@ function handleReset() {
     nickName: '',
     phone: '',
     deptId: null as string | null,
+    postId: null as string | null,
     status: '',
     createTimeRange: null,
   };
@@ -60,12 +70,19 @@ function handleReset() {
     class="border-surface-200 bg-surface-0 flex flex-wrap items-center gap-4 rounded-lg border p-4"
   >
     <div class="flex items-center gap-2">
-      <label class="text-sm font-medium whitespace-nowrap">用户账号</label>
-      <PrimeInputText
-        v-model="searchForm.userName"
-        placeholder="搜索账号"
-        class="w-36"
-        @keydown.enter="handleSearch"
+      <label class="text-sm font-medium whitespace-nowrap">部门</label>
+      <DeptPicker v-model="searchForm.deptId" placeholder="全部" class="w-52" />
+    </div>
+
+    <div class="flex items-center gap-2">
+      <label class="text-sm font-medium whitespace-nowrap">岗位</label>
+      <PrimeSelect
+        v-model="searchForm.postId"
+        :options="postOptions"
+        option-label="label"
+        option-value="value"
+        placeholder="全部"
+        show-clear
       />
     </div>
 

@@ -3,10 +3,11 @@ import UserDeleteDialog from '@sakai/components/views/pages/user-mgr/UserDeleteD
 import UserFormDialog from '@sakai/components/views/pages/user-mgr/UserFormDialog.vue';
 import UserSearchBar from '@sakai/components/views/pages/user-mgr/UserSearchBar.vue';
 import { DeptService } from '@sakai/services/DeptService';
+import { PostService } from '@sakai/services/PostService';
 import { UserMgrService } from '@sakai/services/UserMgrService';
 import { UserService } from '@sakai/services/UserService';
 
-declareProviders([UserService, UserMgrService, DeptService]);
+declareProviders([UserService, UserMgrService, DeptService, PostService]);
 
 const mgr = useService(UserMgrService);
 const toast = useToast();
@@ -196,6 +197,17 @@ onMounted(() => {
                 class="text-xs"
               />
             </div>
+          </template>
+        </PrimeColumn>
+
+        <PrimeColumn
+          field="postName"
+          header="岗位"
+          style="min-width: 130px"
+          sortable
+        >
+          <template #body="{ data }">
+            <span>{{ data.postName || '--' }}</span>
           </template>
         </PrimeColumn>
 

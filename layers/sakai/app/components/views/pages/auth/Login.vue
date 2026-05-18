@@ -9,7 +9,7 @@ const checked = ref(false);
 <template>
   <FloatingConfigurator />
   <div
-    class="flex min-h-screen min-w-[100vw] items-center justify-center overflow-hidden bg-surface-50 dark:bg-surface-950"
+    class="bg-surface-50 dark:bg-surface-950 flex min-h-screen min-w-[100vw] items-center justify-center overflow-hidden"
   >
     <div class="flex flex-col items-center justify-center">
       <div
@@ -24,7 +24,7 @@ const checked = ref(false);
         "
       >
         <div
-          class="w-full bg-surface-0 px-8 py-20 sm:px-20 dark:bg-surface-900"
+          class="bg-surface-0 dark:bg-surface-900 w-full px-8 py-20 sm:px-20"
           style="border-radius: 53px"
         >
           <div class="mb-8 text-center">
@@ -62,11 +62,11 @@ const checked = ref(false);
               </g>
             </svg>
             <div
-              class="mb-4 text-3xl font-medium text-surface-900 dark:text-surface-0"
+              class="text-surface-900 dark:text-surface-0 mb-4 text-3xl font-medium"
             >
               Welcome to PrimeLand!
             </div>
-            <span class="font-medium text-muted-color"
+            <span class="text-muted-color font-medium"
               >Sign in to continue</span
             >
           </div>
@@ -74,20 +74,20 @@ const checked = ref(false);
           <div>
             <label
               for="email1"
-              class="mb-2 block text-xl font-medium text-surface-900 dark:text-surface-0"
+              class="text-surface-900 dark:text-surface-0 mb-2 block text-xl font-medium"
               >Email</label
             >
             <PrimeInputText
               id="email1"
               type="text"
               placeholder="Email address"
-              class="mb-8 w-full md:w-[30rem]"
+              class="mb-8 w-full md:w-120"
               v-model="email"
             />
 
             <label
               for="password1"
-              class="mb-2 block text-xl font-medium text-surface-900 dark:text-surface-0"
+              class="text-surface-900 dark:text-surface-0 mb-2 block text-xl font-medium"
               >Password</label
             >
             <PrimePassword
@@ -100,7 +100,7 @@ const checked = ref(false);
               :feedback="false"
             ></PrimePassword>
 
-            <div class="mb-8 mt-2 flex items-center justify-between gap-8">
+            <div class="mt-2 mb-8 flex items-center justify-between gap-8">
               <div class="flex items-center">
                 <PrimeCheckbox
                   v-model="checked"
@@ -111,7 +111,7 @@ const checked = ref(false);
                 <label for="rememberme1">Remember me</label>
               </div>
               <span
-                class="ml-2 cursor-pointer text-right font-medium text-primary no-underline"
+                class="text-primary ml-2 cursor-pointer text-right font-medium no-underline"
                 >Forgot password?</span
               >
             </div>
