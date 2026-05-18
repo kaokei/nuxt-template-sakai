@@ -1,16 +1,14 @@
 <script lang="ts" setup>
+import OnlineUserMgr from '@sakai/components/views/pages/OnlineUserMgr.vue';
+import { OnlineUserMgrService } from '@sakai/services/OnlineUserMgrService';
+import { OnlineUserService } from '@sakai/services/OnlineUserService';
+
+declareProviders([OnlineUserService, OnlineUserMgrService]);
+
 definePageMeta({ layout: 'sakai-sidebar' });
 useSeoMeta({ title: '在线用户' });
 </script>
 
 <template>
-  <div class="card">
-    <h1 class="mb-4 text-2xl font-bold">在线用户</h1>
-    <p class="text-surface-500">当前在线用户列表、会话管理、强制下线等功能。</p>
-    <div
-      class="bg-surface-50 text-surface-400 mt-4 rounded-lg py-8 text-center"
-    >
-      功能开发中...
-    </div>
-  </div>
+  <OnlineUserMgr />
 </template>

@@ -58,6 +58,7 @@ onMounted(() => {
         <PrimeColumn
           field="userName"
           header="操作人员"
+          :frozen="true"
           style="min-width: 110px"
           sortable
         />
