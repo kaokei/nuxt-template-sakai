@@ -70,19 +70,12 @@ function handleReset() {
     class="border-surface-200 bg-surface-0 flex flex-wrap items-center gap-4 rounded-lg border p-4"
   >
     <div class="flex items-center gap-2">
-      <label class="text-sm font-medium whitespace-nowrap">部门</label>
-      <DeptPicker v-model="searchForm.deptId" placeholder="全部" class="w-52" />
-    </div>
-
-    <div class="flex items-center gap-2">
-      <label class="text-sm font-medium whitespace-nowrap">岗位</label>
-      <PrimeSelect
-        v-model="searchForm.postId"
-        :options="postOptions"
-        option-label="label"
-        option-value="value"
-        placeholder="全部"
-        show-clear
+      <label class="text-sm font-medium whitespace-nowrap">用户账号</label>
+      <PrimeInputText
+        v-model="searchForm.userName"
+        placeholder="搜索账号"
+        class="w-36"
+        @keydown.enter="handleSearch"
       />
     </div>
 
@@ -109,6 +102,18 @@ function handleReset() {
     <div class="flex items-center gap-2">
       <label class="text-sm font-medium whitespace-nowrap">部门</label>
       <DeptPicker v-model="searchForm.deptId" placeholder="全部" class="w-52" />
+    </div>
+
+    <div class="flex items-center gap-2">
+      <label class="text-sm font-medium whitespace-nowrap">岗位</label>
+      <PrimeSelect
+        v-model="searchForm.postId"
+        :options="postOptions"
+        option-label="label"
+        option-value="value"
+        placeholder="全部"
+        show-clear
+      />
     </div>
 
     <div class="flex items-center gap-2">

@@ -258,7 +258,6 @@ onMounted(() => {
             option-value="value"
             placeholder="选择标签"
             show-clear
-            class="min-w-40"
           />
         </div>
         <div class="flex flex-col gap-1">
@@ -270,7 +269,6 @@ onMounted(() => {
             option-value="value"
             placeholder="选择状态"
             show-clear
-            class="min-w-40"
           />
         </div>
         <div class="flex gap-2">
