@@ -12,6 +12,14 @@ const toast = useToast();
 definePageMeta({ layout: 'sakai-sidebar' });
 useSeoMeta({ title: '菜单管理' });
 
+// 搜索扩展字段
+const searchStatus = ref<string | null>(null);
+const searchCreateTimeRange = ref<Date[] | null>(null);
+const statusOptions = [
+  { label: '启用', value: 'active' },
+  { label: '禁用', value: 'inactive' },
+];
+
 function onSaved() {
   const result = mgr.onSaved();
   toast.add({
@@ -57,6 +65,29 @@ function collapseAll() {
   mgr.expandedKeys = {};
 }
 
+function handleSearch() {
+  const createTimeFrom =
+    searchCreateTimeRange.value && searchCreateTimeRange.value.length === 2
+      ? searchCreateTimeRange.value[0]!.toISOString()
+      : undefined;
+  const createTimeTo =
+    searchCreateTimeRange.value && searchCreateTimeRange.value.length === 2
+      ? searchCreateTimeRange.value[1]!.toISOString()
+      : undefined;
+  mgr.onSearch({
+    keyword: mgr.keyword,
+    status: searchStatus.value,
+    createTimeFrom,
+    createTimeTo,
+  });
+}
+
+function handleReset() {
+  searchStatus.value = null;
+  searchCreateTimeRange.value = null;
+  mgr.onReset();
+}
+
 onMounted(() => {
   mgr.loadMenus();
 });
@@ -74,7 +105,7 @@ onMounted(() => {
           v-model="mgr.keyword"
           placeholder="搜索菜单"
           class="w-56"
-          @keydown.enter="mgr.onSearch(mgr.keyword)"
+          @keydown.enter="handleSearch"
         />
       </div>
       <div class="flex gap-2">
@@ -82,7 +113,7 @@ onMounted(() => {
           label="搜索"
           icon="pi pi-search"
           severity="primary"
-          @click="mgr.onSearch(mgr.keyword)"
+          @click="handleSearch"
         />
         <PrimeButton
           label="重置"

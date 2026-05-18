@@ -9,6 +9,8 @@ export interface PostQueryParams {
   name?: string;
   code?: string;
   status?: string;
+  createTimeFrom?: string;
+  createTimeTo?: string;
 }
 
 /** 岗位分页结果 */

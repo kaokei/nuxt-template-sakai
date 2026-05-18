@@ -31,6 +31,20 @@ export const backupHandlers = [
       filtered = filtered.filter((b) => b.status === status);
     }
 
+    // 创建时间范围过滤
+    const createTimeFrom = url.searchParams.get('createTimeFrom');
+    const createTimeTo = url.searchParams.get('createTimeTo');
+    if (createTimeFrom || createTimeTo) {
+      const fromMs = createTimeFrom ? Date.parse(createTimeFrom) : NaN;
+      const toMs = createTimeTo ? Date.parse(createTimeTo) : NaN;
+      filtered = filtered.filter((b) => {
+        const c = new Date(b.createTime).getTime();
+        if (!isNaN(fromMs) && c < fromMs) return false;
+        if (!isNaN(toMs) && c > toMs) return false;
+        return true;
+      });
+    }
+
     if (sortField) {
       const order = sortOrder === '-1' ? -1 : 1;
       filtered.sort((a, b) => {

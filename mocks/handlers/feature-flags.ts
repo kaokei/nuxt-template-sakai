@@ -68,6 +68,20 @@ export const featureFlagHandlers = [
       );
     }
 
+    // 更新时间范围筛选
+    const updatedAtFrom = url.searchParams.get('updatedAtFrom');
+    const updatedAtTo = url.searchParams.get('updatedAtTo');
+    if (updatedAtFrom || updatedAtTo) {
+      const fromMs = updatedAtFrom ? Date.parse(updatedAtFrom) : NaN;
+      const toMs = updatedAtTo ? Date.parse(updatedAtTo) : NaN;
+      filtered = filtered.filter((f) => {
+        const c = new Date(f.updatedAt).getTime();
+        if (!isNaN(fromMs) && c < fromMs) return false;
+        if (!isNaN(toMs) && c > toMs) return false;
+        return true;
+      });
+    }
+
     if (sortField) {
       filtered.sort((a, b) => {
         const va = (a as unknown as Record<string, unknown>)[sortField];

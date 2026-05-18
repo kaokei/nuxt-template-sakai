@@ -21,6 +21,8 @@ export interface RoleQueryParams {
   name?: string;
   code?: string;
   status?: string;
+  createTimeFrom?: string;
+  createTimeTo?: string;
 }
 
 export interface PageResult<T> {

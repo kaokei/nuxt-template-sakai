@@ -13,13 +13,19 @@ const searchForm = ref({
   name: '',
   code: '',
   status: '',
+  createTimeRange: null as Date[] | null,
 });
 
 function handleSearch() {
   const params: Record<string, any> = {};
 
   Object.entries(searchForm.value).forEach(([key, value]) => {
-    if (typeof value === 'string' && value !== '') {
+    if (key === 'createTimeRange') {
+      if (value && (value as Date[]).length === 2) {
+        params.createTimeFrom = (value as Date[])[0];
+        params.createTimeTo = (value as Date[])[1];
+      }
+    } else if (typeof value === 'string' && value !== '') {
       params[key] = value;
     }
   });
@@ -32,6 +38,7 @@ function handleReset() {
     name: '',
     code: '',
     status: '',
+    createTimeRange: null,
   };
   emit('reset');
 }
@@ -70,6 +77,18 @@ function handleReset() {
         option-value="value"
         placeholder="全部"
         show-clear
+      />
+    </div>
+
+    <div class="flex items-center gap-2">
+      <label class="text-sm font-medium whitespace-nowrap">创建时间</label>
+      <PrimeDatePicker
+        v-model="searchForm.createTimeRange"
+        selection-mode="range"
+        date-format="yy-mm-dd"
+        placeholder="选择范围"
+        show-clear
+        class="min-w-66"
       />
     </div>
 

@@ -15,6 +15,11 @@ const typeOptions = [
   { label: 'JSON', value: 'json' },
 ];
 
+const statusOptions = [
+  { label: '启用', value: 'active' },
+  { label: '禁用', value: 'inactive' },
+];
+
 function handleSearch() {
   emit('search');
 }
@@ -57,6 +62,30 @@ function handleReset() {
         option-value="value"
         placeholder="选择类型"
         show-clear
+      />
+    </div>
+
+    <div class="flex items-center gap-2">
+      <label class="text-sm font-medium whitespace-nowrap">状态</label>
+      <PrimeSelect
+        v-model="mgr.searchStatus"
+        :options="statusOptions"
+        option-label="label"
+        option-value="value"
+        placeholder="选择状态"
+        show-clear
+      />
+    </div>
+
+    <div class="flex items-center gap-2">
+      <label class="text-sm font-medium whitespace-nowrap">创建时间</label>
+      <PrimeDatePicker
+        v-model="mgr.searchCreateTimeRange"
+        selection-mode="range"
+        date-format="yy-mm-dd"
+        placeholder="选择范围"
+        show-clear
+        class="min-w-66"
       />
     </div>
 

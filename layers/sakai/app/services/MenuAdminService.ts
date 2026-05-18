@@ -54,10 +54,24 @@ export interface SaveResult {
 @Injectable()
 export class MenuAdminService {
   /** 查询菜单列表（扁平数组） */
-  async queryMenus(keyword?: string): Promise<Menu[]> {
+  async queryMenus(
+    keyword?: string,
+    status?: string,
+    createTimeFrom?: string,
+    createTimeTo?: string,
+  ): Promise<Menu[]> {
     const query: Record<string, string> = {};
     if (keyword) {
       query.keyword = keyword;
+    }
+    if (status) {
+      query.status = status;
+    }
+    if (createTimeFrom) {
+      query.createTimeFrom = createTimeFrom;
+    }
+    if (createTimeTo) {
+      query.createTimeTo = createTimeTo;
     }
     const res = await $fetch<{ data: Menu[] }>('/api/menus', { query });
     return res.data;

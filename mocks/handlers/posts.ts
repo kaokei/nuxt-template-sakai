@@ -36,6 +36,20 @@ export const postsHandlers = [
       filtered = filtered.filter((p) => p.status === status);
     }
 
+    // 创建时间范围筛选
+    const createTimeFrom = url.searchParams.get('createTimeFrom');
+    const createTimeTo = url.searchParams.get('createTimeTo');
+    if (createTimeFrom || createTimeTo) {
+      const fromMs = createTimeFrom ? Date.parse(createTimeFrom) : NaN;
+      const toMs = createTimeTo ? Date.parse(createTimeTo) : NaN;
+      filtered = filtered.filter((p) => {
+        const c = new Date(p.createTime).getTime();
+        if (!isNaN(fromMs) && c < fromMs) return false;
+        if (!isNaN(toMs) && c > toMs) return false;
+        return true;
+      });
+    }
+
     // 排序
     if (sortField) {
       const order = sortOrder === '-1' ? -1 : 1;

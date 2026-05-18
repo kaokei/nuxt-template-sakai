@@ -37,6 +37,8 @@ export class SysParamMgrService {
   searchName = '';
   searchKey = '';
   searchType: string | undefined = undefined;
+  searchStatus = '';
+  searchCreateTimeRange: Date[] | null = null;
 
   // ==================== 弹窗状态 ====================
   formDialogVisible = false;
@@ -112,6 +114,13 @@ export class SysParamMgrService {
     if (this.searchType) {
       params.type = this.searchType;
     }
+    if (this.searchStatus) {
+      params.status = this.searchStatus;
+    }
+    if (this.searchCreateTimeRange && this.searchCreateTimeRange.length === 2) {
+      params.createTimeFrom = this.searchCreateTimeRange[0]!.toISOString();
+      params.createTimeTo = this.searchCreateTimeRange[1]!.toISOString();
+    }
     this.searchParams = params;
     this.page = 1;
     this.loadParams();
@@ -122,6 +131,8 @@ export class SysParamMgrService {
     this.searchName = '';
     this.searchKey = '';
     this.searchType = undefined;
+    this.searchStatus = '';
+    this.searchCreateTimeRange = null;
     this.searchParams = {};
     this.page = 1;
     this.loadParams();

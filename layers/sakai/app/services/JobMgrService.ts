@@ -31,6 +31,8 @@ export class JobMgrService {
   searchName = '';
   searchGroup = '';
   searchStatus: '' | 'running' | 'paused' | null = null;
+  searchLastRunTimeRange: Date[] | null = null;
+  searchNextRunTimeRange: Date[] | null = null;
 
   // ==================== 工具函数 ====================
 
@@ -62,6 +64,10 @@ export class JobMgrService {
         name: this.searchName || undefined,
         group: this.searchGroup || undefined,
         status: this.searchStatus || undefined,
+        lastRunTimeFrom: this.searchLastRunTimeRange?.[0]?.toISOString(),
+        lastRunTimeTo: this.searchLastRunTimeRange?.[1]?.toISOString(),
+        nextRunTimeFrom: this.searchNextRunTimeRange?.[0]?.toISOString(),
+        nextRunTimeTo: this.searchNextRunTimeRange?.[1]?.toISOString(),
       });
       this.jobs = result.data;
       this.totalRecords = result.total;
@@ -129,6 +135,8 @@ export class JobMgrService {
     this.searchName = '';
     this.searchGroup = '';
     this.searchStatus = null;
+    this.searchLastRunTimeRange = null;
+    this.searchNextRunTimeRange = null;
     await this.loadJobs();
   }
 

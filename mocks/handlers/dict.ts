@@ -40,6 +40,19 @@ export const dictHandlers = [
       filtered = filtered.filter((t) => t.status === status);
     }
 
+    const createTimeFrom = url.searchParams.get('createTimeFrom');
+    const createTimeTo = url.searchParams.get('createTimeTo');
+    if (createTimeFrom || createTimeTo) {
+      const fromMs = createTimeFrom ? Date.parse(createTimeFrom) : NaN;
+      const toMs = createTimeTo ? Date.parse(createTimeTo) : NaN;
+      filtered = filtered.filter((t) => {
+        const c = new Date(t.createTime).getTime();
+        if (!isNaN(fromMs) && c < fromMs) return false;
+        if (!isNaN(toMs) && c > toMs) return false;
+        return true;
+      });
+    }
+
     if (sortField) {
       filtered.sort((a, b) => {
         const va = (a as unknown as Record<string, unknown>)[sortField];

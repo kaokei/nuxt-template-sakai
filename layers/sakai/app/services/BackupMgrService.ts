@@ -25,6 +25,8 @@ export class BackupMgrService {
   searchName = '';
   searchStatus: string | null = null;
   searchType: string | null = null;
+  searchCreateTimeFrom: string | undefined = undefined;
+  searchCreateTimeTo: string | undefined = undefined;
 
   // ==================== 弹窗状态 ====================
   formDialogVisible = false;
@@ -85,6 +87,8 @@ export class BackupMgrService {
         name: this.searchName || undefined,
         status: this.searchStatus || undefined,
         type: this.searchType || undefined,
+        createTimeFrom: this.searchCreateTimeFrom,
+        createTimeTo: this.searchCreateTimeTo,
       });
       this.backups = result.data;
       this.totalRecords = result.total;
@@ -106,6 +110,8 @@ export class BackupMgrService {
     this.searchName = '';
     this.searchStatus = null;
     this.searchType = null;
+    this.searchCreateTimeFrom = undefined;
+    this.searchCreateTimeTo = undefined;
     this.loadBackups();
   }
 

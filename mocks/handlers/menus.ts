@@ -86,8 +86,28 @@ export const menuHandlers = [
   http.get('/api/menus', async ({ request }) => {
     const url = new URL(request.url);
     const keyword = url.searchParams.get('keyword');
+    const status = url.searchParams.get('status');
+    const createTimeFrom = url.searchParams.get('createTimeFrom');
+    const createTimeTo = url.searchParams.get('createTimeTo');
 
     let result = [...menus];
+
+    // 状态过滤
+    if (status) {
+      result = result.filter((m) => m.status === status);
+    }
+
+    // 创建时间范围过滤
+    if (createTimeFrom || createTimeTo) {
+      const fromMs = createTimeFrom ? Date.parse(createTimeFrom) : NaN;
+      const toMs = createTimeTo ? Date.parse(createTimeTo) : NaN;
+      result = result.filter((m) => {
+        const c = new Date(m.createTime).getTime();
+        if (!isNaN(fromMs) && c < fromMs) return false;
+        if (!isNaN(toMs) && c > toMs) return false;
+        return true;
+      });
+    }
 
     if (keyword) {
       const kw = keyword.toLowerCase();

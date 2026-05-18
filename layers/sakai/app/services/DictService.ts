@@ -31,6 +31,8 @@ export interface DictTypeQueryParams {
   name?: string;
   code?: string;
   status?: string;
+  createTimeFrom?: string;
+  createTimeTo?: string;
 }
 
 export interface DictDataQueryParams {

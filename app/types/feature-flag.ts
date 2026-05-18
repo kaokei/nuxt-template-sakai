@@ -45,6 +45,8 @@ export interface FeatureFlagQueryParams {
   tag?: string;
   status?: string;
   owner?: string;
+  updatedAtFrom?: string;
+  updatedAtTo?: string;
 }
 
 /** 分页结果 */

@@ -22,6 +22,8 @@ export class MenuMgrService {
   loading = false;
   selectedNodes: Record<string, any> = {};
   keyword = '';
+  searchStatus: string | null = null;
+  searchCreateTimeRange: Date[] | null = null;
   sortField = 'order';
   sortOrder: number = 1;
   expandedKeys: Record<string, boolean> = {};
@@ -95,11 +97,22 @@ export class MenuMgrService {
     return buildChildren(null);
   }
 
-  async loadMenus(keyword?: string): Promise<void> {
+  async loadMenus(params?: {
+    keyword?: string;
+    status?: string | null;
+    createTimeFrom?: string;
+    createTimeTo?: string;
+  }): Promise<void> {
     this.loading = true;
     try {
-      const k = typeof keyword === 'string' ? keyword : this.keyword;
-      this.allMenus = await this.menuAdminService.queryMenus(k);
+      const k =
+        typeof params?.keyword === 'string' ? params.keyword : this.keyword;
+      this.allMenus = await this.menuAdminService.queryMenus(
+        k,
+        params?.status ?? this.searchStatus ?? undefined,
+        params?.createTimeFrom,
+        params?.createTimeTo,
+      );
       this.treeNodes = this.buildTree(this.allMenus);
       this.expandedKeys = this.computeDefaultExpandedKeys(this.treeNodes);
     } finally {
@@ -144,14 +157,22 @@ export class MenuMgrService {
   }
 
   @autobind
-  onSearch(searchKeyword: string): void {
-    this.keyword = searchKeyword;
-    this.loadMenus(searchKeyword);
+  onSearch(params: {
+    keyword?: string;
+    status?: string | null;
+    createTimeFrom?: string;
+    createTimeTo?: string;
+  }): void {
+    this.keyword = params.keyword ?? '';
+    this.searchStatus = params.status ?? null;
+    this.loadMenus(params);
   }
 
   @autobind
   onReset(): void {
     this.keyword = '';
+    this.searchStatus = null;
+    this.searchCreateTimeRange = null;
     this.loadMenus();
   }
 

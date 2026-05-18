@@ -8,10 +8,12 @@ const searchForm = ref<{
   name: string;
   code: string;
   status: string | null;
+  createTimeRange: Date[] | null;
 }>({
   name: '',
   code: '',
   status: null,
+  createTimeRange: null,
 });
 
 const statusOptions = [
@@ -22,7 +24,12 @@ const statusOptions = [
 function handleSearch() {
   const params: Record<string, any> = {};
   Object.entries(searchForm.value).forEach(([key, value]) => {
-    if (
+    if (key === 'createTimeRange') {
+      if (value && (value as Date[]).length === 2) {
+        params.createTimeFrom = (value as Date[])[0];
+        params.createTimeTo = (value as Date[])[1];
+      }
+    } else if (
       key === 'status'
         ? value != null && value !== ''
         : typeof value === 'string' && value !== ''
@@ -38,6 +45,7 @@ function handleReset() {
     name: '',
     code: '',
     status: null,
+    createTimeRange: null,
   };
   emit('reset');
 }
@@ -76,6 +84,18 @@ function handleReset() {
         option-value="value"
         placeholder="选择状态"
         show-clear
+      />
+    </div>
+
+    <div class="flex items-center gap-2">
+      <label class="text-sm font-medium whitespace-nowrap">创建时间</label>
+      <PrimeDatePicker
+        v-model="searchForm.createTimeRange"
+        selection-mode="range"
+        date-format="yy-mm-dd"
+        placeholder="选择范围"
+        show-clear
+        class="min-w-66"
       />
     </div>
 

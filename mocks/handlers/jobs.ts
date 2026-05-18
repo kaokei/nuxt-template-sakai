@@ -33,6 +33,33 @@ export const jobsHandlers = [
       filtered = filtered.filter((j) => j.status === status);
     }
 
+    // 上次执行时间范围过滤
+    const lastRunTimeFrom = url.searchParams.get('lastRunTimeFrom');
+    const lastRunTimeTo = url.searchParams.get('lastRunTimeTo');
+    if (lastRunTimeFrom || lastRunTimeTo) {
+      const fromMs = lastRunTimeFrom ? Date.parse(lastRunTimeFrom) : NaN;
+      const toMs = lastRunTimeTo ? Date.parse(lastRunTimeTo) : NaN;
+      filtered = filtered.filter((j) => {
+        if (!j.lastRunTime) return false;
+        const c = new Date(j.lastRunTime).getTime();
+        if (!isNaN(fromMs) && c < fromMs) return false;
+        if (!isNaN(toMs) && c > toMs) return false;
+        return true;
+      });
+    }
+    const nextRunTimeFrom = url.searchParams.get('nextRunTimeFrom');
+    const nextRunTimeTo = url.searchParams.get('nextRunTimeTo');
+    if (nextRunTimeFrom || nextRunTimeTo) {
+      const fromMs = nextRunTimeFrom ? Date.parse(nextRunTimeFrom) : NaN;
+      const toMs = nextRunTimeTo ? Date.parse(nextRunTimeTo) : NaN;
+      filtered = filtered.filter((j) => {
+        const c = new Date(j.nextRunTime).getTime();
+        if (!isNaN(fromMs) && c < fromMs) return false;
+        if (!isNaN(toMs) && c > toMs) return false;
+        return true;
+      });
+    }
+
     if (sortField) {
       const order = sortOrder === '-1' ? -1 : 1;
       filtered.sort((a, b) => {

@@ -9,6 +9,8 @@ export interface SysParamQueryParams {
   key?: string;
   type?: string;
   status?: string;
+  createTimeFrom?: string;
+  createTimeTo?: string;
 }
 
 export interface PageResult<T> {

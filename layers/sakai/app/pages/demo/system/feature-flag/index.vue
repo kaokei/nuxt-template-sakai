@@ -16,6 +16,7 @@ const searchKey = ref('');
 const searchName = ref('');
 const searchTag = ref('');
 const searchStatus = ref('');
+const searchUpdatedAtRange = ref<Date[] | null>(null);
 
 const statusOptions = [
   { label: '活跃', value: 'active' },
@@ -115,12 +116,17 @@ watch(
 // ==================== 事件处理 ====================
 
 function onSearch() {
-  mgr.onSearch({
+  const params: Record<string, any> = {
     key: searchKey.value,
     name: searchName.value,
     tag: searchTag.value,
     status: searchStatus.value,
-  });
+  };
+  if (searchUpdatedAtRange.value && searchUpdatedAtRange.value.length === 2) {
+    params.updatedAtFrom = searchUpdatedAtRange.value[0]!.toISOString();
+    params.updatedAtTo = searchUpdatedAtRange.value[1]!.toISOString();
+  }
+  mgr.onSearch(params);
 }
 
 function onReset() {
@@ -128,6 +134,7 @@ function onReset() {
   searchName.value = '';
   searchTag.value = '';
   searchStatus.value = '';
+  searchUpdatedAtRange.value = null;
   mgr.onReset();
 }
 
@@ -271,6 +278,17 @@ onMounted(() => {
             option-value="value"
             placeholder="选择状态"
             show-clear
+          />
+        </div>
+        <div class="flex flex-col gap-1">
+          <label class="text-surface-500 text-sm">更新时间</label>
+          <PrimeDatePicker
+            v-model="searchUpdatedAtRange"
+            selection-mode="range"
+            date-format="yy-mm-dd"
+            placeholder="选择范围"
+            show-clear
+            class="min-w-66"
           />
         </div>
         <div class="flex gap-2">

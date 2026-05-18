@@ -49,10 +49,24 @@ export interface SaveResult {
 @Injectable()
 export class DeptService {
   /** 查询部门列表（扁平数组） */
-  async queryDepts(keyword?: string): Promise<Dept[]> {
+  async queryDepts(
+    keyword?: string,
+    status?: string,
+    createTimeFrom?: string,
+    createTimeTo?: string,
+  ): Promise<Dept[]> {
     const query: Record<string, string> = {};
     if (keyword) {
       query.keyword = keyword;
+    }
+    if (status) {
+      query.status = status;
+    }
+    if (createTimeFrom) {
+      query.createTimeFrom = createTimeFrom;
+    }
+    if (createTimeTo) {
+      query.createTimeTo = createTimeTo;
     }
     const res = await $fetch<{ data: Dept[] }>('/api/depts', { query });
     return res.data;

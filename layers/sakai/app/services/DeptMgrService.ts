@@ -22,6 +22,8 @@ export class DeptMgrService {
   loading = false;
   selectedNodes: Record<string, any> = {};
   keyword = '';
+  searchStatus: string | null = null;
+  searchCreateTimeRange: Date[] | null = null;
   sortField = 'order';
   sortOrder: number = 1;
   expandedKeys: Record<string, boolean> = {};
@@ -77,11 +79,22 @@ export class DeptMgrService {
     return buildChildren(null);
   }
 
-  async loadDepts(keyword?: string): Promise<void> {
+  async loadDepts(params?: {
+    keyword?: string;
+    status?: string | null;
+    createTimeFrom?: string;
+    createTimeTo?: string;
+  }): Promise<void> {
     this.loading = true;
     try {
-      const k = typeof keyword === 'string' ? keyword : this.keyword;
-      this.allDepts = await this.deptService.queryDepts(k);
+      const k =
+        typeof params?.keyword === 'string' ? params.keyword : this.keyword;
+      this.allDepts = await this.deptService.queryDepts(
+        k,
+        params?.status ?? this.searchStatus ?? undefined,
+        params?.createTimeFrom,
+        params?.createTimeTo,
+      );
       this.treeNodes = this.buildTree(this.allDepts);
       this.expandedKeys = this.computeDefaultExpandedKeys(this.treeNodes);
     } finally {
@@ -126,14 +139,22 @@ export class DeptMgrService {
   }
 
   @autobind
-  onSearch(searchKeyword: string): void {
-    this.keyword = searchKeyword;
-    this.loadDepts(searchKeyword);
+  onSearch(params: {
+    keyword?: string;
+    status?: string | null;
+    createTimeFrom?: string;
+    createTimeTo?: string;
+  }): void {
+    this.keyword = params.keyword ?? '';
+    this.searchStatus = params.status ?? null;
+    this.loadDepts(params);
   }
 
   @autobind
   onReset(): void {
     this.keyword = '';
+    this.searchStatus = null;
+    this.searchCreateTimeRange = null;
     this.loadDepts();
   }
 

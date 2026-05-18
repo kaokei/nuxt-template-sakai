@@ -8,8 +8,10 @@ export interface JobQueryParams {
   name?: string;
   group?: string;
   status?: string;
-  createTimeFrom?: string;
-  createTimeTo?: string;
+  lastRunTimeFrom?: string;
+  lastRunTimeTo?: string;
+  nextRunTimeFrom?: string;
+  nextRunTimeTo?: string;
 }
 
 export interface PageResult<T> {

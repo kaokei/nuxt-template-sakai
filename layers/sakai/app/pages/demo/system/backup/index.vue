@@ -101,11 +101,21 @@ const searchTypeOptions = [
   { label: '增量备份', value: 'incremental' },
 ];
 
+const searchCreateTimeRange = ref<Date[] | null>(null);
+
 function handleSearch() {
+  if (searchCreateTimeRange.value && searchCreateTimeRange.value.length === 2) {
+    mgr.searchCreateTimeFrom = searchCreateTimeRange.value[0]!.toISOString();
+    mgr.searchCreateTimeTo = searchCreateTimeRange.value[1]!.toISOString();
+  } else {
+    mgr.searchCreateTimeFrom = undefined;
+    mgr.searchCreateTimeTo = undefined;
+  }
   mgr.onSearch();
 }
 
 function handleReset() {
+  searchCreateTimeRange.value = null;
   mgr.onReset();
 }
 
@@ -151,6 +161,18 @@ onMounted(() => {
           option-value="value"
           placeholder="选择状态"
           show-clear
+        />
+      </div>
+
+      <div class="flex items-center gap-2">
+        <label class="text-sm font-medium whitespace-nowrap">创建时间</label>
+        <PrimeDatePicker
+          v-model="searchCreateTimeRange"
+          selection-mode="range"
+          date-format="yy-mm-dd"
+          placeholder="选择范围"
+          show-clear
+          class="min-w-66"
         />
       </div>
 

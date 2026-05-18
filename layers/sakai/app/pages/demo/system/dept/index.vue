@@ -13,6 +13,14 @@ const toast = useToast();
 definePageMeta({ layout: 'sakai-sidebar' });
 useSeoMeta({ title: '部门管理' });
 
+// 搜索扩展字段
+const searchStatus = ref<string | null>(null);
+const searchCreateTimeRange = ref<Date[] | null>(null);
+const statusOptions = [
+  { label: '启用', value: 'active' },
+  { label: '禁用', value: 'inactive' },
+];
+
 function onSaved() {
   const result = mgr.onSaved();
   toast.add({
@@ -58,6 +66,29 @@ function collapseAll() {
   mgr.expandedKeys = {};
 }
 
+function handleSearch() {
+  const createTimeFrom =
+    searchCreateTimeRange.value && searchCreateTimeRange.value.length === 2
+      ? searchCreateTimeRange.value[0]!.toISOString()
+      : undefined;
+  const createTimeTo =
+    searchCreateTimeRange.value && searchCreateTimeRange.value.length === 2
+      ? searchCreateTimeRange.value[1]!.toISOString()
+      : undefined;
+  mgr.onSearch({
+    keyword: mgr.keyword,
+    status: searchStatus.value,
+    createTimeFrom,
+    createTimeTo,
+  });
+}
+
+function handleReset() {
+  searchStatus.value = null;
+  searchCreateTimeRange.value = null;
+  mgr.onReset();
+}
+
 onMounted(() => {
   mgr.loadDepts();
 });
@@ -75,7 +106,29 @@ onMounted(() => {
           v-model="mgr.keyword"
           placeholder="搜索部门"
           class="w-56"
-          @keydown.enter="mgr.onSearch(mgr.keyword)"
+          @keydown.enter="handleSearch"
+        />
+      </div>
+      <div class="flex items-center gap-2">
+        <label class="text-sm font-medium whitespace-nowrap">状态</label>
+        <PrimeSelect
+          v-model="searchStatus"
+          :options="statusOptions"
+          option-label="label"
+          option-value="value"
+          placeholder="全部"
+          show-clear
+          class="w-32"
+        />
+      </div>
+      <div class="flex items-center gap-2">
+        <label class="text-sm font-medium whitespace-nowrap">创建时间</label>
+        <PrimeDatePicker
+          v-model="searchCreateTimeRange"
+          selection-mode="range"
+          date-format="yy-mm-dd"
+          show-clear
+          class="min-w-66"
         />
       </div>
       <div class="flex gap-2">
@@ -83,14 +136,14 @@ onMounted(() => {
           label="搜索"
           icon="pi pi-search"
           severity="primary"
-          @click="mgr.onSearch(mgr.keyword)"
+          @click="handleSearch"
         />
         <PrimeButton
           label="重置"
           icon="pi pi-refresh"
           severity="secondary"
           outlined
-          @click="mgr.onReset"
+          @click="handleReset"
         />
       </div>
     </div>
