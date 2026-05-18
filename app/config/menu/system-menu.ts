@@ -37,6 +37,43 @@ const menuItems: MenuItem[] = [
       },
     ],
   },
+  {
+    label: '系统监控',
+    icon: 'pi pi-fw pi-desktop',
+    items: [
+      {
+        label: '登录日志',
+        icon: 'pi pi-fw pi-sign-in',
+        to: '/demo/system/monitor/login-log',
+      },
+      {
+        label: '操作日志',
+        icon: 'pi pi-fw pi-history',
+        to: '/demo/system/monitor/oper-log',
+      },
+      {
+        label: '在线用户',
+        icon: 'pi pi-fw pi-circle-fill',
+        to: '/demo/system/monitor/online-user',
+      },
+    ],
+  },
+  {
+    label: '通知中心',
+    icon: 'pi pi-fw pi-bell',
+    items: [
+      {
+        label: '通知列表',
+        icon: 'pi pi-fw pi-envelope',
+        to: '/demo/system/notify/list',
+      },
+      {
+        label: '公告管理',
+        icon: 'pi pi-fw pi-megaphone',
+        to: '/demo/system/notify/announce',
+      },
+    ],
+  },
 ];
 
 export const demoSystemConfig: SystemConfig = {

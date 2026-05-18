@@ -1,5 +1,3 @@
-import { demoMonitorConfig } from '~/config/menu/monitor-menu';
-import { demoNotifyConfig } from '~/config/menu/notify-menu';
 import { demoShowcaseConfig } from '~/config/menu/showcase-menu';
 import { demoSystemConfig } from '~/config/menu/system-menu';
 import { demoWorkbenchConfig } from '~/config/menu/workbench-menu';
@@ -11,13 +9,7 @@ export default defineNuxtPlugin(() => {
   const menuService = useRootService(MenuService);
   const route = useRoute();
   menuService.registerSystems(
-    [
-      demoSystemConfig,
-      demoMonitorConfig,
-      demoWorkbenchConfig,
-      demoNotifyConfig,
-      demoShowcaseConfig,
-    ],
+    [demoSystemConfig, demoWorkbenchConfig, demoShowcaseConfig],
     route.path,
   );
 
