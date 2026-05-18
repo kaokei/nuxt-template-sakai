@@ -9,3 +9,4 @@ lib
 *-raw.js
 *-raw.json
 ./utils/encode.ts
+**/components.d.ts
