@@ -78,16 +78,19 @@ export const deptHandlers = [
 
     let result = [...depts];
 
+    // 逐步应用过滤条件，收集所有匹配的节点
+    let matched = result;
+
     // 状态过滤
     if (status) {
-      result = result.filter((d) => d.status === status);
+      matched = matched.filter((d) => d.status === status);
     }
 
     // 时间范围过滤
     if (createTimeFrom || createTimeTo) {
       const fromMs = createTimeFrom ? Date.parse(createTimeFrom) : NaN;
       const toMs = createTimeTo ? Date.parse(createTimeTo) : NaN;
-      result = result.filter((d) => {
+      matched = matched.filter((d) => {
         const c = new Date(d.createTime).getTime();
         if (!isNaN(fromMs) && c < fromMs) return false;
         if (!isNaN(toMs) && c > toMs) return false;
@@ -95,13 +98,18 @@ export const deptHandlers = [
       });
     }
 
+    // 关键词过滤
     if (keyword) {
       const kw = keyword.toLowerCase();
-      const matched = result.filter((d) => d.name.toLowerCase().includes(kw));
+      matched = matched.filter((d) => d.name.toLowerCase().includes(kw));
+    }
+
+    // 有过滤条件时，补全祖先节点确保树结构完整
+    // 注意：使用原始数据 depts 查找祖先，避免祖先节点被过滤条件排除
+    if (status || createTimeFrom || createTimeTo || keyword) {
       const keepIds = new Set(matched.map((d) => d.id));
-      // 补全祖先节点，确保匹配的子节点在树中可见
       for (const d of matched) {
-        for (const ancestorId of getAncestorIds(d.id, result)) {
+        for (const ancestorId of getAncestorIds(d.id, depts)) {
           keepIds.add(ancestorId);
         }
       }
