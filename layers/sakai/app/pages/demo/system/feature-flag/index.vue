@@ -239,7 +239,9 @@ onMounted(() => {
 <template>
   <div class="flex flex-col gap-4">
     <!-- 搜索栏 -->
-    <div class="card p-4!">
+    <div
+      class="border-surface-200 bg-surface-0 flex flex-wrap items-center gap-4 rounded-lg border p-4"
+    >
       <div class="flex flex-wrap items-end gap-4">
         <div class="flex flex-col gap-1">
           <label class="text-surface-500 text-sm">开关标识</label>
@@ -251,7 +253,7 @@ onMounted(() => {
         </div>
         <div class="flex flex-col gap-1">
           <label class="text-surface-500 text-sm">标签</label>
-          <PrimeDropdown
+          <PrimeSelect
             v-model="searchTag"
             :options="mgr.tagOptions"
             option-label="label"
@@ -262,7 +264,7 @@ onMounted(() => {
         </div>
         <div class="flex flex-col gap-1">
           <label class="text-surface-500 text-sm">状态</label>
-          <PrimeDropdown
+          <PrimeSelect
             v-model="searchStatus"
             :options="statusOptions"
             option-label="label"
