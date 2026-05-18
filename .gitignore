@@ -30,3 +30,5 @@ logs
 .kiro/
 .sisyphus/
 .playwright-mcp/
+
+app/components.d.ts
