@@ -4,7 +4,9 @@ import { deptHandlers } from './depts';
 import { dictHandlers } from './dict';
 import { featureFlagHandlers } from './feature-flags';
 import { jobsHandlers } from './jobs';
+import { loginLogHandlers } from './login-logs';
 import { menuHandlers } from './menus';
+import { operLogHandlers } from './oper-logs';
 import { postsHandlers } from './posts';
 import { problemHandlers } from './problems';
 import { roleHandlers } from './roles';
@@ -24,4 +26,6 @@ export const handlers = [
   ...sysParamHandlers,
   ...jobsHandlers,
   ...backupHandlers,
+  ...loginLogHandlers,
+  ...operLogHandlers,
 ];
