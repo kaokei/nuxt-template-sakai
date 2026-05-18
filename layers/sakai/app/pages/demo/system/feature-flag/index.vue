@@ -1,8 +1,9 @@
 <script lang="ts" setup>
+import { UserService, type SelectOption } from '@sakai/services/UserService';
 import { FeatureFlagAdminService } from '@sakai/services/FeatureFlagAdminService';
 import { FeatureFlagMgrService } from '@sakai/services/FeatureFlagMgrService';
 
-declareProviders([FeatureFlagAdminService, FeatureFlagMgrService]);
+declareProviders([FeatureFlagAdminService, FeatureFlagMgrService, UserService]);
 
 const mgr = useService(FeatureFlagMgrService);
 const toast = useToast();
@@ -33,7 +34,7 @@ function getDefaultFormData() {
     description: '',
     type: 'boolean' as 'boolean' | 'multivariate',
     tags: [] as string[],
-    owner: '',
+    owner: null as SelectOption | null,
     status: 'active' as 'active' | 'archived',
     rules: {
       dev: {
@@ -84,7 +85,7 @@ watch(
         description: val.description || '',
         type: val.type || 'boolean',
         tags: val.tags ? [...val.tags] : [],
-        owner: val.owner || '',
+        owner: val.owner ? { label: val.owner, value: val.owner } : null,
         status: val.status || 'active',
         rules: {
           dev: {
@@ -177,7 +178,7 @@ async function saveFlag() {
         description: data.description,
         type: data.type,
         tags: data.tags,
-        owner: data.owner,
+        owner: data.owner?.label || '',
         status: data.status,
       });
       // 更新各环境规则
@@ -197,7 +198,7 @@ async function saveFlag() {
         description: data.description,
         type: data.type,
         tags: data.tags,
-        owner: data.owner,
+        owner: data.owner?.label || '',
         status: data.status,
       });
       // 创建后更新各环境规则
@@ -573,12 +574,8 @@ onMounted(() => {
           </div>
 
           <div class="flex flex-col gap-1">
-            <label for="flagOwner" class="text-sm font-medium">负责人</label>
-            <PrimeInputText
-              id="flagOwner"
-              v-model="formData.owner"
-              placeholder="请输入负责人"
-            />
+            <label class="text-sm font-medium">负责人</label>
+            <UserPicker v-model="formData.owner" placeholder="输入姓名搜索" />
           </div>
         </div>
 
