@@ -97,7 +97,7 @@ onMounted(() => {
   <div class="flex flex-col gap-4">
     <!-- 搜索栏 -->
     <div
-      class="border-surface-200 bg-surface-0 flex items-center gap-4 rounded-lg border p-4"
+      class="border-surface-200 bg-surface-0 flex flex-wrap items-center gap-4 rounded-lg border p-4"
     >
       <div class="flex items-center gap-2">
         <label class="text-sm font-medium whitespace-nowrap">菜单名称</label>
@@ -108,6 +108,31 @@ onMounted(() => {
           @keydown.enter="handleSearch"
         />
       </div>
+
+      <div class="flex items-center gap-2">
+        <label class="text-sm font-medium whitespace-nowrap">状态</label>
+        <PrimeSelect
+          v-model="searchStatus"
+          :options="statusOptions"
+          option-label="label"
+          option-value="value"
+          placeholder="全部"
+          show-clear
+        />
+      </div>
+
+      <div class="flex items-center gap-2">
+        <label class="text-sm font-medium whitespace-nowrap">创建时间</label>
+        <PrimeDatePicker
+          v-model="searchCreateTimeRange"
+          selection-mode="range"
+          date-format="yy-mm-dd"
+          placeholder="选择范围"
+          show-clear
+          class="min-w-66"
+        />
+      </div>
+
       <div class="flex gap-2">
         <PrimeButton
           label="搜索"
@@ -120,7 +145,7 @@ onMounted(() => {
           icon="pi pi-refresh"
           severity="secondary"
           outlined
-          @click="mgr.onReset"
+          @click="handleReset"
         />
       </div>
     </div>

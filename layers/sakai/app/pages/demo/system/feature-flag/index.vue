@@ -538,14 +538,26 @@ onMounted(() => {
             />
           </div>
 
-          <div class="flex flex-col gap-1">
-            <label class="text-sm font-medium">类型</label>
-            <PrimeSelectButton
-              v-model="formData.type"
-              :options="typeOptions"
-              option-label="label"
-              option-value="value"
-            />
+          <div class="grid grid-cols-2 gap-4">
+            <div class="flex flex-col gap-1">
+              <label class="text-sm font-medium">类型</label>
+              <PrimeSelectButton
+                v-model="formData.type"
+                :options="typeOptions"
+                option-label="label"
+                option-value="value"
+              />
+            </div>
+
+            <div class="flex flex-col gap-1">
+              <label class="text-sm font-medium">状态</label>
+              <PrimeSelectButton
+                v-model="formData.status"
+                :options="statusOptions"
+                option-label="label"
+                option-value="value"
+              />
+            </div>
           </div>
 
           <div class="flex flex-col gap-1">

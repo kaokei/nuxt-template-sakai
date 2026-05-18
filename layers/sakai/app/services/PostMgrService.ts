@@ -42,8 +42,8 @@ export class PostMgrService {
 
   // ==================== 显示映射 ====================
   readonly statusLabels: Record<string, string> = {
-    active: '启用',
-    inactive: '禁用',
+    active: '正常',
+    inactive: '停用',
   };
 
   getStatusSeverity(status: string): 'success' | 'danger' {
