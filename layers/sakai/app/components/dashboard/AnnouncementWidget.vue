@@ -27,7 +27,10 @@ onMounted(async () => {
   <div class="card">
     <div class="mb-4 flex items-center justify-between">
       <div class="text-xl font-semibold">最新公告</div>
-      <router-link to="/notices" class="text-primary text-sm hover:underline">
+      <router-link
+        to="/demo/notices"
+        class="text-primary text-sm hover:underline"
+      >
         查看全部
       </router-link>
     </div>
@@ -46,7 +49,7 @@ onMounted(async () => {
         v-for="item in announcements"
         :key="item.id"
         class="group cursor-pointer"
-        @click="navigateTo(`/notices/${item.id}`)"
+        @click="navigateTo(`/demo/notices/${item.id}`)"
       >
         <div class="flex items-start gap-2">
           <div class="mt-0.5 shrink-0">

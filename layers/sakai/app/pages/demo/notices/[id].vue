@@ -7,7 +7,7 @@ declareProviders([AnnouncementService]);
 const service = useService(AnnouncementService);
 const route = useRoute();
 
-definePageMeta({ layout: 'sakai-sidebar' });
+definePageMeta({ layout: 'sakai-consumer' });
 useSeoMeta({ title: '公告详情' });
 
 const announcement = ref<Announcement | null>(null);
@@ -53,7 +53,7 @@ onMounted(async () => {
         severity="secondary"
         text
         class="mb-4"
-        @click="navigateTo('/notices')"
+        @click="navigateTo('/demo/notices')"
       />
 
       <article>

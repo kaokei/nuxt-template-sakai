@@ -195,7 +195,14 @@ function toggleSystemMenu(event: Event) {
 
       <div class="layout-topbar-menu hidden lg:block">
         <div class="layout-topbar-menu-content">
-          <router-link to="/notices" class="layout-topbar-action no-underline">
+          <button type="button" class="layout-topbar-action">
+            <i class="pi pi-calendar"></i>
+            <span>日历</span>
+          </button>
+          <router-link
+            to="/demo/notices"
+            class="layout-topbar-action no-underline"
+          >
             <i class="pi pi-megaphone"></i>
             <span>公告</span>
           </router-link>

@@ -52,7 +52,7 @@ export class UserNotificationService {
 
   handleNotificationClick(notif: UserNotification): string {
     if (notif.sourceType === 'announcement' && notif.sourceId) {
-      return `/notices/${notif.sourceId}`;
+      return `/demo/notices/${notif.sourceId}`;
     }
     return '';
   }

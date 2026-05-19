@@ -6,7 +6,7 @@ declareProviders([AnnouncementService]);
 
 const service = useService(AnnouncementService);
 
-definePageMeta({ layout: 'sakai-sidebar' });
+definePageMeta({ layout: 'sakai-consumer' });
 useSeoMeta({ title: '公告栏' });
 
 const announcements = ref<Announcement[]>([]);
@@ -61,7 +61,7 @@ onMounted(() => {
         :key="item.id"
         class="card cursor-pointer p-5! transition-shadow hover:shadow-md"
         :class="{ 'border-l-primary border-l-4': item.isPinned }"
-        @click="navigateTo(`/notices/${item.id}`)"
+        @click="navigateTo(`/demo/notices/${item.id}`)"
       >
         <div class="flex items-start justify-between gap-4">
           <div class="min-w-0 flex-1">

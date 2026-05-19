@@ -613,3 +613,14 @@ p {
 p:last-child {
   margin-bottom: 0;
 }
+
+/* Consumer layout */
+.layout-wrapper.layout-consumer .layout-main-container {
+  padding-top: 6rem; /* 4rem(topbar) + 2rem(breathing) */
+}
+
+.layout-main-centered {
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+}
