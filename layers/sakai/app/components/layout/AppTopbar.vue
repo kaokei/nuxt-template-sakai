@@ -1,11 +1,52 @@
 <script lang="ts" setup>
 import { useLayout } from '@sakai/components/layout/composables/layout';
 import { MenuService } from '~/services/menu.service';
+import { UserNotificationService } from '~/services/UserNotificationService';
 import AppConfigurator from './AppConfigurator.vue';
 
 const { toggleMenu, toggleTopMenu, toggleDarkMode, isDarkTheme } = useLayout();
 const menuService = useService(MenuService);
+const notifyService = useService(UserNotificationService);
 const router = useRouter();
+
+const notifyPopover = ref<{ toggle: (event: Event) => void } | null>(null);
+const notifyLoading = ref(false);
+
+function toggleNotifyPanel(event: Event) {
+  notifyPopover.value?.toggle(event);
+  if (!notifyLoading.value && notifyService.recentNotifications.length === 0) {
+    notifyLoading.value = true;
+    notifyService.fetchRecent().finally(() => {
+      notifyLoading.value = false;
+    });
+  }
+  notifyService.fetchUnreadCount();
+}
+
+async function onNotifyClick(notif: any) {
+  await notifyService.markAsRead(notif.id);
+  const target = notifyService.handleNotificationClick(notif);
+  if (target) {
+    router.push(target);
+  }
+}
+
+async function onMarkAllRead() {
+  await notifyService.markAllAsRead();
+}
+
+function formatNotifyTime(date: string): string {
+  if (!date) return '';
+  const d = new Date(date);
+  const now = new Date();
+  const diffMs = now.getTime() - d.getTime();
+  const diffH = Math.floor(diffMs / 3600000);
+  const diffD = Math.floor(diffMs / 86400000);
+  if (diffH < 1) return '刚刚';
+  if (diffH < 24) return `${diffH}小时前`;
+  if (diffD < 7) return `${diffD}天前`;
+  return `${d.getMonth() + 1}-${d.getDate()}`;
+}
 
 /** 是否移动端视口（响应式，联动窗口 resize） */
 const isMobileView = ref(window.innerWidth <= 991);
@@ -154,14 +195,92 @@ function toggleSystemMenu(event: Event) {
 
       <div class="layout-topbar-menu hidden lg:block">
         <div class="layout-topbar-menu-content">
-          <button type="button" class="layout-topbar-action">
-            <i class="pi pi-calendar"></i>
-            <span>Calendar</span>
+          <router-link to="/notices" class="layout-topbar-action no-underline">
+            <i class="pi pi-megaphone"></i>
+            <span>公告</span>
+          </router-link>
+          <button
+            type="button"
+            class="layout-topbar-action relative"
+            @click="toggleNotifyPanel"
+          >
+            <i class="pi pi-bell"></i>
+            <span
+              v-if="notifyService.unreadCount > 0"
+              class="absolute -top-0.5 -right-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-red-500 px-1 text-[11px] leading-none text-white"
+            >
+              {{
+                notifyService.unreadCount > 99
+                  ? '99+'
+                  : notifyService.unreadCount
+              }}
+            </span>
+            <span>消息</span>
           </button>
-          <button type="button" class="layout-topbar-action">
-            <i class="pi pi-inbox"></i>
-            <span>Messages</span>
-          </button>
+          <PrimePopover ref="notifyPopover" :style="{ width: '360px' }">
+            <div class="flex items-center justify-between px-3 pt-3 pb-2">
+              <span class="font-semibold">消息通知</span>
+              <button
+                v-if="notifyService.unreadCount > 0"
+                class="text-primary text-xs hover:underline"
+                @click="onMarkAllRead"
+              >
+                全部已读
+              </button>
+            </div>
+            <div class="max-h-[360px] overflow-y-auto">
+              <div
+                v-if="notifyLoading"
+                class="text-surface-400 py-8 text-center text-sm"
+              >
+                加载中...
+              </div>
+              <div
+                v-else-if="notifyService.recentNotifications.length === 0"
+                class="text-surface-400 py-8 text-center text-sm"
+              >
+                暂无通知
+              </div>
+              <div
+                v-for="item in notifyService.recentNotifications"
+                :key="item.id"
+                class="hover:bg-surface-50 border-surface flex cursor-pointer items-start gap-3 border-b px-3 py-2.5 transition-colors last:border-b-0"
+                :class="{ 'bg-blue-50': !item.isRead }"
+                @click="onNotifyClick(item)"
+              >
+                <div class="mt-0.5 shrink-0">
+                  <i
+                    :class="{
+                      'pi pi-megaphone text-blue-500':
+                        item.type === 'announcement',
+                      'pi pi-cog text-purple-500': item.type === 'system',
+                      'pi pi-briefcase text-green-500':
+                        item.type === 'business',
+                    }"
+                    class="text-sm"
+                  />
+                </div>
+                <div class="min-w-0 flex-1">
+                  <div
+                    class="line-clamp-1 text-sm"
+                    :class="{ 'font-medium': !item.isRead }"
+                  >
+                    {{ item.title }}
+                  </div>
+                  <div class="text-surface-400 mt-0.5 line-clamp-1 text-xs">
+                    {{ item.content }}
+                  </div>
+                  <div class="text-surface-400 mt-1 text-xs">
+                    {{ formatNotifyTime(item.createdAt) }}
+                  </div>
+                </div>
+                <div
+                  v-if="!item.isRead"
+                  class="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-blue-500"
+                />
+              </div>
+            </div>
+          </PrimePopover>
           <button type="button" class="layout-topbar-action">
             <i class="pi pi-user"></i>
             <span>Profile</span>

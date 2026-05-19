@@ -1,4 +1,5 @@
 <script setup>
+import AnnouncementWidget from '@sakai/components/dashboard/AnnouncementWidget.vue';
 import BestSellingWidget from '@sakai/components/dashboard/BestSellingWidget.vue';
 import NotificationsWidget from '@sakai/components/dashboard/NotificationsWidget.vue';
 import RecentSalesWidget from '@sakai/components/dashboard/RecentSalesWidget.vue';
@@ -15,7 +16,7 @@ import StatsWidget from '@sakai/components/dashboard/StatsWidget.vue';
       <BestSellingWidget />
     </div>
     <div class="col-span-12 xl:col-span-6">
-      <RevenueStreamWidget />
+      <AnnouncementWidget />
       <NotificationsWidget />
     </div>
   </div>

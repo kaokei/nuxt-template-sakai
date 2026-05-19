@@ -1,0 +1,168 @@
+<script lang="ts" setup>
+import type { AnnouncementMgrService } from '@sakai/services/AnnouncementMgrService';
+import type { AnnouncementStatus } from '~/types/announcement';
+
+const props = defineProps<{
+  mgr: AnnouncementMgrService;
+}>();
+
+const emit = defineEmits<{
+  saved: [];
+}>();
+
+const formData = reactive({
+  title: '',
+  content: '',
+  summary: '',
+  isPinned: false,
+  scheduledAt: '',
+});
+
+watch(
+  () => props.mgr.formDialogVisible,
+  (visible) => {
+    if (visible) {
+      if (props.mgr.editData) {
+        formData.title = props.mgr.editData.title;
+        formData.content = props.mgr.editData.content;
+        formData.summary = props.mgr.editData.summary || '';
+        formData.isPinned = props.mgr.editData.isPinned;
+        formData.scheduledAt = props.mgr.editData.scheduledAt
+          ? new Date(props.mgr.editData.scheduledAt).toISOString().slice(0, 16)
+          : '';
+      } else {
+        formData.title = '';
+        formData.content = '';
+        formData.summary = '';
+        formData.isPinned = false;
+        formData.scheduledAt = '';
+      }
+    }
+  },
+);
+
+async function doSave(status: AnnouncementStatus) {
+  if (!formData.title.trim() || !formData.content.trim()) return;
+
+  const payload = {
+    title: formData.title.trim(),
+    content: formData.content.trim(),
+    summary: formData.summary.trim(),
+    isPinned: formData.isPinned,
+    status,
+    scheduledAt: formData.scheduledAt
+      ? new Date(formData.scheduledAt).toISOString()
+      : undefined,
+  };
+
+  try {
+    if (props.mgr.isEdit && props.mgr.editData) {
+      await props.mgr.announcementService.updateAnnouncement(
+        props.mgr.editData.id,
+        payload,
+      );
+    } else {
+      await props.mgr.announcementService.createAnnouncement(payload);
+    }
+    props.mgr.formDialogVisible = false;
+    emit('saved');
+  } catch {
+    // toast handled by page
+  }
+}
+
+async function saveDraft() {
+  await doSave('draft');
+}
+
+async function publishNow() {
+  await doSave('published');
+}
+</script>
+
+<template>
+  <PrimeDialog
+    v-model:visible="mgr.formDialogVisible"
+    :header="mgr.isEdit ? '编辑公告' : '新建公告'"
+    :modal="true"
+    :style="{ width: '700px' }"
+    :closable="false"
+  >
+    <div class="flex flex-col gap-4 pt-2">
+      <div class="flex flex-col gap-1">
+        <label class="text-sm font-medium"
+          >标题 <span class="text-red-500">*</span></label
+        >
+        <PrimeInputText
+          v-model="formData.title"
+          placeholder="请输入公告标题"
+          class="w-full"
+        />
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label class="text-sm font-medium">摘要</label>
+        <PrimeTextarea
+          v-model="formData.summary"
+          placeholder="简要描述（列表展示用，可选）"
+          rows="2"
+          class="w-full"
+        />
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label class="text-sm font-medium"
+          >正文 <span class="text-red-500">*</span></label
+        >
+        <PrimeTextarea
+          v-model="formData.content"
+          placeholder="请输入公告正文内容"
+          rows="8"
+          class="w-full"
+        />
+      </div>
+
+      <div class="flex items-center gap-6">
+        <div class="flex items-center gap-2">
+          <PrimeToggleSwitch v-model="formData.isPinned" input-id="isPinned" />
+          <label for="isPinned" class="text-sm">置顶</label>
+        </div>
+        <div class="flex flex-1 items-center gap-2">
+          <label class="text-sm font-medium whitespace-nowrap">定时发布</label>
+          <PrimeInputText
+            v-model="formData.scheduledAt"
+            type="datetime-local"
+            class="flex-1"
+          />
+        </div>
+      </div>
+    </div>
+
+    <template #footer>
+      <div class="flex justify-between">
+        <PrimeButton
+          label="取消"
+          icon="pi pi-times"
+          severity="secondary"
+          outlined
+          @click="mgr.formDialogVisible = false"
+        />
+        <div class="flex gap-2">
+          <PrimeButton
+            label="保存草稿"
+            icon="pi pi-save"
+            severity="info"
+            outlined
+            @click="saveDraft"
+          />
+          <PrimeButton
+            label="发布"
+            icon="pi pi-send"
+            severity="primary"
+            @click="publishNow"
+          />
+        </div>
+      </div>
+    </template>
+  </PrimeDialog>
+</template>
