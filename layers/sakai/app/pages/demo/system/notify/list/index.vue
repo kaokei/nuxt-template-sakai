@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { NotificationMgrService } from '@sakai/services/NotificationMgrService';
 import { NotificationService } from '@sakai/services/NotificationService';
+import NotificationFormDialog from '@sakai/components/views/pages/notify-mgr/NotificationFormDialog.vue';
 import type { NotificationRecord } from '~/types/notification';
 
 declareProviders([NotificationService, NotificationMgrService]);
@@ -15,8 +16,7 @@ const searchForm = reactive({
   keyword: '',
   type: '',
   sendStatus: '',
-  dateFrom: '',
-  dateTo: '',
+  dateRange: null as Date[] | null,
 });
 
 function onSearch() {
@@ -24,10 +24,11 @@ function onSearch() {
   if (searchForm.keyword) params.keyword = searchForm.keyword;
   if (searchForm.type) params.type = searchForm.type;
   if (searchForm.sendStatus) params.sendStatus = searchForm.sendStatus;
-  if (searchForm.dateFrom)
-    params.dateFrom = new Date(searchForm.dateFrom).toISOString();
-  if (searchForm.dateTo)
-    params.dateTo = new Date(searchForm.dateTo).toISOString();
+  const dateRange = searchForm.dateRange;
+  if (dateRange && dateRange.length === 2) {
+    params.dateFrom = dateRange[0]!.toISOString();
+    params.dateTo = dateRange[1]!.toISOString();
+  }
   mgr.onSearch(params);
 }
 
@@ -35,8 +36,7 @@ function onReset() {
   searchForm.keyword = '';
   searchForm.type = '';
   searchForm.sendStatus = '';
-  searchForm.dateFrom = '';
-  searchForm.dateTo = '';
+  searchForm.dateRange = null;
   mgr.onReset();
 }
 
@@ -57,6 +57,16 @@ async function handleRetry(row: NotificationRecord) {
       life: 3000,
     });
   }
+}
+
+function onSaved() {
+  const result = mgr.onSaved();
+  toast.add({
+    severity: 'success',
+    summary: '成功',
+    detail: '通知已发送',
+    life: 3000,
+  });
 }
 
 onMounted(() => {
@@ -89,7 +99,8 @@ onMounted(() => {
             ]"
             option-label="label"
             option-value="value"
-            class="w-28"
+            placeholder="全部"
+            show-clear
           />
         </div>
         <div class="flex flex-col gap-1">
@@ -104,23 +115,19 @@ onMounted(() => {
             ]"
             option-label="label"
             option-value="value"
-            class="w-28"
+            placeholder="全部"
+            show-clear
           />
         </div>
         <div class="flex flex-col gap-1">
-          <label class="text-surface-500 text-xs">开始日期</label>
-          <PrimeInputText
-            v-model="searchForm.dateFrom"
-            type="date"
-            class="w-36"
-          />
-        </div>
-        <div class="flex flex-col gap-1">
-          <label class="text-surface-500 text-xs">结束日期</label>
-          <PrimeInputText
-            v-model="searchForm.dateTo"
-            type="date"
-            class="w-36"
+          <label class="text-surface-500 text-xs">创建时间</label>
+          <PrimeDatePicker
+            v-model="searchForm.dateRange"
+            selection-mode="range"
+            date-format="yy-mm-dd"
+            placeholder="选择日期范围"
+            show-clear
+            class="min-w-60"
           />
         </div>
         <div class="flex gap-2">
@@ -142,6 +149,17 @@ onMounted(() => {
     </div>
 
     <div class="card p-4!">
+      <PrimeToolbar class="mb-4">
+        <template #start>
+          <PrimeButton
+            label="新建通知"
+            icon="pi pi-plus"
+            severity="primary"
+            @click="mgr.openNew"
+          />
+        </template>
+      </PrimeToolbar>
+
       <PrimeDataTable
         :value="mgr.records"
         data-key="id"
@@ -317,5 +335,7 @@ onMounted(() => {
         </div>
       </div>
     </PrimeDialog>
+
+    <NotificationFormDialog :mgr="mgr" @saved="onSaved" />
   </div>
 </template>

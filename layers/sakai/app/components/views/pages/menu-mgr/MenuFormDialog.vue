@@ -182,6 +182,7 @@ async function handleSave() {
             :options="typeOptions"
             option-label="label"
             option-value="value"
+            show-clear
             fluid
           />
         </div>
@@ -212,6 +213,7 @@ async function handleSave() {
             option-label="label"
             option-value="value"
             placeholder="选择图标"
+            show-clear
             fluid
           >
             <template #value="slotProps">
@@ -250,6 +252,7 @@ async function handleSave() {
             :options="statusOptions"
             option-label="label"
             option-value="value"
+            show-clear
             fluid
           />
         </div>

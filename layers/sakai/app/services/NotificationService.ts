@@ -1,4 +1,7 @@
-import type { NotificationRecord } from '~/types/notification';
+import type {
+  NotificationFormData,
+  NotificationRecord,
+} from '~/types/notification';
 
 export interface PageResult<T> {
   data: T[];
@@ -33,6 +36,12 @@ export class NotificationService {
 
   async getRecord(id: string): Promise<{ data: NotificationRecord }> {
     return $fetch(`/api/notifications/records/${id}`);
+  }
+
+  async createAndSend(
+    data: NotificationFormData,
+  ): Promise<{ data: NotificationRecord }> {
+    return $fetch('/api/notifications/records', { method: 'POST', body: data });
   }
 
   async retryRecord(id: string): Promise<{ data: NotificationRecord }> {

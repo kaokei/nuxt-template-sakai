@@ -247,7 +247,12 @@ function getStatusLabel(status) {
             />
           </template>
         </PrimeColumn>
-        <PrimeColumn field="price" header="Price" sortable style="min-width: 8rem">
+        <PrimeColumn
+          field="price"
+          header="Price"
+          sortable
+          style="min-width: 8rem"
+        >
           <template #body="slotProps">
             {{ formatCurrency(slotProps.data.price) }}
           </template>
@@ -352,6 +357,7 @@ function getStatusLabel(status) {
             :options="statuses"
             optionLabel="label"
             placeholder="Select a Status"
+            show-clear
             fluid
           ></PrimeSelect>
         </div>
@@ -423,7 +429,12 @@ function getStatusLabel(status) {
       </div>
 
       <template #footer>
-        <PrimeButton label="Cancel" icon="pi pi-times" text @click="hideDialog" />
+        <PrimeButton
+          label="Cancel"
+          icon="pi pi-times"
+          text
+          @click="hideDialog"
+        />
         <PrimeButton label="Save" icon="pi pi-check" @click="saveProduct" />
       </template>
     </PrimeDialog>

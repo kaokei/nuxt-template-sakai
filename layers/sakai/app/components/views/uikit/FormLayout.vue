@@ -128,6 +128,7 @@ const dropdownItem = ref(null);
               :options="dropdownItems"
               optionLabel="name"
               placeholder="Select One"
+              show-clear
               fluid
             ></PrimeSelect>
           </div>

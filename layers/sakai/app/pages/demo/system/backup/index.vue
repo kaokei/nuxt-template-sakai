@@ -353,6 +353,7 @@ onMounted(() => {
             option-label="label"
             option-value="value"
             placeholder="选择类型"
+            show-clear
           />
         </div>
 

@@ -129,6 +129,7 @@ async function handleSave() {
             option-label="label"
             option-value="value"
             placeholder="选择所有者"
+            show-clear
             fluid
           />
         </div>
@@ -142,6 +143,7 @@ async function handleSave() {
             :options="difficultyOptions"
             option-label="label"
             option-value="value"
+            show-clear
             fluid
           />
         </div>
@@ -213,6 +215,7 @@ async function handleSave() {
           :options="accessLevelOptions"
           option-label="label"
           option-value="value"
+          show-clear
           fluid
         />
       </div>

@@ -168,6 +168,7 @@ async function handleSave() {
           ]"
           option-label="label"
           option-value="value"
+          show-clear
           fluid
         />
       </div>
@@ -206,6 +207,7 @@ async function handleSave() {
             option-label="label"
             option-value="value"
             placeholder="选择回显样式"
+            show-clear
             fluid
           />
         </div>
@@ -217,6 +219,7 @@ async function handleSave() {
             :options="statusOptions"
             option-label="label"
             option-value="value"
+            show-clear
             fluid
           />
         </div>

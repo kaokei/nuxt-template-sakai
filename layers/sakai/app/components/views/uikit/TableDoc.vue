@@ -353,7 +353,7 @@ function calculateCustomerTotal(name) {
             v-model="filterModel.value"
             :options="statuses"
             placeholder="Select One"
-            showClear
+            show-clear
           >
             <template #option="slotProps">
               <PrimeTag
@@ -378,7 +378,11 @@ function calculateCustomerTotal(name) {
           ></PrimeProgressBar>
         </template>
         <template #filter="{ filterModel }">
-          <PrimeSlider v-model="filterModel.value" range class="m-4"></PrimeSlider>
+          <PrimeSlider
+            v-model="filterModel.value"
+            range
+            class="m-4"
+          ></PrimeSlider>
           <div class="flex items-center justify-between px-2">
             <span>{{ filterModel.value ? filterModel.value[0] : 0 }}</span>
             <span>{{ filterModel.value ? filterModel.value[1] : 100 }}</span>
@@ -424,7 +428,12 @@ function calculateCustomerTotal(name) {
       offLabel="Balance"
     />
 
-    <PrimeDataTable :value="customers2" scrollable scrollHeight="400px" class="mt-6">
+    <PrimeDataTable
+      :value="customers2"
+      scrollable
+      scrollHeight="400px"
+      class="mt-6"
+    >
       <PrimeColumn
         field="name"
         header="Name"
@@ -432,20 +441,36 @@ function calculateCustomerTotal(name) {
         frozen
         class="font-bold"
       ></PrimeColumn>
-      <PrimeColumn field="id" header="Id" style="min-width: 100px"></PrimeColumn>
-      <PrimeColumn field="name" header="Name" style="min-width: 200px"></PrimeColumn>
+      <PrimeColumn
+        field="id"
+        header="Id"
+        style="min-width: 100px"
+      ></PrimeColumn>
+      <PrimeColumn
+        field="name"
+        header="Name"
+        style="min-width: 200px"
+      ></PrimeColumn>
       <PrimeColumn
         field="country.name"
         header="Country"
         style="min-width: 200px"
       ></PrimeColumn>
-      <PrimeColumn field="date" header="Date" style="min-width: 200px"></PrimeColumn>
+      <PrimeColumn
+        field="date"
+        header="Date"
+        style="min-width: 200px"
+      ></PrimeColumn>
       <PrimeColumn
         field="company"
         header="Company"
         style="min-width: 200px"
       ></PrimeColumn>
-      <PrimeColumn field="status" header="Status" style="min-width: 200px"></PrimeColumn>
+      <PrimeColumn
+        field="status"
+        header="Status"
+        style="min-width: 200px"
+      ></PrimeColumn>
       <PrimeColumn
         field="activity"
         header="Activity"
@@ -530,7 +555,11 @@ function calculateCustomerTotal(name) {
           <h5>Orders for {{ slotProps.data.name }}</h5>
           <PrimeDataTable :value="slotProps.data.orders">
             <PrimeColumn field="id" header="Id" sortable></PrimeColumn>
-            <PrimeColumn field="customer" header="Customer" sortable></PrimeColumn>
+            <PrimeColumn
+              field="customer"
+              header="Customer"
+              sortable
+            ></PrimeColumn>
             <PrimeColumn field="date" header="Date" sortable></PrimeColumn>
             <PrimeColumn field="amount" header="Amount" sortable>
               <template #body="slotProps">
@@ -580,8 +609,15 @@ function calculateCustomerTotal(name) {
           <span>{{ slotProps.data.representative.name }}</span>
         </div>
       </template>
-      <PrimeColumn field="representative.name" header="Representative"></PrimeColumn>
-      <PrimeColumn field="name" header="Name" style="min-width: 200px"></PrimeColumn>
+      <PrimeColumn
+        field="representative.name"
+        header="Representative"
+      ></PrimeColumn>
+      <PrimeColumn
+        field="name"
+        header="Name"
+        style="min-width: 200px"
+      ></PrimeColumn>
       <PrimeColumn field="country" header="Country" style="min-width: 200px">
         <template #body="slotProps">
           <div class="flex items-center gap-2">
@@ -608,7 +644,11 @@ function calculateCustomerTotal(name) {
           />
         </template>
       </PrimeColumn>
-      <PrimeColumn field="date" header="Date" style="min-width: 200px"></PrimeColumn>
+      <PrimeColumn
+        field="date"
+        header="Date"
+        style="min-width: 200px"
+      ></PrimeColumn>
       <template #groupfooter="slotProps">
         <div class="flex w-full justify-end font-bold">
           Total Customers:

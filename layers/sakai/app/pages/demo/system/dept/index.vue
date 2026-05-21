@@ -118,7 +118,6 @@ onMounted(() => {
           option-value="value"
           placeholder="全部"
           show-clear
-          class="w-32"
         />
       </div>
       <div class="flex items-center gap-2">

@@ -1,5 +1,6 @@
 import { HttpResponse, delay, http } from 'msw';
 import type {
+  NotificationFormData,
   NotificationRecord,
   UserNotification,
 } from '../../app/types/notification';
@@ -80,6 +81,33 @@ export const notificationHandlers = [
 
     await delay(150);
     return HttpResponse.json({ data: paged, total });
+  }),
+
+  // 创建并发送通知
+  http.post('/api/notifications/records', async ({ request }) => {
+    const body = (await request.json()) as NotificationFormData;
+
+    const newRecord: NotificationRecord = {
+      id: `notif-${Date.now()}`,
+      type: body.type,
+      title: body.title,
+      content: body.content,
+      targetType: body.targetType,
+      targetDesc: body.targetDesc,
+      targetIds: body.targetIds,
+      sendStatus: 'sent',
+      readCount: 0,
+      totalCount: body.targetType === 'all' ? 150 : body.targetIds.length,
+      createdAt: new Date().toISOString(),
+      sentAt: new Date().toISOString(),
+      senderId: 'admin',
+      senderName: '系统管理员',
+    };
+
+    notificationRecords.unshift(newRecord);
+
+    await delay(200);
+    return HttpResponse.json({ data: newRecord }, { status: 201 });
   }),
 
   http.get('/api/notifications/records/:id', async ({ params }) => {

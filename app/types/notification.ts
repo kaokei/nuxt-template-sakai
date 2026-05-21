@@ -67,6 +67,22 @@ export interface UserNotification {
   createdAt: string;
 }
 
+/** 通知表单数据（新建通知时使用） */
+export interface NotificationFormData {
+  /** 通知类型 */
+  type: NotificationType;
+  /** 标题 */
+  title: string;
+  /** 内容 */
+  content: string;
+  /** 发送目标类型 */
+  targetType: NotificationTargetType;
+  /** 目标 ID 列表（all 时传 ['all']） */
+  targetIds: string[];
+  /** 目标描述 */
+  targetDesc: string;
+}
+
 /** 未读通知统计 */
 export interface UnreadNotificationCount {
   /** 未读通知总数 */

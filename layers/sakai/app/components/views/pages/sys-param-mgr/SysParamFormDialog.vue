@@ -152,6 +152,7 @@ async function handleSave() {
             :options="typeOptions"
             option-label="label"
             option-value="value"
+            show-clear
             fluid
           />
         </div>
@@ -181,6 +182,7 @@ async function handleSave() {
             :options="statusOptions"
             option-label="label"
             option-value="value"
+            show-clear
             fluid
           />
         </div>

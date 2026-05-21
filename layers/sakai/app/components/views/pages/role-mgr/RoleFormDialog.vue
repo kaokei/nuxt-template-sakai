@@ -194,6 +194,7 @@ async function handleSave() {
             :options="statusOptions"
             option-label="label"
             option-value="value"
+            show-clear
             fluid
           />
         </div>
@@ -205,6 +206,7 @@ async function handleSave() {
             :options="dataScopeOptions"
             option-label="label"
             option-value="value"
+            show-clear
             fluid
           />
         </div>

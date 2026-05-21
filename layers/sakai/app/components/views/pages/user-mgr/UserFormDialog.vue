@@ -234,6 +234,7 @@ async function handleSave() {
             :options="genderOptions"
             option-label="label"
             option-value="value"
+            show-clear
             fluid
           />
         </div>
@@ -265,6 +266,7 @@ async function handleSave() {
             :options="statusOptions"
             option-label="label"
             option-value="value"
+            show-clear
             fluid
           />
         </div>

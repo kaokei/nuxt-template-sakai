@@ -8,7 +8,7 @@ import type { NotificationRecord } from '~/types/notification';
 @Injectable()
 export class NotificationMgrService {
   @Inject(NotificationService)
-  private notificationService!: NotificationService;
+  notificationService!: NotificationService;
 
   records: NotificationRecord[] = [];
   totalRecords = 0;
@@ -22,6 +22,8 @@ export class NotificationMgrService {
 
   detailDialogVisible = false;
   currentDetail: NotificationRecord | null = null;
+
+  formDialogVisible = false;
 
   readonly typeLabels: Record<string, string> = {
     announcement: '公告',
@@ -107,6 +109,18 @@ export class NotificationMgrService {
     this.sortField = event.sortField as string;
     this.sortOrder = event.sortOrder !== null ? String(event.sortOrder) : '1';
     this.loadRecords();
+  }
+
+  @autobind
+  openNew(): void {
+    this.formDialogVisible = true;
+  }
+
+  @autobind
+  onSaved(): { success: boolean } {
+    this.formDialogVisible = false;
+    this.loadRecords();
+    return { success: true };
   }
 
   @autobind

@@ -136,7 +136,7 @@ onMounted(() => {
             ]"
             option-label="label"
             option-value="value"
-            class="w-32"
+            show-clear
           />
         </div>
         <div class="flex flex-col gap-1">

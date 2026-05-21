@@ -245,6 +245,7 @@ function searchCountry(event) {
           :options="dropdownValues"
           optionLabel="name"
           placeholder="Select"
+          show-clear
         />
 
         <div class="text-xl font-semibold">MultiSelect</div>
@@ -257,7 +258,7 @@ function searchCountry(event) {
         >
           <template #value="slotProps">
             <div
-              class="mr-2 inline-flex items-center bg-primary px-2 py-1 text-primary-contrast rounded-border"
+              class="bg-primary text-primary-contrast rounded-border mr-2 inline-flex items-center px-2 py-1"
               v-for="option of slotProps.value"
               :key="option.code"
             >
