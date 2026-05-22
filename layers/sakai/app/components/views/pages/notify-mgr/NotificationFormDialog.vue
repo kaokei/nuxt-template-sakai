@@ -23,7 +23,7 @@ const formData = reactive({
 });
 
 const roleOptions: Ref<SelectOption[]> = ref([]);
-const selectedUser = ref<SelectOption | null>(null);
+const selectedUsers = ref<SelectOption[]>([]);
 
 async function fetchRoleOptions() {
   try {
@@ -49,7 +49,9 @@ function buildTargetDesc(): string {
     return names.length > 0 ? names.join('、') : '未选择';
   }
   if (formData.targetType === 'user') {
-    return selectedUser.value?.label || '未选择';
+    return selectedUsers.value.length > 0
+      ? selectedUsers.value.map((u) => u.label).join('、')
+      : '未选择';
   }
   return '';
 }
@@ -60,7 +62,7 @@ function resetForm() {
   formData.content = '';
   formData.targetType = 'all';
   formData.targetIds = [];
-  selectedUser.value = null;
+  selectedUsers.value = [];
 }
 
 watch(
@@ -75,9 +77,9 @@ watch(
 
 watch(
   () => formData.targetType,
-  (newType) => {
+  () => {
     formData.targetIds = [];
-    selectedUser.value = null;
+    selectedUsers.value = [];
   },
 );
 
@@ -109,9 +111,7 @@ async function handleSubmit() {
         formData.targetType === 'all'
           ? ['all']
           : formData.targetType === 'user'
-            ? selectedUser.value
-              ? [selectedUser.value.value]
-              : []
+            ? selectedUsers.value.map((u) => u.value)
             : [...formData.targetIds],
       targetDesc: buildTargetDesc(),
     });
@@ -201,10 +201,10 @@ async function handleSubmit() {
       </div>
 
       <div v-if="formData.targetType === 'user'" class="flex flex-col gap-1">
-        <label class="text-sm font-medium">选择用户</label>
-        <UserPicker
-          v-model="selectedUser"
-          placeholder="输入姓名搜索用户"
+        <label class="text-sm font-medium">选择用户（可多选）</label>
+        <UserMultiPicker
+          v-model="selectedUsers"
+          placeholder="输入姓名搜索添加用户"
           :disabled="submitting"
         />
       </div>
