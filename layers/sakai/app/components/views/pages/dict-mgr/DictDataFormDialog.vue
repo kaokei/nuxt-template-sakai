@@ -232,7 +232,7 @@ async function handleSave() {
 
       <div>
         <label class="mb-2 block text-sm font-medium">备注</label>
-        <PrimeTextarea v-model="form.remark" rows="3" auto-resize />
+        <PrimeTextarea v-model="form.remark" rows="3" auto-resize fluid />
       </div>
     </div>
 

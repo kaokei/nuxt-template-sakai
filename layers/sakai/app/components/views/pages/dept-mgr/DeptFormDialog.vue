@@ -190,6 +190,7 @@ async function handleSave() {
             :options="statusOptions"
             option-label="label"
             option-value="value"
+            placeholder="选择状态"
             show-clear
             fluid
           />
