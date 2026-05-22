@@ -56,6 +56,26 @@ const menuItems: MenuItem[] = [
         icon: 'pi pi-fw pi-circle-fill',
         to: '/demo/system/monitor/online-user',
       },
+      {
+        label: '数据监控',
+        icon: 'pi pi-fw pi-database',
+        to: '/demo/system/monitor/data',
+      },
+      {
+        label: '服务监控',
+        icon: 'pi pi-fw pi-server',
+        to: '/demo/system/monitor/server',
+      },
+      {
+        label: '缓存监控',
+        icon: 'pi pi-fw pi-cloud',
+        to: '/demo/system/monitor/cache',
+      },
+      {
+        label: '缓存列表',
+        icon: 'pi pi-fw pi-list',
+        to: '/demo/system/monitor/cache-list',
+      },
     ],
   },
   {

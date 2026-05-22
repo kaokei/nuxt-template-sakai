@@ -1,6 +1,9 @@
 import { announcementHandlers } from './announcements';
 import { authHandlers } from './auth';
 import { backupHandlers } from './backups';
+import { cacheListHandlers } from './cache-list';
+import { cacheMonitorHandlers } from './cache-monitor';
+import { dataMonitorHandlers } from './data-monitor';
 import { deptHandlers } from './depts';
 import { dictHandlers } from './dict';
 import { featureFlagHandlers } from './feature-flags';
@@ -13,6 +16,7 @@ import { operLogHandlers } from './oper-logs';
 import { postsHandlers } from './posts';
 import { problemHandlers } from './problems';
 import { roleHandlers } from './roles';
+import { serverMonitorHandlers } from './server-monitor';
 import { sysParamHandlers } from './sys-params';
 import { userHandlers } from './users';
 
@@ -20,6 +24,9 @@ export const handlers = [
   ...announcementHandlers,
   ...authHandlers,
   ...backupHandlers,
+  ...cacheListHandlers,
+  ...cacheMonitorHandlers,
+  ...dataMonitorHandlers,
   ...deptHandlers,
   ...dictHandlers,
   ...featureFlagHandlers,
@@ -32,6 +39,7 @@ export const handlers = [
   ...postsHandlers,
   ...problemHandlers,
   ...roleHandlers,
+  ...serverMonitorHandlers,
   ...sysParamHandlers,
   ...userHandlers,
 ];
