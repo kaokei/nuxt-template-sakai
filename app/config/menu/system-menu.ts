@@ -29,6 +29,11 @@ const menuItems: MenuItem[] = [
         icon: 'pi pi-fw pi-flag',
         to: '/demo/system/feature-flag',
       },
+      {
+        label: '区号管理',
+        icon: 'pi pi-fw pi-globe',
+        to: '/demo/system/area-code',
+      },
       { label: '定时任务', icon: 'pi pi-fw pi-clock', to: '/demo/system/job' },
       {
         label: '数据备份',
