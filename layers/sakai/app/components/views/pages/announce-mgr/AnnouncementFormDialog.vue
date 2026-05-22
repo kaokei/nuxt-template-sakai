@@ -15,7 +15,7 @@ const formData = reactive({
   content: '',
   summary: '',
   isPinned: false,
-  scheduledAt: '',
+  scheduledAt: null as Date | null,
 });
 
 watch(
@@ -28,14 +28,14 @@ watch(
         formData.summary = props.mgr.editData.summary || '';
         formData.isPinned = props.mgr.editData.isPinned;
         formData.scheduledAt = props.mgr.editData.scheduledAt
-          ? new Date(props.mgr.editData.scheduledAt).toISOString().slice(0, 16)
-          : '';
+          ? new Date(props.mgr.editData.scheduledAt)
+          : null;
       } else {
         formData.title = '';
         formData.content = '';
         formData.summary = '';
         formData.isPinned = false;
-        formData.scheduledAt = '';
+        formData.scheduledAt = null;
       }
     }
   },
@@ -51,7 +51,7 @@ async function doSave(status: AnnouncementStatus) {
     isPinned: formData.isPinned,
     status,
     scheduledAt: formData.scheduledAt
-      ? new Date(formData.scheduledAt).toISOString()
+      ? formData.scheduledAt.toISOString()
       : undefined,
   };
 
@@ -129,9 +129,13 @@ async function publishNow() {
         </div>
         <div class="flex flex-1 items-center gap-2">
           <label class="text-sm font-medium whitespace-nowrap">定时发布</label>
-          <PrimeInputText
+          <PrimeDatePicker
             v-model="formData.scheduledAt"
-            type="datetime-local"
+            show-time
+            hour-format="24"
+            date-format="yy-mm-dd"
+            placeholder="选择发布时间"
+            show-clear
             class="flex-1"
           />
         </div>
@@ -139,7 +143,7 @@ async function publishNow() {
     </div>
 
     <template #footer>
-      <div class="flex justify-between">
+      <div class="flex justify-end gap-2">
         <PrimeButton
           label="取消"
           icon="pi pi-times"
@@ -147,21 +151,19 @@ async function publishNow() {
           outlined
           @click="mgr.formDialogVisible = false"
         />
-        <div class="flex gap-2">
-          <PrimeButton
-            label="保存草稿"
-            icon="pi pi-save"
-            severity="info"
-            outlined
-            @click="saveDraft"
-          />
-          <PrimeButton
-            label="发布"
-            icon="pi pi-send"
-            severity="primary"
-            @click="publishNow"
-          />
-        </div>
+        <PrimeButton
+          label="保存草稿"
+          icon="pi pi-save"
+          severity="info"
+          outlined
+          @click="saveDraft"
+        />
+        <PrimeButton
+          label="发布"
+          icon="pi pi-send"
+          severity="primary"
+          @click="publishNow"
+        />
       </div>
     </template>
   </PrimeDialog>

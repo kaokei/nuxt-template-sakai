@@ -63,7 +63,7 @@ const menuItems: MenuItem[] = [
     icon: 'pi pi-fw pi-bell',
     items: [
       {
-        label: '通知列表',
+        label: '通知管理',
         icon: 'pi pi-fw pi-envelope',
         to: '/demo/system/notify/list',
       },

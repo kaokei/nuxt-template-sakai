@@ -10,7 +10,7 @@ const mgr = useService(NotificationMgrService);
 const toast = useToast();
 
 definePageMeta({ layout: 'sakai-sidebar' });
-useSeoMeta({ title: '通知列表' });
+useSeoMeta({ title: '通知管理' });
 
 const searchForm = reactive({
   keyword: '',
@@ -120,7 +120,7 @@ onMounted(() => {
           />
         </div>
         <div class="flex flex-col gap-1">
-          <label class="text-surface-500 text-xs">创建时间</label>
+          <label class="text-surface-500 text-xs">发送时间</label>
           <PrimeDatePicker
             v-model="searchForm.dateRange"
             selection-mode="range"
