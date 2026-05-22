@@ -8,6 +8,7 @@ declareProviders([AnnouncementService, AnnouncementMgrService]);
 
 const mgr = useService(AnnouncementMgrService);
 const toast = useToast();
+const confirmDialog = useConfirm();
 
 definePageMeta({ layout: 'sakai-sidebar' });
 useSeoMeta({ title: '公告管理' });
@@ -47,23 +48,40 @@ function onSaved() {
   });
 }
 
-async function onDeleteConfirm() {
-  try {
-    const result = await mgr.onDeleteConfirm();
-    toast.add({
-      severity: 'success',
-      summary: '成功',
-      detail: result.message,
-      life: 3000,
-    });
-  } catch {
-    toast.add({
-      severity: 'error',
-      summary: '错误',
-      detail: '删除失败',
-      life: 3000,
-    });
-  }
+function handleDeleteConfirm(row: Announcement) {
+  confirmDialog.require({
+    message: `确定要删除公告「${row.title}」吗？此操作不可撤销。`,
+    header: '删除确认',
+    icon: 'pi pi-exclamation-triangle',
+    rejectProps: {
+      label: '取消',
+      severity: 'secondary',
+      outlined: true,
+    },
+    acceptProps: {
+      label: '确认删除',
+      severity: 'danger',
+    },
+    accept: async () => {
+      try {
+        await mgr.announcementService.deleteAnnouncement(row.id);
+        await mgr.loadAnnouncements();
+        toast.add({
+          severity: 'success',
+          summary: '成功',
+          detail: '公告已删除',
+          life: 3000,
+        });
+      } catch {
+        toast.add({
+          severity: 'error',
+          summary: '错误',
+          detail: '删除失败',
+          life: 3000,
+        });
+      }
+    },
+  });
 }
 
 async function handlePublish(row: Announcement) {
@@ -99,6 +117,29 @@ async function handleArchive(row: Announcement) {
       severity: 'error',
       summary: '错误',
       detail: '下架失败',
+      life: 3000,
+    });
+  }
+}
+
+function handleView(row: Announcement) {
+  navigateTo(`/demo/notices/${row.id}`);
+}
+
+async function handleCancelSchedule(row: Announcement) {
+  try {
+    await mgr.cancelSchedule(row.id);
+    toast.add({
+      severity: 'success',
+      summary: '成功',
+      detail: '已取消定时发布',
+      life: 3000,
+    });
+  } catch {
+    toast.add({
+      severity: 'error',
+      summary: '错误',
+      detail: '取消定时失败',
       life: 3000,
     });
   }
@@ -267,6 +308,7 @@ onMounted(() => {
                   rounded
                   size="small"
                   v-tooltip.top="'查看'"
+                  @click="handleView(data)"
                 />
                 <PrimeButton
                   icon="pi pi-pencil"
@@ -287,7 +329,7 @@ onMounted(() => {
                   @click="handleArchive(data)"
                 />
               </template>
-              <template v-else-if="data.status === 'draft'">
+              <template v-if="data.status === 'draft'">
                 <PrimeButton
                   icon="pi pi-pencil"
                   severity="warn"
@@ -313,10 +355,10 @@ onMounted(() => {
                   rounded
                   size="small"
                   v-tooltip.top="'删除'"
-                  @click="mgr.confirmDelete(data)"
+                  @click="handleDeleteConfirm(data)"
                 />
               </template>
-              <template v-else-if="data.status === 'scheduled'">
+              <template v-if="data.status === 'scheduled'">
                 <PrimeButton
                   icon="pi pi-pencil"
                   severity="warn"
@@ -333,6 +375,7 @@ onMounted(() => {
                   rounded
                   size="small"
                   v-tooltip.top="'取消定时'"
+                  @click="handleCancelSchedule(data)"
                 />
                 <PrimeButton
                   icon="pi pi-trash"
@@ -341,7 +384,7 @@ onMounted(() => {
                   rounded
                   size="small"
                   v-tooltip.top="'删除'"
-                  @click="mgr.confirmDelete(data)"
+                  @click="handleDeleteConfirm(data)"
                 />
               </template>
               <template v-else-if="data.status === 'archived'">
@@ -352,6 +395,7 @@ onMounted(() => {
                   rounded
                   size="small"
                   v-tooltip.top="'查看'"
+                  @click="handleView(data)"
                 />
               </template>
             </div>

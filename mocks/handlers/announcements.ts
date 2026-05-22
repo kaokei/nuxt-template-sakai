@@ -239,10 +239,11 @@ export const announcementHandlers = [
       return HttpResponse.json({ message: '公告不存在' }, { status: 404 });
     }
 
-    // 只能删除草稿
-    if (announcements[index]!.status !== 'draft') {
+    // 草稿和定时状态的公告可以删除
+    const deletable = ['draft', 'scheduled'];
+    if (!deletable.includes(announcements[index]!.status)) {
       return HttpResponse.json(
-        { message: '只有草稿状态的公告才能删除' },
+        { message: '只有草稿和定时状态的公告才能删除' },
         { status: 400 },
       );
     }

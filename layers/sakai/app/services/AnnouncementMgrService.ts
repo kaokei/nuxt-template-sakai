@@ -24,9 +24,6 @@ export class AnnouncementMgrService {
   editData: Announcement | null = null;
   isEdit = false;
 
-  deleteDialogVisible = false;
-  deleteTarget: Announcement | null = null;
-
   readonly statusLabels: Record<string, string> = {
     draft: '草稿',
     scheduled: '定时',
@@ -126,22 +123,6 @@ export class AnnouncementMgrService {
     return { success: true, isEdit };
   }
 
-  @autobind
-  confirmDelete(announcement: Announcement): void {
-    this.deleteTarget = announcement;
-    this.deleteDialogVisible = true;
-  }
-
-  async onDeleteConfirm(): Promise<{ success: boolean; message: string }> {
-    if (!this.deleteTarget) {
-      return { success: false, message: '没有选中公告' };
-    }
-    await this.announcementService.deleteAnnouncement(this.deleteTarget.id);
-    this.deleteDialogVisible = false;
-    this.loadAnnouncements();
-    return { success: true, message: '公告已删除' };
-  }
-
   async publish(id: string): Promise<void> {
     await this.announcementService.publishAnnouncement(id);
     this.loadAnnouncements();
@@ -149,6 +130,14 @@ export class AnnouncementMgrService {
 
   async archive(id: string): Promise<void> {
     await this.announcementService.archiveAnnouncement(id);
+    this.loadAnnouncements();
+  }
+
+  async cancelSchedule(id: string): Promise<void> {
+    await this.announcementService.updateAnnouncement(id, {
+      status: 'draft',
+      scheduledAt: undefined,
+    } as any);
     this.loadAnnouncements();
   }
 }

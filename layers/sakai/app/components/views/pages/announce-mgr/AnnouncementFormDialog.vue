@@ -18,6 +18,14 @@ const formData = reactive({
   scheduledAt: null as Date | null,
 });
 
+const enableSchedule = ref(false);
+
+/** 编辑时公告的原始状态；新建时为 null */
+const editingStatus = computed<AnnouncementStatus | null>(() => {
+  if (props.mgr.isEdit && props.mgr.editData) return props.mgr.editData.status;
+  return null;
+});
+
 watch(
   () => props.mgr.formDialogVisible,
   (visible) => {
@@ -30,12 +38,16 @@ watch(
         formData.scheduledAt = props.mgr.editData.scheduledAt
           ? new Date(props.mgr.editData.scheduledAt)
           : null;
+        enableSchedule.value =
+          props.mgr.editData.status === 'scheduled' &&
+          !!props.mgr.editData.scheduledAt;
       } else {
         formData.title = '';
         formData.content = '';
         formData.summary = '';
         formData.isPinned = false;
         formData.scheduledAt = null;
+        enableSchedule.value = false;
       }
     }
   },
@@ -77,6 +89,11 @@ async function saveDraft() {
 
 async function publishNow() {
   await doSave('published');
+}
+
+async function schedulePublish() {
+  if (!formData.scheduledAt) return;
+  await doSave('scheduled');
 }
 </script>
 
@@ -122,23 +139,32 @@ async function publishNow() {
         />
       </div>
 
-      <div class="flex items-center gap-6">
+      <div class="flex flex-wrap items-center gap-4">
         <div class="flex items-center gap-2">
           <PrimeToggleSwitch v-model="formData.isPinned" input-id="isPinned" />
           <label for="isPinned" class="text-sm">置顶</label>
         </div>
-        <div class="flex flex-1 items-center gap-2">
-          <label class="text-sm font-medium whitespace-nowrap">定时发布</label>
-          <PrimeDatePicker
-            v-model="formData.scheduledAt"
-            show-time
-            hour-format="24"
-            date-format="yy-mm-dd"
-            placeholder="选择发布时间"
-            show-clear
-            class="flex-1"
-          />
-        </div>
+        <template v-if="editingStatus !== 'published'">
+          <div class="flex items-center gap-2">
+            <PrimeToggleSwitch
+              v-model="enableSchedule"
+              input-id="enableSchedule"
+            />
+            <label for="enableSchedule" class="text-sm">启用定时发布</label>
+          </div>
+          <div class="flex flex-1 items-center gap-2">
+            <PrimeDatePicker
+              v-model="formData.scheduledAt"
+              show-time
+              hour-format="24"
+              date-format="yy-mm-dd"
+              placeholder="选择发布时间"
+              show-clear
+              :disabled="!enableSchedule"
+              class="flex-1"
+            />
+          </div>
+        </template>
       </div>
     </div>
 
@@ -152,6 +178,7 @@ async function publishNow() {
           @click="mgr.formDialogVisible = false"
         />
         <PrimeButton
+          v-if="!editingStatus || editingStatus === 'draft'"
           label="保存草稿"
           icon="pi pi-save"
           severity="info"
@@ -159,11 +186,29 @@ async function publishNow() {
           @click="saveDraft"
         />
         <PrimeButton
-          label="发布"
-          icon="pi pi-send"
+          v-if="editingStatus === 'published'"
+          label="保存"
+          icon="pi pi-check"
           severity="primary"
           @click="publishNow"
         />
+        <template v-else>
+          <PrimeButton
+            v-if="enableSchedule"
+            label="定时发布"
+            icon="pi pi-clock"
+            severity="warn"
+            :disabled="!formData.scheduledAt"
+            @click="schedulePublish"
+          />
+          <PrimeButton
+            v-else
+            label="立即发布"
+            icon="pi pi-send"
+            severity="primary"
+            @click="publishNow"
+          />
+        </template>
       </div>
     </template>
   </PrimeDialog>
