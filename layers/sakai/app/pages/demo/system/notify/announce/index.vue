@@ -112,7 +112,9 @@ onMounted(() => {
 
 <template>
   <div class="flex flex-col gap-4">
-    <div class="card p-4!">
+    <div
+      class="border-surface-200 bg-surface-0 flex flex-wrap items-center gap-4 rounded-lg border p-4"
+    >
       <div class="flex flex-wrap items-end gap-3">
         <div class="flex flex-col gap-1">
           <label class="text-surface-500 text-xs">关键词</label>

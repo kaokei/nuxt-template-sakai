@@ -76,7 +76,9 @@ onMounted(() => {
 
 <template>
   <div class="flex flex-col gap-4">
-    <div class="card p-4!">
+    <div
+      class="border-surface-200 bg-surface-0 flex flex-wrap items-center gap-4 rounded-lg border p-4"
+    >
       <div class="flex flex-wrap items-end gap-3">
         <div class="flex flex-col gap-1">
           <label class="text-surface-500 text-xs">关键词</label>
@@ -92,7 +94,6 @@ onMounted(() => {
           <PrimeSelect
             v-model="searchForm.type"
             :options="[
-              { label: '全部', value: '' },
               { label: '公告', value: 'announcement' },
               { label: '系统', value: 'system' },
               { label: '业务', value: 'business' },
@@ -108,7 +109,6 @@ onMounted(() => {
           <PrimeSelect
             v-model="searchForm.sendStatus"
             :options="[
-              { label: '全部', value: '' },
               { label: '待发送', value: 'pending' },
               { label: '已发送', value: 'sent' },
               { label: '失败', value: 'failed' },
@@ -179,7 +179,7 @@ onMounted(() => {
         @page="mgr.onPage"
         @sort="mgr.onSort"
       >
-        <PrimeColumn header="序号" style="min-width: 60px">
+        <PrimeColumn header="序号" style="width: 60px">
           <template #body="{ index }">
             <span class="text-surface-500 text-sm">{{
               (mgr.page - 1) * mgr.pageSize + index + 1
@@ -195,12 +195,7 @@ onMounted(() => {
           sortable
         />
 
-        <PrimeColumn
-          field="type"
-          header="通知类型"
-          style="min-width: 100px"
-          sortable
-        >
+        <PrimeColumn field="type" header="通知类型" sortable>
           <template #body="{ data }">
             <PrimeTag
               :value="mgr.typeLabels[data.type]"
@@ -209,18 +204,13 @@ onMounted(() => {
           </template>
         </PrimeColumn>
 
-        <PrimeColumn header="发送目标" style="min-width: 130px">
+        <PrimeColumn header="发送目标">
           <template #body="{ data }">
             <span class="text-sm">{{ data.targetDesc }}</span>
           </template>
         </PrimeColumn>
 
-        <PrimeColumn
-          field="sendStatus"
-          header="发送状态"
-          style="min-width: 100px"
-          sortable
-        >
+        <PrimeColumn field="sendStatus" header="发送状态" sortable>
           <template #body="{ data }">
             <PrimeTag
               :value="mgr.statusLabels[data.sendStatus]"
@@ -229,7 +219,7 @@ onMounted(() => {
           </template>
         </PrimeColumn>
 
-        <PrimeColumn header="已读/总数" style="min-width: 100px">
+        <PrimeColumn header="已读/总数">
           <template #body="{ data }">
             <span class="text-sm"
               >{{ data.readCount }}/{{ data.totalCount }}</span
@@ -237,12 +227,7 @@ onMounted(() => {
           </template>
         </PrimeColumn>
 
-        <PrimeColumn
-          field="sentAt"
-          header="发送时间"
-          style="min-width: 150px"
-          sortable
-        >
+        <PrimeColumn field="sentAt" header="发送时间" sortable>
           <template #body="{ data }">
             <span class="text-sm">{{
               mgr.formatDateTime(data.sentAt || data.createdAt)
@@ -250,7 +235,7 @@ onMounted(() => {
           </template>
         </PrimeColumn>
 
-        <PrimeColumn header="操作" style="min-width: 120px" :exportable="false">
+        <PrimeColumn header="操作" :exportable="false">
           <template #body="{ data }">
             <div class="flex gap-1">
               <PrimeButton
