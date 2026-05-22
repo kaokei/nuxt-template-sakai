@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import { NotificationMgrService } from '@sakai/services/NotificationMgrService';
 import { NotificationService } from '@sakai/services/NotificationService';
+import { UserService } from '@sakai/services/UserService';
 import NotificationFormDialog from '@sakai/components/views/pages/notify-mgr/NotificationFormDialog.vue';
 import type { NotificationRecord } from '~/types/notification';
 
-declareProviders([NotificationService, NotificationMgrService]);
+declareProviders([NotificationService, NotificationMgrService, UserService]);
 
 const mgr = useService(NotificationMgrService);
 const toast = useToast();

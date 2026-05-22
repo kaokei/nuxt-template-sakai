@@ -4,11 +4,7 @@ import type {
   NotificationType,
   NotificationTargetType,
 } from '~/types/notification';
-
-interface SelectOption {
-  label: string;
-  value: string;
-}
+import type { SelectOption } from '@sakai/services/DeptService';
 
 const props = defineProps<{
   mgr: NotificationMgrService;
@@ -27,7 +23,7 @@ const formData = reactive({
 });
 
 const roleOptions: Ref<SelectOption[]> = ref([]);
-const userOptions: Ref<SelectOption[]> = ref([]);
+const selectedUser = ref<SelectOption | null>(null);
 
 async function fetchRoleOptions() {
   try {
@@ -44,20 +40,6 @@ async function fetchRoleOptions() {
   }
 }
 
-async function fetchUserOptions() {
-  try {
-    const result = await $fetch<{
-      data: { id: string; userName: string; nickName: string }[];
-    }>('/api/users', { query: { page: '1', pageSize: '200' } });
-    userOptions.value = result.data.map((u) => ({
-      label: `${u.userName}（${u.nickName}）`,
-      value: u.id,
-    }));
-  } catch {
-    userOptions.value = [];
-  }
-}
-
 function buildTargetDesc(): string {
   if (formData.targetType === 'all') return '全体用户';
   if (formData.targetType === 'role') {
@@ -67,10 +49,7 @@ function buildTargetDesc(): string {
     return names.length > 0 ? names.join('、') : '未选择';
   }
   if (formData.targetType === 'user') {
-    const names = userOptions.value
-      .filter((u) => formData.targetIds.includes(u.value))
-      .map((u) => u.label);
-    return names.length > 0 ? names.join('、') : '未选择';
+    return selectedUser.value?.label || '未选择';
   }
   return '';
 }
@@ -81,6 +60,7 @@ function resetForm() {
   formData.content = '';
   formData.targetType = 'all';
   formData.targetIds = [];
+  selectedUser.value = null;
 }
 
 watch(
@@ -97,9 +77,7 @@ watch(
   () => formData.targetType,
   (newType) => {
     formData.targetIds = [];
-    if (newType === 'user') {
-      fetchUserOptions();
-    }
+    selectedUser.value = null;
   },
 );
 
@@ -128,7 +106,13 @@ async function handleSubmit() {
       content: formData.content.trim(),
       targetType: formData.targetType,
       targetIds:
-        formData.targetType === 'all' ? ['all'] : [...formData.targetIds],
+        formData.targetType === 'all'
+          ? ['all']
+          : formData.targetType === 'user'
+            ? selectedUser.value
+              ? [selectedUser.value.value]
+              : []
+            : [...formData.targetIds],
       targetDesc: buildTargetDesc(),
     });
     emit('saved');
@@ -218,16 +202,10 @@ async function handleSubmit() {
 
       <div v-if="formData.targetType === 'user'" class="flex flex-col gap-1">
         <label class="text-sm font-medium">选择用户</label>
-        <PrimeMultiSelect
-          v-model="formData.targetIds"
-          :options="userOptions"
-          option-label="label"
-          option-value="value"
-          placeholder="请选择用户"
-          :filter="true"
-          class="w-full"
+        <UserPicker
+          v-model="selectedUser"
+          placeholder="输入姓名搜索用户"
           :disabled="submitting"
-          display="chip"
         />
       </div>
     </div>
