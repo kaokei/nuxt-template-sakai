@@ -22,7 +22,7 @@ onMounted(() => {
     </div>
 
     <!-- CPU 信息 -->
-    <div class="card p-4!">
+    <div class="card mb-0! p-4!">
       <div class="mb-3 font-semibold">CPU</div>
       <div class="grid grid-cols-2 gap-4 lg:grid-cols-5">
         <div class="rounded-lg border p-3 text-center">
@@ -66,7 +66,7 @@ onMounted(() => {
     </div>
 
     <!-- 内存信息 -->
-    <div class="card p-4!">
+    <div class="card mb-0! p-4!">
       <div class="mb-3 font-semibold">内存</div>
       <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
         <div class="rounded-lg border p-3 text-center">
@@ -104,7 +104,7 @@ onMounted(() => {
     </div>
 
     <!-- JVM 信息 -->
-    <div class="card p-4!">
+    <div class="card mb-0! p-4!">
       <div class="mb-3 font-semibold">JVM 信息</div>
       <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <div class="rounded-lg border p-4">
@@ -173,7 +173,7 @@ onMounted(() => {
     </div>
 
     <!-- 服务器信息 -->
-    <div class="card p-4!">
+    <div class="card mb-0! p-4!">
       <div class="mb-3 font-semibold">服务器信息</div>
       <div class="grid grid-cols-2 gap-3 text-sm lg:grid-cols-4">
         <div class="rounded-lg border p-3">
@@ -204,7 +204,7 @@ onMounted(() => {
     </div>
 
     <!-- 系统属性 -->
-    <div class="card p-4!">
+    <div class="card mb-0! p-4!">
       <div class="mb-3 font-semibold">系统属性</div>
       <PrimeDataTable
         :value="mgr.monitorInfo?.systemProperties ?? []"

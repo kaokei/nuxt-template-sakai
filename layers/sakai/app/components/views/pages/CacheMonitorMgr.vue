@@ -109,18 +109,18 @@ onMounted(() => {
 
     <!-- 命令统计 -->
     <div class="card mb-0! p-4!">
-      <div class="mb-3 font-semibold">命令统计</div>
+      <div class="mb-3 flex items-center gap-2">
+        <span class="font-semibold">命令统计</span>
+        <span class="text-surface-400 text-xs"
+          >（共 {{ mgr.monitorInfo?.commandStats?.length ?? 0 }} 条）</span
+        >
+      </div>
       <PrimeDataTable
         :value="mgr.monitorInfo?.commandStats ?? []"
         scrollable
         :row-hover="true"
         striped-rows
         class="text-sm"
-        paginator
-        :rows="10"
-        :rows-per-page-options="[5, 10, 20]"
-        paginator-template="RowsPerPageDropdown CurrentPageReport"
-        current-page-report-template="共 {totalRecords} 条"
       >
         <PrimeColumn field="command" header="命令" style="width: 120px">
           <template #body="{ data }">
@@ -156,18 +156,18 @@ onMounted(() => {
 
     <!-- 详细信息 -->
     <div class="card mb-0! p-4!">
-      <div class="mb-3 font-semibold">Redis 详细信息</div>
+      <div class="mb-3 flex items-center gap-2">
+        <span class="font-semibold">Redis 详细信息</span>
+        <span class="text-surface-400 text-xs"
+          >（共 {{ mgr.monitorInfo?.detailInfo?.length ?? 0 }} 条）</span
+        >
+      </div>
       <PrimeDataTable
         :value="mgr.monitorInfo?.detailInfo ?? []"
         scrollable
         :row-hover="true"
         striped-rows
         class="text-sm"
-        paginator
-        :rows="10"
-        :rows-per-page-options="[5, 10, 20]"
-        paginator-template="RowsPerPageDropdown CurrentPageReport"
-        current-page-report-template="共 {totalRecords} 条"
       >
         <PrimeColumn field="key" header="配置项" style="min-width: 200px">
           <template #body="{ data }">
