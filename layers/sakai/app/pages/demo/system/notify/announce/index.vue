@@ -15,26 +15,25 @@ useSeoMeta({ title: '公告管理' });
 const searchForm = reactive({
   keyword: '',
   status: '',
-  dateFrom: '',
-  dateTo: '',
+  dateRange: null as Date[] | null,
 });
 
 function onSearch() {
   const params: Record<string, any> = {};
   if (searchForm.keyword) params.keyword = searchForm.keyword;
   if (searchForm.status) params.status = searchForm.status;
-  if (searchForm.dateFrom)
-    params.dateFrom = new Date(searchForm.dateFrom).toISOString();
-  if (searchForm.dateTo)
-    params.dateTo = new Date(searchForm.dateTo).toISOString();
+  const dateRange = searchForm.dateRange;
+  if (dateRange && dateRange.length === 2) {
+    params.dateFrom = dateRange[0]!.toISOString();
+    params.dateTo = dateRange[1]!.toISOString();
+  }
   mgr.onSearch(params);
 }
 
 function onReset() {
   searchForm.keyword = '';
   searchForm.status = '';
-  searchForm.dateFrom = '';
-  searchForm.dateTo = '';
+  searchForm.dateRange = null;
   mgr.onReset();
 }
 
@@ -130,7 +129,6 @@ onMounted(() => {
           <PrimeSelect
             v-model="searchForm.status"
             :options="[
-              { label: '全部', value: '' },
               { label: '草稿', value: 'draft' },
               { label: '定时', value: 'scheduled' },
               { label: '已发布', value: 'published' },
@@ -138,23 +136,19 @@ onMounted(() => {
             ]"
             option-label="label"
             option-value="value"
+            placeholder="全部"
             show-clear
           />
         </div>
         <div class="flex flex-col gap-1">
-          <label class="text-surface-500 text-xs">开始日期</label>
-          <PrimeInputText
-            v-model="searchForm.dateFrom"
-            type="date"
-            class="w-36"
-          />
-        </div>
-        <div class="flex flex-col gap-1">
-          <label class="text-surface-500 text-xs">结束日期</label>
-          <PrimeInputText
-            v-model="searchForm.dateTo"
-            type="date"
-            class="w-36"
+          <label class="text-surface-500 text-xs">创建时间</label>
+          <PrimeDatePicker
+            v-model="searchForm.dateRange"
+            selection-mode="range"
+            date-format="yy-mm-dd"
+            placeholder="选择日期范围"
+            show-clear
+            class="min-w-66"
           />
         </div>
         <div class="flex gap-2">

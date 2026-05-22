@@ -127,7 +127,7 @@ onMounted(() => {
             date-format="yy-mm-dd"
             placeholder="选择日期范围"
             show-clear
-            class="min-w-60"
+            class="min-w-66"
           />
         </div>
         <div class="flex gap-2">
