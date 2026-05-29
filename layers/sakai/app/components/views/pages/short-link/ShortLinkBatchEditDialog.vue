@@ -88,7 +88,6 @@ function handleConfirm(): void {
           :suggestions="filteredCampaigns"
           option-label="label"
           placeholder="选择或输入标签"
-          dropdown
           fluid
         />
       </div>

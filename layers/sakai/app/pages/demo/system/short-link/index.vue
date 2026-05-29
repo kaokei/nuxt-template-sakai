@@ -96,9 +96,11 @@ onMounted(() => {
 <template>
   <div class="flex flex-col gap-4">
     <!-- 搜索栏 -->
-    <div class="card p-4!">
+    <div
+      class="border-surface-200 bg-surface-0 flex flex-wrap items-center gap-4 rounded-lg border p-4"
+    >
       <div class="flex flex-wrap items-end gap-4">
-        <div class="min-w-[200px] flex-1">
+        <div class="min-w-50 flex-1">
           <label
             class="text-surface-500 dark:text-surface-400 mb-1 block text-xs"
             >关键词</label
@@ -110,7 +112,7 @@ onMounted(() => {
             @keyup.enter="mgr.onSearch(mgr.searchQuery)"
           />
         </div>
-        <div class="w-[200px]">
+        <div class="w-50">
           <label
             class="text-surface-500 dark:text-surface-400 mb-1 block text-xs"
             >活动标签</label
@@ -202,7 +204,7 @@ onMounted(() => {
         <PrimeColumn selection-mode="multiple" header-style="width:3rem" />
         <PrimeColumn field="title" header="标题" sortable>
           <template #body="{ data }">
-            <div class="max-w-[200px] truncate">
+            <div class="max-w-50 truncate">
               {{ data.title || '--' }}
             </div>
           </template>
@@ -216,7 +218,7 @@ onMounted(() => {
         </PrimeColumn>
         <PrimeColumn field="originalUrl" header="目标 URL">
           <template #body="{ data }">
-            <div class="max-w-[250px] truncate text-xs">
+            <div class="max-w-62.5 truncate text-xs">
               {{ data.originalUrl }}
             </div>
           </template>
