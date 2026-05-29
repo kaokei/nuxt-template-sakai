@@ -14,10 +14,6 @@ const previewRows = ref<Row[]>([]);
 const allRows = ref<Row[]>([]);
 const fileName = ref('');
 
-interface FileUploadEvent {
-  files: File[];
-}
-
 function downloadTemplate(): void {
   const header = [
     '标题',
@@ -49,12 +45,18 @@ function downloadTemplate(): void {
   XLSX.writeFile(wb, '短链导入模板.xlsx');
 }
 
-async function handleUpload(event: FileUploadEvent): Promise<void> {
-  const file = event.files[0];
+async function handleUpload(event: { files: File | File[] }): Promise<void> {
+  const files = Array.isArray(event.files) ? event.files : [event.files];
+  const file = files[0];
+  if (!file) return;
+
   fileName.value = file.name;
   const buffer = await file.arrayBuffer();
   const wb = XLSX.read(buffer);
-  const sheet = wb.Sheets[wb.SheetNames[0]];
+  const sheetName = wb.SheetNames[0];
+  if (!sheetName) return;
+  const sheet = wb.Sheets[sheetName];
+  if (!sheet) return;
   const rawRows = XLSX.utils.sheet_to_json<Record<string, string>>(sheet);
 
   allRows.value = rawRows.map((row) => ({
