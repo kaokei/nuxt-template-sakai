@@ -66,9 +66,17 @@ watch(visible, (isVisible) => {
   }
 });
 
+const campaignModel = computed({
+  get: () => form.value.campaign,
+  set: (val: string | { label: string; value: string }) => {
+    form.value.campaign = typeof val === 'string' ? val : val.value;
+  },
+});
+
 const filteredCampaigns = computed(() => {
-  if (!form.value.campaign) return allCampaigns.value;
-  return allCampaigns.value.filter((c) => c.includes(form.value.campaign));
+  const list = allCampaigns.value.map((c) => ({ label: c, value: c }));
+  if (!form.value.campaign) return list;
+  return list.filter((c) => c.label.includes(form.value.campaign));
 });
 
 async function handleSave(): Promise<void> {
@@ -153,10 +161,11 @@ async function handleSave(): Promise<void> {
         <div class="flex-1">
           <label class="mb-2 block text-sm font-medium">活动标签</label>
           <PrimeAutoComplete
-            v-model="form.campaign"
+            v-model="campaignModel"
             :suggestions="filteredCampaigns"
+            option-label="label"
             placeholder="选择或输入标签"
-            :dropdown="true"
+            dropdown
             fluid
           />
         </div>
