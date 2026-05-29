@@ -43,11 +43,13 @@
     "nuxt": "^4.4.5",
     "primeicons": "^7.0.0",
     "primevue": "^4.5.5",
+    "qrcode": "^1.5.4",
     "query-string": "^9.3.1",
     "tailwindcss": "^4.3.0",
     "tailwindcss-primeui": "^0.6.1",
     "vue": "^3.5.34",
-    "vue-router": "^5.0.7"
+    "vue-router": "^5.0.7",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@babel/plugin-proposal-decorators": "^7.29.0",
@@ -63,6 +65,7 @@
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "@types/lodash-es": "^4.17.12",
     "@types/node": "^25.7.0",
+    "@types/qrcode": "^1.5.6",
     "@vue/language-server": "^3.2.9",
     "commitizen": "^4.3.1",
     "cross-env": "^10.1.0",
