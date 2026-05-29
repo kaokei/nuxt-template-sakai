@@ -28,6 +28,7 @@
     "debug": "tsx ./utils/markdown/summary.test.ts"
   },
   "dependencies": {
+    "@faker-js/faker": "^10.4.0",
     "@kaokei/di": "^5.0.9",
     "@kaokei/nuxt-use-vue-service": "^1.0.5",
     "@kaokei/use-vue-service": "^4.0.5",
@@ -39,6 +40,7 @@
     "copy-to-clipboard": "^4.0.2",
     "lodash-es": "^4.18.1",
     "mitt": "^3.0.1",
+    "msw": "^2.14.6",
     "nanoid": "^5.1.11",
     "nuxt": "^4.4.5",
     "primeicons": "^7.0.0",
@@ -54,7 +56,6 @@
   "devDependencies": {
     "@babel/plugin-proposal-decorators": "^7.29.0",
     "@changesets/cli": "^2.31.0",
-    "@faker-js/faker": "^10.4.0",
     "@iconify-json/lucide": "^1.2.107",
     "@iconify-json/uil": "^1.2.3",
     "@nuxt/eslint": "^1.15.2",
@@ -72,10 +73,10 @@
     "cz-conventional-changelog": "^3.3.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
-    "msw": "^2.14.6",
     "prettier": "^3.8.3",
     "prettier-plugin-tailwindcss": "^0.8.0",
     "sass": "^1.99.0",
+    "serve": "^14.2.6",
     "tsx": "^4.21.1",
     "typescript": "^6.0.3",
     "typescript-language-server": "^5.2.0",
