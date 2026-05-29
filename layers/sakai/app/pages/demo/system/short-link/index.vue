@@ -115,9 +115,11 @@ onMounted(() => {
             class="text-surface-500 dark:text-surface-400 mb-1 block text-xs"
             >活动标签</label
           >
-          <PrimeDropdown
+          <PrimeSelect
             v-model="mgr.searchQuery.campaign"
             :options="mgr.allCampaigns.map((c) => ({ label: c, value: c }))"
+            option-label="label"
+            option-value="value"
             placeholder="全部标签"
             show-clear
             fluid
