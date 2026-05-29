@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { ShortLinkService } from '@sakai/services/ShortLinkService';
 import type { ShortLink } from '@sakai/types/short-link';
 
 const visible = defineModel<boolean>('visible', { required: true });
@@ -6,6 +7,9 @@ const count = defineModel<number>('count', { required: true });
 const emit = defineEmits<{
   confirm: [data: Partial<Omit<ShortLink, 'id' | 'createdAt' | 'updatedAt'>>];
 }>();
+
+const service = useService(ShortLinkService);
+const allCampaigns = ref<string[]>([]);
 
 const form = ref({
   campaign: '',
@@ -17,8 +21,26 @@ const form = ref({
   expireAt: null as Date | null,
 });
 
+async function loadCampaigns(): Promise<void> {
+  allCampaigns.value = await service.getAllCampaigns();
+}
+
+const campaignModel = computed({
+  get: () => form.value.campaign,
+  set: (val: string | { label: string; value: string }) => {
+    form.value.campaign = typeof val === 'string' ? val : val.value;
+  },
+});
+
+const filteredCampaigns = computed(() => {
+  const list = allCampaigns.value.map((c) => ({ label: c, value: c }));
+  if (!form.value.campaign) return list;
+  return list.filter((c) => c.label.includes(form.value.campaign));
+});
+
 watch(visible, (v) => {
   if (v) {
+    loadCampaigns();
     form.value = {
       campaign: '',
       utmSource: '',
@@ -61,9 +83,12 @@ function handleConfirm(): void {
 
       <div>
         <label class="mb-2 block text-sm font-medium">活动标签</label>
-        <PrimeInputText
-          v-model.trim="form.campaign"
-          placeholder="统一修改标签"
+        <PrimeAutoComplete
+          v-model="campaignModel"
+          :suggestions="filteredCampaigns"
+          option-label="label"
+          placeholder="选择或输入标签"
+          dropdown
           fluid
         />
       </div>
