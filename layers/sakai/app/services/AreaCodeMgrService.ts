@@ -21,6 +21,7 @@ export class AreaCodeMgrService {
   // ==================== 表格数据状态 ====================
   list: AreaCode[] = [];
   totalRecords = 0;
+  enabledCount = 0;
   loading = false;
   selectedItems: AreaCode[] = [];
 
@@ -52,7 +53,8 @@ export class AreaCodeMgrService {
   // ==================== 国旗 emoji ====================
   getFlagEmoji(countryCode: string): string {
     if (!countryCode || countryCode.length !== 2) return '';
-    const codePoints = countryCode
+    const code = countryCode === 'TW' ? 'CN' : countryCode;
+    const codePoints = code
       .toUpperCase()
       .split('')
       .map((char) => 0x1f1e6 + char.charCodeAt(0) - 65);
@@ -78,6 +80,7 @@ export class AreaCodeMgrService {
       const result = await this.areaCodeService.getList(params);
       this.list = result.data;
       this.totalRecords = result.total;
+      this.enabledCount = result.enabledCount;
     } finally {
       this.loading = false;
     }
@@ -160,13 +163,11 @@ export class AreaCodeMgrService {
     }
 
     const ids = (this.selectedItems || []).map((p) => p.id);
-    for (const id of ids) {
-      await this.areaCodeService.delete(id);
-    }
+    const result = await this.areaCodeService.batchDelete(ids);
     this.selectedItems = [];
     this.deleteDialogVisible = false;
     this.loadList();
-    return { success: true, message: `已删除 ${ids.length} 个区号` };
+    return { success: true, message: `已删除 ${result.deleted} 个区号` };
   }
 
   // ==================== 批量启用/禁用 ====================

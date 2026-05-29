@@ -85,5 +85,13 @@ function handleReset() {
         @click="handleReset"
       />
     </div>
+
+    <div class="text-surface-500 ml-auto flex items-center gap-1 text-sm">
+      <span>开启</span>
+      <span class="font-semibold text-green-600">{{ mgr.enabledCount }}</span>
+      <span>/</span>
+      <span>全部</span>
+      <span class="font-semibold">{{ mgr.totalRecords }}</span>
+    </div>
   </div>
 </template>

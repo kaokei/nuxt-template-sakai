@@ -1,4 +1,5 @@
 import { announcementHandlers } from './announcements';
+import { areaCodeHandlers } from './area-codes';
 import { authHandlers } from './auth';
 import { backupHandlers } from './backups';
 import { cacheListHandlers } from './cache-list';
@@ -22,6 +23,7 @@ import { userHandlers } from './users';
 
 export const handlers = [
   ...announcementHandlers,
+  ...areaCodeHandlers,
   ...authHandlers,
   ...backupHandlers,
   ...cacheListHandlers,
