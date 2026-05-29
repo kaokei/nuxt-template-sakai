@@ -18,6 +18,7 @@ import { postsHandlers } from './posts';
 import { problemHandlers } from './problems';
 import { roleHandlers } from './roles';
 import { serverMonitorHandlers } from './server-monitor';
+import { shortLinkHandlers } from './short-link';
 import { sysParamHandlers } from './sys-params';
 import { userHandlers } from './users';
 
@@ -42,6 +43,7 @@ export const handlers = [
   ...problemHandlers,
   ...roleHandlers,
   ...serverMonitorHandlers,
+  ...shortLinkHandlers,
   ...sysParamHandlers,
   ...userHandlers,
 ];
