@@ -85,6 +85,13 @@ function onFileSelect(event: { files: File[] }): void {
     : 'attachment';
 }
 
+function onFileRemove(): void {
+  selectedFile.value = null;
+  form.value.fileName = '';
+  form.value.fileSize = 0;
+  form.value.mimeType = '';
+}
+
 async function handleSave(): Promise<void> {
   submitted.value = true;
 
@@ -130,6 +137,7 @@ async function handleSave(): Promise<void> {
           :max-file-size="MAX_FILE_SIZE"
           name="file"
           @select="onFileSelect"
+          @remove="onFileRemove"
         >
           <template #empty>
             <div class="flex flex-col items-center gap-3 py-4">

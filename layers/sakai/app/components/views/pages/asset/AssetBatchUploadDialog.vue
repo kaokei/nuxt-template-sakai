@@ -28,8 +28,15 @@ function onFileSelect(event: { files: File[] }): void {
   selectedFiles.value = [...selectedFiles.value, ...event.files];
 }
 
-function removeFile(index: number): void {
-  selectedFiles.value.splice(index, 1);
+function onFileRemove(event: { file: File }): void {
+  selectedFiles.value = selectedFiles.value.filter(
+    (f) =>
+      !(
+        f.name === event.file.name &&
+        f.size === event.file.size &&
+        f.lastModified === event.file.lastModified
+      ),
+  );
 }
 
 async function handleUpload(): Promise<void> {
@@ -66,6 +73,7 @@ async function handleUpload(): Promise<void> {
           :multiple="true"
           name="files"
           @select="onFileSelect"
+          @remove="onFileRemove"
         >
           <template #empty>
             <div class="flex flex-col items-center gap-3 py-4">
@@ -81,60 +89,35 @@ async function handleUpload(): Promise<void> {
         >
       </div>
 
-      <div v-if="selectedFiles.length > 0">
-        <PrimeDataTable :value="selectedFiles" class="text-sm">
-          <PrimeColumn header="#" class="w-12">
-            <template #body="{ index }">
-              {{ index + 1 }}
-            </template>
-          </PrimeColumn>
-          <PrimeColumn field="name" header="文件名" />
-          <PrimeColumn field="size" header="大小" class="w-28">
-            <template #body="{ data }">
-              {{ (data.size / 1024).toFixed(1) }} KB
-            </template>
-          </PrimeColumn>
-          <PrimeColumn header="" class="w-16">
-            <template #body="{ index }">
-              <PrimeButton
-                icon="pi pi-times"
-                severity="secondary"
-                text
-                size="small"
-                @click="removeFile(index)"
+      <div v-if="selectedFiles.length > 0" class="flex flex-col gap-4">
+        <div class="flex flex-col gap-2">
+          <label class="text-sm font-medium">统一标签</label>
+          <TagInput
+            v-model="commonTags"
+            :suggestions="existingTags"
+            placeholder="所有文件应用相同标签"
+          />
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label class="text-sm font-medium">统一浏览器行为</label>
+          <div class="flex gap-3">
+            <div class="flex items-center gap-2">
+              <PrimeRadioButton
+                v-model="commonBehavior"
+                value="inline"
+                input-id="batch-inline"
               />
-            </template>
-          </PrimeColumn>
-        </PrimeDataTable>
-      </div>
-
-      <div class="flex flex-col gap-2">
-        <label class="text-sm font-medium">统一标签</label>
-        <TagInput
-          v-model="commonTags"
-          :suggestions="existingTags"
-          placeholder="所有文件应用相同标签"
-        />
-      </div>
-
-      <div class="flex flex-col gap-2">
-        <label class="text-sm font-medium">统一浏览器行为</label>
-        <div class="flex gap-3">
-          <div class="flex items-center gap-2">
-            <PrimeRadioButton
-              v-model="commonBehavior"
-              value="inline"
-              input-id="batch-inline"
-            />
-            <label for="batch-inline" class="text-sm">在线预览</label>
-          </div>
-          <div class="flex items-center gap-2">
-            <PrimeRadioButton
-              v-model="commonBehavior"
-              value="attachment"
-              input-id="batch-attach"
-            />
-            <label for="batch-attach" class="text-sm">触发下载</label>
+              <label for="batch-inline" class="text-sm">在线预览</label>
+            </div>
+            <div class="flex items-center gap-2">
+              <PrimeRadioButton
+                v-model="commonBehavior"
+                value="attachment"
+                input-id="batch-attach"
+              />
+              <label for="batch-attach" class="text-sm">触发下载</label>
+            </div>
           </div>
         </div>
       </div>
