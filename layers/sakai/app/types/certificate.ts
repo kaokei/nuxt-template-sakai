@@ -55,7 +55,7 @@ export interface TextElement {
   maxLines?: number;
   /** 旋转角度（度，0-360） */
   rotation?: number;
-  /** 背景色（标签样式），不填则透明 */
+  /** 背景色（标签样式），默认不填则透明 */
   backgroundColor?: string;
   /** 背景圆角（px） */
   borderRadius?: number;

@@ -80,6 +80,10 @@ export class CertificateEditorService {
       textAlign: 'left',
       verticalAlign: 'top',
       lineHeight: 1.5,
+      rotation: 0,
+      borderRadius: 0,
+      padding: 0,
+      defaultValue: '示例文字',
     };
     this.template.elements.push(el);
     this.selectedElementId = el.id;
@@ -98,6 +102,8 @@ export class CertificateEditorService {
       width: 120,
       height: 120,
       fit: 'contain',
+      borderRadius: 0,
+      opacity: 1,
     };
     this.template.elements.push(el);
     this.selectedElementId = el.id;

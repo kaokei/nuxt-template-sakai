@@ -74,7 +74,7 @@ function onFileSelect(event: { files: File[] }) {
         <PrimeInputText
           :model-value="element.name"
           size="small"
-          class="w-full"
+          fluid
           @update:model-value="(v) => emit('update', element.id, { name: v })"
         />
       </div>
@@ -85,7 +85,7 @@ function onFileSelect(event: { files: File[] }) {
           <PrimeInputNumber
             :model-value="element.x"
             size="small"
-            class="w-full"
+            fluid
             @update:model-value="(v) => emit('update', element.id, { x: v })"
           />
         </div>
@@ -94,7 +94,7 @@ function onFileSelect(event: { files: File[] }) {
           <PrimeInputNumber
             :model-value="element.y"
             size="small"
-            class="w-full"
+            fluid
             @update:model-value="(v) => emit('update', element.id, { y: v })"
           />
         </div>
@@ -103,7 +103,7 @@ function onFileSelect(event: { files: File[] }) {
           <PrimeInputNumber
             :model-value="element.width"
             size="small"
-            class="w-full"
+            fluid
             @update:model-value="
               (v) => emit('update', element.id, { width: v })
             "
@@ -114,7 +114,7 @@ function onFileSelect(event: { files: File[] }) {
           <PrimeInputNumber
             :model-value="element.height"
             size="small"
-            class="w-full"
+            fluid
             @update:model-value="
               (v) => emit('update', element.id, { height: v })
             "
@@ -131,7 +131,7 @@ function onFileSelect(event: { files: File[] }) {
             option-label="label"
             option-value="value"
             size="small"
-            class="w-full"
+            fluid
             @update:model-value="(v) => emit('update', element.id, { fit: v })"
           />
         </div>
@@ -141,7 +141,7 @@ function onFileSelect(event: { files: File[] }) {
             :model-value="element.borderRadius"
             :min="0"
             size="small"
-            class="w-full"
+            fluid
             @update:model-value="
               (v) =>
                 emit('update', element.id, { borderRadius: v ?? undefined })
@@ -155,8 +155,9 @@ function onFileSelect(event: { files: File[] }) {
             :min="0"
             :max="1"
             :step="0.1"
+            :min-fraction-digits="1"
             size="small"
-            class="w-full"
+            fluid
             @update:model-value="
               (v) => emit('update', element.id, { opacity: v ?? undefined })
             "
@@ -172,7 +173,7 @@ function onFileSelect(event: { files: File[] }) {
           :model-value="element.bindingKey"
           placeholder="如 qrcode"
           size="small"
-          class="w-full"
+          fluid
           @update:model-value="
             (v) => emit('update', element.id, { bindingKey: v || undefined })
           "

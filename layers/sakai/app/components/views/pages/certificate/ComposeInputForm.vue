@@ -12,9 +12,8 @@ const emit = defineEmits<{
   fileChange: [elementId: string, file: File | null];
 }>();
 
-function onFileSelect(elementId: string, event: Event) {
-  const input = event.target as HTMLInputElement;
-  const file = input.files?.[0] ?? null;
+function onFileSelect(elementId: string, event: { files: File[] }) {
+  const file = event.files[0] ?? null;
   emit('fileChange', elementId, file);
 }
 </script>
@@ -35,12 +34,14 @@ function onFileSelect(elementId: string, event: Event) {
       </template>
       <template v-if="el.type === 'image'">
         <label class="text-sm font-medium">{{ el.name }}</label>
-        <input
-          type="file"
-          accept="image/*"
-          class="text-sm"
-          @change="(e) => onFileSelect(el.id, e)"
-        />
+        <div>
+          <PrimeFileUpload
+            mode="basic"
+            accept="image/*"
+            custom-upload
+            @select="(e) => onFileSelect(el.id, e)"
+          />
+        </div>
         <span v-if="fileMap[el.id]" class="text-xs text-green-600"
           >已选择图片</span
         >

@@ -79,7 +79,7 @@ const verticalAlignOptions = [
         <PrimeInputText
           :model-value="element.name"
           size="small"
-          class="w-full"
+          fluid
           @update:model-value="(v) => emit('update', element.id, { name: v })"
         />
       </div>
@@ -90,7 +90,7 @@ const verticalAlignOptions = [
           <PrimeInputNumber
             :model-value="element.x"
             size="small"
-            class="w-full"
+            fluid
             @update:model-value="(v) => emit('update', element.id, { x: v })"
           />
         </div>
@@ -99,7 +99,7 @@ const verticalAlignOptions = [
           <PrimeInputNumber
             :model-value="element.y"
             size="small"
-            class="w-full"
+            fluid
             @update:model-value="(v) => emit('update', element.id, { y: v })"
           />
         </div>
@@ -108,7 +108,7 @@ const verticalAlignOptions = [
           <PrimeInputNumber
             :model-value="element.width"
             size="small"
-            class="w-full"
+            fluid
             @update:model-value="
               (v) => emit('update', element.id, { width: v })
             "
@@ -122,7 +122,7 @@ const verticalAlignOptions = [
           <PrimeInputNumber
             :model-value="element.fontSize"
             size="small"
-            class="w-full"
+            fluid
             @update:model-value="
               (v) => emit('update', element.id, { fontSize: v })
             "
@@ -136,7 +136,7 @@ const verticalAlignOptions = [
             option-label="label"
             option-value="value"
             size="small"
-            class="w-full"
+            fluid
             @update:model-value="
               (v) => emit('update', element.id, { fontFamily: v })
             "
@@ -150,7 +150,7 @@ const verticalAlignOptions = [
           <PrimeInputText
             :model-value="element.color"
             size="small"
-            class="w-full"
+            fluid
             @update:model-value="
               (v) => emit('update', element.id, { color: v })
             "
@@ -164,7 +164,7 @@ const verticalAlignOptions = [
             option-label="label"
             option-value="value"
             size="small"
-            class="w-full"
+            fluid
             @update:model-value="
               (v) => emit('update', element.id, { fontWeight: v })
             "
@@ -178,7 +178,7 @@ const verticalAlignOptions = [
             :max="3"
             :step="0.1"
             size="small"
-            class="w-full"
+            fluid
             @update:model-value="
               (v) => emit('update', element.id, { lineHeight: v })
             "
@@ -195,7 +195,7 @@ const verticalAlignOptions = [
             option-label="label"
             option-value="value"
             size="small"
-            class="w-full"
+            fluid
             @update:model-value="
               (v) => emit('update', element.id, { textAlign: v })
             "
@@ -209,7 +209,7 @@ const verticalAlignOptions = [
             option-label="label"
             option-value="value"
             size="small"
-            class="w-full"
+            fluid
             @update:model-value="
               (v) => emit('update', element.id, { verticalAlign: v })
             "
@@ -225,7 +225,7 @@ const verticalAlignOptions = [
             :min="0"
             :max="360"
             size="small"
-            class="w-full"
+            fluid
             @update:model-value="
               (v) => emit('update', element.id, { rotation: v ?? undefined })
             "
@@ -238,7 +238,8 @@ const verticalAlignOptions = [
             :min="1"
             :max="10"
             size="small"
-            class="w-full"
+            placeholder="无"
+            fluid
             @update:model-value="
               (v) => emit('update', element.id, { maxLines: v ?? undefined })
             "
@@ -251,9 +252,9 @@ const verticalAlignOptions = [
           <label class="text-muted-color text-xs">背景色</label>
           <PrimeInputText
             :model-value="element.backgroundColor"
-            placeholder="不填则透明"
+            placeholder="无"
             size="small"
-            class="w-full"
+            fluid
             @update:model-value="
               (v) =>
                 emit('update', element.id, { backgroundColor: v || undefined })
@@ -266,7 +267,7 @@ const verticalAlignOptions = [
             :model-value="element.borderRadius"
             :min="0"
             size="small"
-            class="w-full"
+            fluid
             @update:model-value="
               (v) =>
                 emit('update', element.id, { borderRadius: v ?? undefined })
@@ -285,7 +286,7 @@ const verticalAlignOptions = [
           "
           :min="0"
           size="small"
-          class="w-full"
+          fluid
           @update:model-value="
             (v) => emit('update', element.id, { padding: v ?? undefined })
           "
@@ -300,7 +301,7 @@ const verticalAlignOptions = [
           :model-value="element.bindingKey"
           placeholder="如 userName"
           size="small"
-          class="w-full"
+          fluid
           @update:model-value="
             (v) => emit('update', element.id, { bindingKey: v || undefined })
           "
@@ -313,7 +314,7 @@ const verticalAlignOptions = [
           :model-value="element.defaultValue"
           placeholder="保存后编辑页和合成页直接显示"
           size="small"
-          class="w-full"
+          fluid
           @update:model-value="
             (v: string | undefined) =>
               emit('update', element.id, { defaultValue: v || undefined })

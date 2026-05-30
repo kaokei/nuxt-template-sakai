@@ -36,8 +36,9 @@ async function onSave() {
       severity: 'success',
       summary: '成功',
       detail: '模板已保存',
-      life: 3000,
+      life: 1500,
     });
+    router.push('/demo/system/certificate');
   } catch {
     toast.add({
       severity: 'error',
@@ -54,12 +55,10 @@ async function onSave() {
     <i class="pi pi-spin pi-spinner text-2xl" />
   </div>
   <div v-else-if="editor.template" class="flex h-[calc(100vh-140px)] gap-4">
-    <div class="w-2/5 flex-shrink-0 overflow-y-auto">
+    <div class="w-2/5 shrink-0 overflow-y-auto">
       <CertificateEditForm :editor="editor" @save="onSave" />
     </div>
-    <div
-      class="sticky top-0 flex w-3/5 flex-shrink-0 items-start justify-center"
-    >
+    <div class="sticky top-0 flex w-3/5 shrink-0 items-start justify-center">
       <CertificateCanvasPreview :editor="editor" />
     </div>
   </div>
