@@ -1,5 +1,5 @@
+import type { CertificateTemplate } from '@sakai/types/certificate';
 import { HttpResponse, http } from 'msw';
-import type { CertificateTemplate } from '~~/layers/sakai/app/types/certificate';
 import { mockCertificateTemplates } from '../data/certificate-templates';
 
 let templates: CertificateTemplate[] = JSON.parse(

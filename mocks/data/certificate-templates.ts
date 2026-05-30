@@ -1,4 +1,4 @@
-import type { CertificateTemplate } from '~~/layers/sakai/app/types/certificate';
+import type { CertificateTemplate } from '@sakai/types/certificate';
 
 export const mockCertificateTemplates: CertificateTemplate[] = [
   {
