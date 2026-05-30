@@ -59,29 +59,8 @@ watch(visible, (isVisible) => {
   }
 });
 
-const isDragOver = ref(false);
-
-function onDragOver(event: DragEvent): void {
-  event.preventDefault();
-  isDragOver.value = true;
-}
-
-function onDragLeave(): void {
-  isDragOver.value = false;
-}
-
-function onDrop(event: DragEvent): void {
-  event.preventDefault();
-  isDragOver.value = false;
-  const fileList = event.dataTransfer?.files;
-  const file = fileList?.[0];
-  if (!file) return;
-  onFileSelect({ files: file });
-}
-
-function onFileSelect(event: { files: File | File[] }): void {
-  const files = Array.isArray(event.files) ? event.files : [event.files];
-  const file = files[0];
+function onFileSelect(event: { files: File[] }): void {
+  const file = event.files[0];
   if (!file) return;
 
   if (file.size > MAX_FILE_SIZE) {
@@ -144,39 +123,28 @@ async function handleSave(): Promise<void> {
         <label class="text-sm font-medium"
           >选择文件 <span class="text-red-500">*</span></label
         >
-        <div
-          class="relative flex cursor-pointer flex-col items-center gap-3 rounded-lg border-2 border-dashed p-6 transition-colors"
-          :class="{
-            'border-primary bg-primary-50': isDragOver,
-            'border-surface-300 hover:border-primary':
-              !isDragOver && !(submitted && !selectedFile),
-            'border-red-400': submitted && !selectedFile,
-          }"
-          @dragover="onDragOver"
-          @dragleave="onDragLeave"
-          @drop="onDrop"
+        <PrimeFileUpload
+          :custom-upload="true"
+          :auto="false"
+          :multiple="false"
+          :max-file-size="MAX_FILE_SIZE"
+          name="file"
+          @select="onFileSelect"
         >
-          <i class="pi pi-cloud-upload text-surface-400 text-3xl" />
-          <p class="text-surface-500 text-sm">
-            拖拽文件到此处，或点击下方按钮选择
-          </p>
-          <PrimeFileUpload
-            mode="basic"
-            :max-file-size="MAX_FILE_SIZE"
-            choose-label="选择文件"
-            @upload="onFileSelect"
-          />
-        </div>
-        <small v-if="!selectedFile" class="text-surface-400 text-xs"
-          >支持任意格式，单文件最大 50 MB</small
-        >
+          <template #empty>
+            <div class="flex flex-col items-center gap-3 py-4">
+              <i class="pi pi-cloud-upload !text-surface-400 !text-4xl" />
+              <span class="text-surface-500 text-sm"
+                >拖拽文件到此处，或点击选择</span
+              >
+              <span class="text-surface-400 text-xs"
+                >支持任意格式，单文件最大 50 MB</span
+              >
+            </div>
+          </template>
+        </PrimeFileUpload>
         <small v-if="submitted && !selectedFile" class="text-red-500"
           >请选择文件</small
-        >
-        <small
-          v-if="selectedFile && selectedFile.size > MAX_FILE_SIZE"
-          class="text-red-500"
-          >文件大小超过 50MB 限制</small
         >
       </div>
 
