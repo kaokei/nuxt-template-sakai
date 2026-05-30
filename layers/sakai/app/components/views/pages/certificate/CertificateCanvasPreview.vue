@@ -29,6 +29,18 @@ const dragEndPos = ref<{ x: number; y: number; w: number; h: number } | null>(
 );
 const imageCache = ref<Record<string, HTMLImageElement>>({});
 
+let destroyed = false;
+
+onBeforeUnmount(() => {
+  destroyed = true;
+  cachedBg.value = null;
+  for (const img of Object.values(imageCache.value)) {
+    img.onload = null;
+    img.src = '';
+  }
+  imageCache.value = {};
+});
+
 const HANDLE_SIZE = 8;
 
 function getScale(): { scaleX: number; scaleY: number } {
@@ -356,6 +368,7 @@ function preloadBackground(url: string): Promise<HTMLImageElement> {
 function preloadImage(elementId: string, dataUrl: string) {
   const img = new Image();
   img.onload = () => {
+    if (destroyed) return;
     imageCache.value = { ...imageCache.value, [elementId]: img };
   };
   img.src = dataUrl;
