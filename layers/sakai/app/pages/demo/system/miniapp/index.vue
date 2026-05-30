@@ -34,6 +34,18 @@ const TYPE_SEVERITY: Record<GenerateType, string> = {
   urllink: 'danger',
 };
 
+const TYPE_DESCRIPTIONS: Record<GenerateType, string> = {
+  wxacode:
+    '适用于正式业务场景，样式可定制（尺寸、颜色、透明底色），有数量限制（总数 10 万个）',
+  wxacodeunlimit:
+    '不限数量生成，需要填写 scene 场景值传递参数，适用于营销推广、带参二维码',
+  qrcode: '普通二维码样式，最简单的生成方式，有数量限制（总数 10 万个）',
+  scheme:
+    '生成 weixin:// 协议的加密跳转链接，支持设置有效期，适用于短信、App 内跳转',
+  urllink:
+    '生成 https:// 协议的短链接，可在短信、邮件、网页中使用，支持设置有效期',
+};
+
 async function onGenerate(type: GenerateType): Promise<void> {
   try {
     await mgr.generate(type);
@@ -91,6 +103,15 @@ onMounted(() => {
       <h1 class="text-surface-900 dark:text-surface-0 text-xl font-semibold">
         小程序码/链接生成工具
       </h1>
+      <a
+        href="https://developers.weixin.qq.com/miniprogram/dev/server/API/qrcode-link/qr-code/api_getqrcode.html"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-primary-500 hover:text-primary-400 flex items-center gap-1 text-sm transition-colors"
+      >
+        <i class="pi pi-external-link text-xs" />
+        <span>腾讯官方文档</span>
+      </a>
     </div>
 
     <div class="border-surface-200 bg-surface-0 rounded-lg border p-4">
@@ -214,12 +235,15 @@ onMounted(() => {
         <PrimeButton
           v-for="t in GENERATE_TYPES"
           :key="t"
-          :label="GENERATE_TYPE_LABELS[t]"
           :severity="TYPE_SEVERITY[t]"
           :loading="mgr.generating"
           :disabled="mgr.generating"
+          v-tooltip.top="TYPE_DESCRIPTIONS[t]"
           @click="onGenerate(t)"
-        />
+        >
+          {{ GENERATE_TYPE_LABELS[t] }}
+          <i class="pi pi-question-circle ml-1 text-xs opacity-60" />
+        </PrimeButton>
       </div>
     </div>
 

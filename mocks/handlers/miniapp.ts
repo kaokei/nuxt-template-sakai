@@ -51,11 +51,16 @@ export const miniappHandlers = [
       });
     }
 
+    const link =
+      type === 'urllink'
+        ? `https://wxaurl.cn/mock_${nanoid(8)}`
+        : `weixin://dl/business/?t=mock_${nanoid(8)}`;
+
     return HttpResponse.json({
       code: 0,
       data: {
         type,
-        link: `weixin://dl/business/?t=mock_${nanoid(8)}`,
+        link,
         contentType: 'text/plain',
       },
     });
