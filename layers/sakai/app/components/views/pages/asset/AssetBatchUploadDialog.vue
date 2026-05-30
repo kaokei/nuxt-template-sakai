@@ -80,32 +80,21 @@ async function handleUpload(): Promise<void> {
           @remove="onFileRemove"
           @clear="onFileClear"
         >
-          <template #header="{ files, chooseCallback, clearCallback }">
+          <template #header="{ files, clearCallback }">
             <div
+              v-if="files.length > 0"
               class="border-surface-200 bg-surface-50 flex items-center justify-between rounded-t-lg border-b px-3 py-2"
             >
-              <template v-if="files.length === 0">
-                <span class="text-surface-400 text-xs">未选择文件</span>
-                <PrimeButton
-                  label="选择文件"
-                  icon="pi pi-plus"
-                  severity="secondary"
-                  size="small"
-                  @click="chooseCallback()"
-                />
-              </template>
-              <template v-else>
-                <span class="text-surface-500 text-xs"
-                  >{{ files.length }} 个文件</span
-                >
-                <PrimeButton
-                  icon="pi pi-times"
-                  severity="secondary"
-                  text
-                  size="small"
-                  @click="clearCallback()"
-                />
-              </template>
+              <span class="text-surface-500 text-xs"
+                >{{ files.length }} 个文件</span
+              >
+              <PrimeButton
+                icon="pi pi-times"
+                severity="secondary"
+                text
+                size="small"
+                @click="clearCallback()"
+              />
             </div>
           </template>
           <template #empty>
