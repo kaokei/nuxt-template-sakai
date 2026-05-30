@@ -3,6 +3,7 @@ import type { Asset } from '@sakai/types/asset';
 
 const visible = defineModel<boolean>('visible', { required: true });
 const asset = defineModel<Asset | null>('asset', { default: null });
+const toast = useToast();
 
 const canPreview = computed(() => {
   if (!asset.value) return false;
@@ -29,8 +30,23 @@ const previewType = computed(() => {
 
 async function copyLink(): Promise<void> {
   if (!asset.value) return;
-  const { default: copy } = await import('copy-to-clipboard');
-  copy(asset.value.url);
+  try {
+    const { default: copy } = await import('copy-to-clipboard');
+    copy(asset.value.url);
+    toast.add({
+      severity: 'info',
+      summary: '已复制',
+      detail: '链接已复制到剪贴板',
+      life: 2000,
+    });
+  } catch {
+    toast.add({
+      severity: 'error',
+      summary: '复制失败',
+      detail: '请手动复制链接',
+      life: 3000,
+    });
+  }
 }
 </script>
 
