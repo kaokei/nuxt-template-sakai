@@ -1,0 +1,73 @@
+<h2>架构与文件结构</h2>
+<p class="subtitle">遵循项目现有分层模式：页面入口 → 服务层 → 组件 → Mock</p>
+
+<h3>文件结构</h3>
+<div style="background:#1e293b;color:#e2e8f0;border-radius:8px;padding:14px;font-family:monospace;font-size:13px;line-height:1.8;">
+┌─ <span style="color:#f59e0b;">layers/sakai/app/pages/demo/system/miniapp/index.vue</span>  ← 页面入口<br/>
+├─ <span style="color:#f59e0b;">layers/sakai/app/services/MiniAppService.ts</span>            ← 数据服务(API调用)<br/>
+├─ <span style="color:#f59e0b;">layers/sakai/app/services/MiniAppMgrService.ts</span>         ← 页面状态(表单/结果/小程序列表)<br/>
+├─ <span style="color:#f59e0b;">app/config/menu/system-menu.ts</span>                        ← 菜单注册(+1条)<br/>
+├─ <span style="color:#22c55e;">mocks/handlers/miniapp.ts</span>                              ← MSW Mock处理器<br/>
+└─ <span style="color:#22c55e;">mocks/data/miniapp.ts</span>                                  ← Mock数据<br/>
+</div>
+
+<h3 style="margin-top:20px;">数据流</h3>
+<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;font-family:monospace;font-size:13px;line-height:1.8;">
+  用户操作                          服务层                         API层<br/>
+  ────────                          ──────                         ────<br/>
+  <br/>
+  1. 打开页面 ─────────────────→ MiniAppMgrService.loadMiniApps()<br/>
+                                 → MiniAppService.getMiniApps() ─→ GET /api/miniapps<br/>
+                                 ← 小程序列表                      ← [{ id, name, appid }]<br/>
+  <br/>
+  2. 填写表单 + 点击[生成有限码]<br/>
+     mgr.generate('wxacode') ──→ 校验参数<br/>
+                                 → MiniAppService.generate({<br/>
+                                     appId, type:'wxacode',<br/>
+                                     path, width, ...<br/>
+                                   }) ────→ POST /api/miniapp/generate<br/>
+                                 ← { imageUrl } / { link }         ← 微信API返回<br/>
+                                 mgr.records.push(record)  ← 加入会话记录<br/>
+  <br/>
+  3. 点击[下载] ─────────────→ 触发浏览器下载 imageUrl<br/>
+  4. 点击[复制链接] ─────────→ navigator.clipboard.writeText(link)<br/>
+</div>
+
+<h3 style="margin-top:20px;">菜单位置</h3>
+<p style="font-size:14px;">加在「系统管理」菜单中，与「短链工具」「模板合成」同级：</p>
+<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px;font-size:13px;">
+  ...<br/>
+  ├── 短链工具     (/demo/system/short-link)<br/>
+  ├── 模板合成     (/demo/system/certificate)<br/>
+  ├── <strong><span style="color:#6366f1;">小程序工具 </span> ← 新增     (/demo/system/miniapp)</strong><br/>
+  └── 系统监控<br/>
+</div>
+
+<h3 style="margin-top:20px;">MiniAppMgrService 核心状态</h3>
+<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;font-family:monospace;font-size:13px;line-height:1.8;">
+@Injectable()<br/>
+class MiniAppMgrService {<br/>
+  <span style="color:#94a3b8;">// 小程序列表</span><br/>
+  miniApps: MiniApp[]<br/>
+  selectedAppId: string<br/>
+  <br/>
+  <span style="color:#94a3b8;">// 表单参数</span><br/>
+  formPath: string           <span style="color:#94a3b8;">// 页面路径 (必填)</span><br/>
+  formQuery: string          <span style="color:#94a3b8;">// URL参数 (可选)</span><br/>
+  formEnvVersion: string     <span style="color:#94a3b8;">// release/trial/develop</span><br/>
+  formWidth: number          <span style="color:#94a3b8;">// 默认430</span><br/>
+  formIsHyaline: boolean<br/>
+  formScene: string          <span style="color:#94a3b8;">// 无限码必填</span><br/>
+  formExpireType: string     <span style="color:#94a3b8;">// Scheme/Link</span><br/>
+  <br/>
+  <span style="color:#94a3b8;">// 会话生成记录</span><br/>
+  records: GenerateRecord[]  <span style="color:#94a3b8;">// 仅内存，刷新清空</span><br/>
+  <br/>
+  <span style="color:#94a3b8;">// 方法</span><br/>
+  loadMiniApps()<br/>
+  generate(type: GenerateType)<br/>
+  download(url: string)<br/>
+  copyLink(text: string)<br/>
+  validateFields(type: GenerateType): boolean<br/>
+}
+</div>

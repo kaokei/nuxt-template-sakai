@@ -50,6 +50,11 @@ const menuItems: MenuItem[] = [
         icon: 'pi pi-fw pi-images',
         to: '/demo/system/certificate',
       },
+      {
+        label: '小程序工具',
+        icon: 'pi pi-fw pi-qrcode',
+        to: '/demo/system/miniapp',
+      },
     ],
   },
   {

@@ -12,6 +12,7 @@ import { featureFlagHandlers } from './feature-flags';
 import { jobsHandlers } from './jobs';
 import { loginLogHandlers } from './login-logs';
 import { menuHandlers } from './menus';
+import { miniappHandlers } from './miniapp';
 import { notificationHandlers } from './notifications';
 import { onlineUserHandlers } from './online-users';
 import { operLogHandlers } from './oper-logs';
@@ -38,6 +39,7 @@ export const handlers = [
   ...jobsHandlers,
   ...loginLogHandlers,
   ...menuHandlers,
+  ...miniappHandlers,
   ...notificationHandlers,
   ...onlineUserHandlers,
   ...operLogHandlers,
