@@ -141,7 +141,6 @@ watch(
             v-model="mgr.searchQuery.keyword"
             placeholder="搜索文件名、标题"
             fluid
-            @keyup.enter="mgr.onSearch(mgr.searchQuery)"
           />
         </div>
         <div class="min-w-[180px]">
@@ -163,7 +162,6 @@ watch(
             :options="mimeTabs"
             option-label="label"
             option-value="value"
-            @update:model-value="mgr.onMimeTabChange($event)"
           />
         </div>
         <div class="flex gap-2">
