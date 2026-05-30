@@ -138,6 +138,7 @@ async function handleSave(): Promise<void> {
           name="file"
           @select="onFileSelect"
           @remove="onFileRemove"
+          @clear="onFileRemove"
         >
           <template #empty>
             <div class="flex flex-col items-center gap-3 py-4">

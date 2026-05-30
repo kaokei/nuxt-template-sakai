@@ -28,6 +28,10 @@ function onFileSelect(event: { files: File[] }): void {
   selectedFiles.value = [...selectedFiles.value, ...event.files];
 }
 
+function onFileClear(): void {
+  selectedFiles.value = [];
+}
+
 function onFileRemove(event: { file: File }): void {
   selectedFiles.value = selectedFiles.value.filter(
     (f) =>
@@ -74,6 +78,7 @@ async function handleUpload(): Promise<void> {
           name="files"
           @select="onFileSelect"
           @remove="onFileRemove"
+          @clear="onFileClear"
         >
           <template #empty>
             <div class="flex flex-col items-center gap-3 py-4">
