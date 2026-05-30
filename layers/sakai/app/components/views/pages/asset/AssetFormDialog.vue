@@ -140,6 +140,23 @@ async function handleSave(): Promise<void> {
           @remove="onFileRemove"
           @clear="onFileRemove"
         >
+          <template #header="{ files, clearCallback }">
+            <div
+              v-if="files.length > 0"
+              class="border-surface-200 bg-surface-50 flex items-center justify-between rounded-t-lg border-b px-3 py-2"
+            >
+              <span class="text-surface-500 text-xs"
+                >{{ files.length }} 个文件</span
+              >
+              <PrimeButton
+                icon="pi pi-times"
+                severity="secondary"
+                text
+                size="small"
+                @click="clearCallback()"
+              />
+            </div>
+          </template>
           <template #empty>
             <div class="flex flex-col items-center gap-3 py-4">
               <i class="pi pi-cloud-upload text-surface-400! text-4xl!" />
