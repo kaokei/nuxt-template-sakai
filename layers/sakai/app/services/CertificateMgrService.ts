@@ -66,6 +66,7 @@ export class CertificateMgrService {
     this.loadTemplates();
   }
 
+  @autobind
   confirmDelete(template: CertificateTemplate): void {
     this.deleteTarget = template;
     this.deleteDialogVisible = true;
