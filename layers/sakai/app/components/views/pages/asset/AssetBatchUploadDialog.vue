@@ -24,11 +24,9 @@ watch(visible, (isVisible) => {
   }
 });
 
-function onFileSelect(event: Event): void {
-  const input = event.target as HTMLInputElement;
-  const files = input.files;
-  if (!files) return;
-  selectedFiles.value = Array.from(files);
+function onFileSelect(event: { files: File | File[] }): void {
+  const files = Array.isArray(event.files) ? event.files : [event.files];
+  selectedFiles.value = [...selectedFiles.value, ...files];
 }
 
 function removeFile(index: number): void {
@@ -61,20 +59,17 @@ async function handleUpload(): Promise<void> {
     :draggable="false"
   >
     <div class="flex flex-col gap-4">
-      <div
-        class="border-surface-300 hover:border-primary relative flex flex-col items-center gap-3 rounded-lg border-2 border-dashed p-6 transition-colors"
-      >
-        <i class="pi pi-cloud-upload text-surface-400 text-3xl" />
-        <p class="text-surface-500 text-sm">点击选择多个文件</p>
+      <div class="flex flex-col gap-2">
+        <label class="text-sm font-medium">选择文件</label>
+        <PrimeFileUpload
+          mode="basic"
+          multiple
+          choose-label="选择文件"
+          @upload="onFileSelect"
+        />
         <small v-if="selectedFiles.length > 0" class="text-surface-400 text-xs"
           >已选 {{ selectedFiles.length }} 个文件</small
         >
-        <input
-          type="file"
-          multiple
-          class="absolute inset-0 cursor-pointer opacity-0"
-          @change="onFileSelect"
-        />
       </div>
 
       <div v-if="selectedFiles.length > 0">

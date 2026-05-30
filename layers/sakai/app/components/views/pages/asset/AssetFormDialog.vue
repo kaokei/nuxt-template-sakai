@@ -59,9 +59,9 @@ watch(visible, (isVisible) => {
   }
 });
 
-function onFileSelect(event: Event): void {
-  const input = event.target as HTMLInputElement;
-  const file = input.files?.[0];
+function onFileSelect(event: { files: File | File[] }): void {
+  const files = Array.isArray(event.files) ? event.files : [event.files];
+  const file = files[0];
   if (!file) return;
 
   if (file.size > MAX_FILE_SIZE) {
@@ -120,31 +120,28 @@ async function handleSave(): Promise<void> {
     :draggable="false"
   >
     <div class="flex flex-col gap-4">
-      <div
-        v-if="!isEdit"
-        class="border-surface-300 hover:border-primary relative flex flex-col items-center gap-3 rounded-lg border-2 border-dashed p-6 transition-colors"
-        :class="{ 'border-red-400': submitted && !selectedFile }"
-      >
-        <i class="pi pi-cloud-upload text-surface-400 text-3xl" />
-        <p class="text-surface-500 text-sm">点击或拖拽文件到此处</p>
-        <small class="text-surface-400 text-xs"
+      <div v-if="!isEdit" class="flex flex-col gap-2">
+        <label class="text-sm font-medium"
+          >选择文件 <span class="text-red-500">*</span></label
+        >
+        <PrimeFileUpload
+          mode="basic"
+          :max-file-size="MAX_FILE_SIZE"
+          choose-label="选择文件"
+          @upload="onFileSelect"
+        />
+        <small v-if="!selectedFile" class="text-surface-400 text-xs"
           >支持任意格式，单文件最大 50 MB</small
         >
-        <input
-          type="file"
-          class="absolute inset-0 cursor-pointer opacity-0"
-          @change="onFileSelect"
-        />
+        <small v-if="submitted && !selectedFile" class="text-red-500"
+          >请选择文件</small
+        >
+        <small
+          v-if="selectedFile && selectedFile.size > MAX_FILE_SIZE"
+          class="text-red-500"
+          >文件大小超过 50MB 限制</small
+        >
       </div>
-
-      <small v-if="submitted && !isEdit && !selectedFile" class="text-red-500"
-        >请选择文件</small
-      >
-      <small
-        v-if="submitted && selectedFile && selectedFile.size > MAX_FILE_SIZE"
-        class="text-red-500"
-        >文件大小超过 50MB 限制</small
-      >
 
       <div v-if="selectedFile || isEdit" class="flex flex-col gap-4">
         <div class="flex flex-col gap-2">
