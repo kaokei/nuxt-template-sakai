@@ -59,6 +59,26 @@ watch(visible, (isVisible) => {
   }
 });
 
+const isDragOver = ref(false);
+
+function onDragOver(event: DragEvent): void {
+  event.preventDefault();
+  isDragOver.value = true;
+}
+
+function onDragLeave(): void {
+  isDragOver.value = false;
+}
+
+function onDrop(event: DragEvent): void {
+  event.preventDefault();
+  isDragOver.value = false;
+  const fileList = event.dataTransfer?.files;
+  const file = fileList?.[0];
+  if (!file) return;
+  onFileSelect({ files: file });
+}
+
 function onFileSelect(event: { files: File | File[] }): void {
   const files = Array.isArray(event.files) ? event.files : [event.files];
   const file = files[0];
@@ -124,12 +144,29 @@ async function handleSave(): Promise<void> {
         <label class="text-sm font-medium"
           >选择文件 <span class="text-red-500">*</span></label
         >
-        <PrimeFileUpload
-          mode="basic"
-          :max-file-size="MAX_FILE_SIZE"
-          choose-label="选择文件"
-          @upload="onFileSelect"
-        />
+        <div
+          class="relative flex cursor-pointer flex-col items-center gap-3 rounded-lg border-2 border-dashed p-6 transition-colors"
+          :class="{
+            'border-primary bg-primary-50': isDragOver,
+            'border-surface-300 hover:border-primary':
+              !isDragOver && !(submitted && !selectedFile),
+            'border-red-400': submitted && !selectedFile,
+          }"
+          @dragover="onDragOver"
+          @dragleave="onDragLeave"
+          @drop="onDrop"
+        >
+          <i class="pi pi-cloud-upload text-surface-400 text-3xl" />
+          <p class="text-surface-500 text-sm">
+            拖拽文件到此处，或点击下方按钮选择
+          </p>
+          <PrimeFileUpload
+            mode="basic"
+            :max-file-size="MAX_FILE_SIZE"
+            choose-label="选择文件"
+            @upload="onFileSelect"
+          />
+        </div>
         <small v-if="!selectedFile" class="text-surface-400 text-xs"
           >支持任意格式，单文件最大 50 MB</small
         >
