@@ -62,7 +62,7 @@ async function handleUpload(): Promise<void> {
   >
     <div class="flex flex-col gap-4">
       <div
-        class="border-surface-300 hover:border-primary flex flex-col items-center gap-3 rounded-lg border-2 border-dashed p-6 transition-colors"
+        class="border-surface-300 hover:border-primary relative flex flex-col items-center gap-3 rounded-lg border-2 border-dashed p-6 transition-colors"
       >
         <i class="pi pi-cloud-upload text-surface-400 text-3xl" />
         <p class="text-surface-500 text-sm">点击选择多个文件</p>
