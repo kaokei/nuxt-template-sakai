@@ -5,8 +5,7 @@ export class AssetService {
   async list(sceneId: string, query: AssetQuery = {}): Promise<Asset[]> {
     const searchParams: Record<string, string> = {};
     if (query.keyword) searchParams.keyword = query.keyword;
-    if (query.tags && query.tags.length > 0)
-      searchParams.tags = query.tags.join(',');
+    if (query.tags) searchParams.tags = query.tags;
     if (query.mimeCategory) searchParams.mimeCategory = query.mimeCategory;
     return $fetch<Asset[]>(`/api/scenes/${sceneId}/assets`, {
       query: searchParams,

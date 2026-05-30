@@ -36,7 +36,7 @@ export interface Asset {
 /** 素材查询参数 */
 export interface AssetQuery {
   keyword?: string;
-  tags?: string[];
+  tags?: string;
   mimeCategory?: MimeCategory;
 }
 
