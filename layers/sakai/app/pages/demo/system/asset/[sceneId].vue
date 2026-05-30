@@ -156,6 +156,16 @@ watch(
             fluid
           />
         </div>
+        <div>
+          <label class="text-surface-500 mb-1 block text-xs">类型</label>
+          <PrimeSelectButton
+            v-model="mgr.activeMimeCategory"
+            :options="mimeTabs"
+            option-label="label"
+            option-value="value"
+            @update:model-value="mgr.onMimeTabChange($event)"
+          />
+        </div>
         <div class="flex gap-2">
           <PrimeButton
             icon="pi pi-search"
@@ -171,19 +181,6 @@ watch(
           />
         </div>
       </div>
-    </div>
-
-    <div class="mb-2 flex flex-wrap gap-2">
-      <PrimeButton
-        v-for="tab in mimeTabs"
-        :key="tab.label"
-        :label="tab.label"
-        :severity="
-          mgr.activeMimeCategory === tab.value ? 'primary' : 'secondary'
-        "
-        size="small"
-        @click="mgr.onMimeTabChange(tab.value)"
-      />
     </div>
 
     <div class="card p-4!">
