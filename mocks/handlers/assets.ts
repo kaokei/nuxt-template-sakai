@@ -115,38 +115,32 @@ export const assetHandlers = [
   http.post(
     '/api/scenes/:sceneId/assets/batch',
     async ({ params, request }) => {
-      const body = (await request.json()) as {
-        files: Array<{
-          fileName?: string;
-          title?: string;
-          description?: string;
-          tags?: string;
-          fileSize?: number;
-          mimeType?: string;
-          behavior?: string;
-        }>;
-      };
+      const formData = await request.formData();
+      const files = formData.getAll('files') as File[];
+      const tagsRaw = (formData.get('tags') as string) ?? '';
+      const tags = tagsRaw
+        ? tagsRaw
+            .split(',')
+            .map((t: string) => t.trim())
+            .filter(Boolean)
+        : [];
+      const behaviorValue =
+        (formData.get('behavior') as string) ?? 'attachment';
+      const behavior: MediaBehavior =
+        behaviorValue === 'inline' ? 'inline' : 'attachment';
+
       const now = new Date().toISOString();
-      const created: Asset[] = body.files.map((f) => {
-        const tags = f.tags
-          ? f.tags
-              .split(',')
-              .map((t: string) => t.trim())
-              .filter(Boolean)
-          : [];
-        const mimeType = f.mimeType ?? 'application/octet-stream';
-        const behavior: MediaBehavior =
-          f.behavior === 'inline' ? 'inline' : 'attachment';
+      const created: Asset[] = files.map((file) => {
+        const mimeType = file.type || 'application/octet-stream';
         return {
           id: crypto.randomUUID(),
           sceneId: params.sceneId as string,
-          fileName: f.fileName ?? 'unknown',
-          title: f.title ?? '',
-          description: f.description ?? '',
+          fileName: file.name,
+          title: '',
+          description: '',
           url: `https://mock-cdn.example.com/uploads/${crypto.randomUUID()}`,
           md5: randomMd5(),
-          fileSize:
-            f.fileSize ?? Math.floor(Math.random() * 10_000_000) + 10_000,
+          fileSize: file.size,
           mimeType,
           tags,
           behavior,
@@ -183,7 +177,25 @@ export const assetHandlers = [
   }),
 
   http.put('/api/scenes/:sceneId/assets/:id', async ({ params, request }) => {
-    const body = (await request.json()) as Partial<Asset>;
+    const formData = await request.formData();
+    const body: Partial<Asset> = {};
+    const title = formData.get('title');
+    if (title && typeof title === 'string') body.title = title;
+    const description = formData.get('description');
+    if (description && typeof description === 'string')
+      body.description = description;
+    const tagsRaw = formData.get('tags');
+    if (tagsRaw && typeof tagsRaw === 'string') {
+      body.tags = tagsRaw
+        .split(',')
+        .map((t: string) => t.trim())
+        .filter(Boolean);
+    }
+    const behavior = formData.get('behavior');
+    if (behavior && typeof behavior === 'string') {
+      body.behavior = behavior === 'inline' ? 'inline' : 'attachment';
+    }
+
     const idx = assets.findIndex(
       (a) => a.id === params.id && a.sceneId === params.sceneId,
     );
