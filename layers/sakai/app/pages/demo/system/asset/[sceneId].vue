@@ -114,21 +114,17 @@ watch(
 
 <template>
   <div class="flex flex-col gap-4">
-    <div class="card p-4!">
-      <div class="mb-4 flex flex-wrap items-center gap-4">
-        <div class="min-w-[200px]">
-          <label class="text-surface-500 mb-1 block text-xs">当前场景</label>
-          <PrimeSelect
-            :model-value="sceneId"
-            :options="sceneMgr.scenes"
-            option-label="name"
-            option-value="id"
-            placeholder="选择场景"
-            class="w-full"
-            @update:model-value="onSceneChange"
-          />
-        </div>
-      </div>
+    <div class="flex flex-wrap items-center gap-4">
+      <span class="text-lg font-semibold">当前场景</span>
+      <PrimeSelect
+        :model-value="sceneId"
+        :options="sceneMgr.scenes"
+        option-label="name"
+        option-value="id"
+        placeholder="选择场景"
+        class="min-w-[200px]"
+        @update:model-value="onSceneChange"
+      />
     </div>
 
     <div
