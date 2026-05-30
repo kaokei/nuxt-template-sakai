@@ -4,6 +4,7 @@ import { authHandlers } from './auth';
 import { backupHandlers } from './backups';
 import { cacheListHandlers } from './cache-list';
 import { cacheMonitorHandlers } from './cache-monitor';
+import { certificateHandlers } from './certificate-templates';
 import { dataMonitorHandlers } from './data-monitor';
 import { deptHandlers } from './depts';
 import { dictHandlers } from './dict';
@@ -29,6 +30,7 @@ export const handlers = [
   ...backupHandlers,
   ...cacheListHandlers,
   ...cacheMonitorHandlers,
+  ...certificateHandlers,
   ...dataMonitorHandlers,
   ...deptHandlers,
   ...dictHandlers,

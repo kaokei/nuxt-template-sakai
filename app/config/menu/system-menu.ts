@@ -45,6 +45,11 @@ const menuItems: MenuItem[] = [
         icon: 'pi pi-fw pi-link',
         to: '/demo/system/short-link',
       },
+      {
+        label: '模板合成',
+        icon: 'pi pi-fw pi-images',
+        to: '/demo/system/certificate',
+      },
     ],
   },
   {
