@@ -20,6 +20,7 @@ function deriveMimeCategory(mimeType: string): MimeCategory {
     mimeType.includes('compress')
   )
     return 'archive';
+  if (mimeType.startsWith('application/vnd.')) return 'document';
   return 'other';
 }
 
