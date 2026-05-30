@@ -46,6 +46,11 @@ const menuItems: MenuItem[] = [
         to: '/demo/system/short-link',
       },
       {
+        label: '素材管理',
+        icon: 'pi pi-fw pi-folder-open',
+        to: '/demo/system/asset',
+      },
+      {
         label: '模板合成',
         icon: 'pi pi-fw pi-images',
         to: '/demo/system/certificate',
