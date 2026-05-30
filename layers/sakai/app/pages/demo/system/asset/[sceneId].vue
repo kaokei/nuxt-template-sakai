@@ -16,6 +16,8 @@ declareProviders([
   SceneMgrService,
 ]);
 
+definePageMeta({ layout: 'sakai-sidebar' });
+
 const mgr = useService(AssetMgrService);
 const sceneMgr = useService(SceneMgrService);
 const toast = useToast();
