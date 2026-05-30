@@ -133,7 +133,7 @@ async function handleSave(): Promise<void> {
         >
           <template #empty>
             <div class="flex flex-col items-center gap-3 py-4">
-              <i class="pi pi-cloud-upload !text-surface-400 !text-4xl" />
+              <i class="pi pi-cloud-upload text-surface-400! text-4xl!" />
               <span class="text-surface-500 text-sm"
                 >拖拽文件到此处，或点击选择</span
               >
