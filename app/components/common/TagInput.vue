@@ -16,7 +16,22 @@ const emit = defineEmits<{
 }>();
 
 const inputValue = ref('');
+const inputRef = ref<HTMLInputElement>();
 const showSuggestions = ref(false);
+const dropdownStyle = ref<Record<string, string>>({});
+
+function updateDropdownPosition(): void {
+  const el = inputRef.value;
+  if (!el) return;
+  const rect = el.getBoundingClientRect();
+  dropdownStyle.value = {
+    position: 'fixed',
+    top: rect.bottom + 4 + 'px',
+    left: rect.left + 'px',
+    width: rect.width + 'px',
+    zIndex: '9999',
+  };
+}
 const filteredSuggestions = computed(() => {
   if (!inputValue.value.trim()) return props.suggestions;
   const keyword = inputValue.value.trim().toLowerCase();
@@ -89,25 +104,31 @@ function onBlur(): void {
         type="text"
         class="placeholder:text-surface-400 min-w-[100px] flex-1 border-none bg-transparent py-0.5 text-sm outline-none"
         :placeholder="modelValue.length === 0 ? placeholder : ''"
-        @focus="showSuggestions = true"
+        @focus="
+          showSuggestions = true;
+          updateDropdownPosition();
+        "
         @keydown="onInputKeydown"
         @blur="onBlur"
       />
     </div>
 
     <!-- 自动补全下拉 -->
-    <ul
-      v-if="showSuggestions && filteredSuggestions.length > 0"
-      class="border-surface-200 bg-surface-0 absolute top-full right-0 left-0 z-10 mt-1 max-h-48 overflow-auto rounded-md border shadow-lg"
-    >
-      <li
-        v-for="suggestion in filteredSuggestions"
-        :key="suggestion"
-        class="hover:bg-surface-100 cursor-pointer px-3 py-2 text-sm"
-        @mousedown.prevent="addTag(suggestion)"
+    <Teleport to="body">
+      <ul
+        v-if="showSuggestions && filteredSuggestions.length > 0"
+        :style="dropdownStyle"
+        class="border-surface-200 bg-surface-0 mt-1 max-h-48 overflow-auto rounded-md border shadow-lg"
       >
-        {{ suggestion }}
-      </li>
-    </ul>
+        <li
+          v-for="suggestion in filteredSuggestions"
+          :key="suggestion"
+          class="hover:bg-surface-100 cursor-pointer px-3 py-2 text-sm"
+          @mousedown.prevent="addTag(suggestion)"
+        >
+          {{ suggestion }}
+        </li>
+      </ul>
+    </Teleport>
   </div>
 </template>
