@@ -29,6 +29,8 @@ logs
 .claude/
 .kiro/
 .sisyphus/
+.playwright/
 .playwright-mcp/
+.playwright-cli/
 
 app/components.d.ts
