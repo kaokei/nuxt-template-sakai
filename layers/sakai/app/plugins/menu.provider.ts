@@ -1,7 +1,7 @@
-import { demoShowcaseConfig } from '~/config/menu/showcase-menu';
-import { demoSystemConfig } from '~/config/menu/system-menu';
-import { demoWorkbenchConfig } from '~/config/menu/workbench-menu';
-import { MenuService } from '~/services/menu.service';
+import { demoShowcaseConfig } from '@sakai/config/menu/showcase-menu';
+import { demoSystemConfig } from '@sakai/config/menu/system-menu';
+import { demoWorkbenchConfig } from '@sakai/config/menu/workbench-menu';
+import { MenuService } from '@sakai/services/menu.service';
 
 export default defineNuxtPlugin(() => {
   declareRootProviders([MenuService]);

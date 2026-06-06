@@ -1,5 +1,5 @@
+import type { Scene } from '@sakai/types/asset';
 import { HttpResponse, delay, http } from 'msw';
-import type { Scene } from '../../layers/sakai/app/types/asset';
 import { SCENES } from '../data/scenes';
 
 let scenes: Scene[] = JSON.parse(JSON.stringify(SCENES)) as Scene[];

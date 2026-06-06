@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useLayout } from '@sakai/components/layout/composables/layout';
-import { MenuService } from '~/services/menu.service';
-import { UserNotificationService } from '~/services/UserNotificationService';
+import { MenuService } from '@sakai/services/menu.service';
+import { UserNotificationService } from '@sakai/services/UserNotificationService';
 import AppConfigurator from './AppConfigurator.vue';
 
 const { toggleMenu, toggleTopMenu, toggleDarkMode, isDarkTheme } = useLayout();

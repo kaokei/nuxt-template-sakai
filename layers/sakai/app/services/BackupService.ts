@@ -1,4 +1,4 @@
-import type { Backup } from '~/types/backup';
+import type { Backup } from '@sakai/types/backup';
 
 export interface BackupQueryParams {
   page?: number;

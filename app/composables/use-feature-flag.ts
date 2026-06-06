@@ -1,5 +1,5 @@
-import { FeatureFlagService } from '~/services/feature-flag.service';
-import { UserService } from '~/services/user.service';
+import { FeatureFlagService } from '@sakai/services/feature-flag.service';
+import { UserService } from '@sakai/services/user.service';
 
 export function useFeatureFlag(key: string): ComputedRef<boolean> {
   const flagService = useService(FeatureFlagService);

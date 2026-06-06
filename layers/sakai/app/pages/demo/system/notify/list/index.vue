@@ -3,7 +3,7 @@ import { NotificationMgrService } from '@sakai/services/NotificationMgrService';
 import { NotificationService } from '@sakai/services/NotificationService';
 import { UserService } from '@sakai/services/UserService';
 import NotificationFormDialog from '@sakai/components/views/pages/notify-mgr/NotificationFormDialog.vue';
-import type { NotificationRecord } from '~/types/notification';
+import type { NotificationRecord } from '@sakai/types/notification';
 
 declareProviders([NotificationService, NotificationMgrService, UserService]);
 

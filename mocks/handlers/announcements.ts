@@ -1,6 +1,6 @@
+import type { Announcement } from '@sakai/types/announcement';
+import type { NotificationRecord } from '@sakai/types/notification';
 import { HttpResponse, delay, http } from 'msw';
-import type { Announcement } from '../../app/types/announcement';
-import type { NotificationRecord } from '../../app/types/notification';
 import { ANNOUNCEMENT_LIST } from '../data/announcements';
 import { NOTIFICATION_RECORD_LIST } from '../data/notifications';
 

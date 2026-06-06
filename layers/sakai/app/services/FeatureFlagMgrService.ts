@@ -1,8 +1,8 @@
+import type { FeatureFlag } from '@sakai/types/feature-flag';
 import type {
   DataTablePageEvent,
   DataTableSortEvent,
 } from 'primevue/datatable';
-import type { FeatureFlag } from '~/types/feature-flag';
 import { FeatureFlagAdminService } from './FeatureFlagAdminService';
 
 export interface SaveResult {

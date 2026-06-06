@@ -1,4 +1,4 @@
-import type { UserNotification } from '~/types/notification';
+import type { UserNotification } from '@sakai/types/notification';
 
 @Injectable()
 export class UserNotificationService {

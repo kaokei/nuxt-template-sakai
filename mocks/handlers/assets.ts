@@ -1,9 +1,5 @@
+import type { Asset, MediaBehavior, MimeCategory } from '@sakai/types/asset';
 import { HttpResponse, delay, http } from 'msw';
-import type {
-  Asset,
-  MediaBehavior,
-  MimeCategory,
-} from '../../layers/sakai/app/types/asset';
 import { ASSETS } from '../data/assets';
 
 let assets: Asset[] = JSON.parse(JSON.stringify(ASSETS)) as Asset[];

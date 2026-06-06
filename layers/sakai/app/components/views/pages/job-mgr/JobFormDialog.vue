@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Job } from '~/types/job';
+import type { Job } from '@sakai/types/job';
 import { JobService } from '@sakai/services/JobService';
 
 const visible = defineModel<boolean>('visible', { required: true });

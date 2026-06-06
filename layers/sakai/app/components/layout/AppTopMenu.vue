@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useLayout } from '@sakai/components/layout/composables/layout';
-import type { MenuItem } from '~/types/menu';
+import type { MenuItem } from '@sakai/types/menu';
 
 const props = defineProps<{
   items: MenuItem[];

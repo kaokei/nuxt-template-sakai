@@ -1,9 +1,9 @@
 import { SysParamService } from '@sakai/services/SysParamService';
+import type { SysParam } from '@sakai/types/sys-param';
 import type {
   DataTablePageEvent,
   DataTableSortEvent,
 } from 'primevue/datatable';
-import type { SysParam } from '~/types/sys-param';
 
 export interface DeleteResult {
   success: true;

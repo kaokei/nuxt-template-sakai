@@ -1,4 +1,4 @@
-import { AuthService } from '~/services/auth.service';
+import { AuthService } from '@sakai/services/auth.service';
 
 export default defineNuxtPlugin(() => {
   declareRootProviders([AuthService]);

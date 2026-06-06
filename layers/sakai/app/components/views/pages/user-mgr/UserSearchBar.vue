@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { UserService, type SelectOption } from '@sakai/services/UserService';
 import { PostService } from '@sakai/services/PostService';
+import DeptPicker from '@sakai/components/common/DeptPicker.vue';
 
 const emit = defineEmits<{
   search: [params: Record<string, any>];

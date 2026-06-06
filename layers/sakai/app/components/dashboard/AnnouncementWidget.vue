@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Announcement } from '~/types/announcement';
+import type { Announcement } from '@sakai/types/announcement';
 
 const announcements = ref<Announcement[]>([]);
 const loading = ref(true);

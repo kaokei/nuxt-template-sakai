@@ -1,9 +1,9 @@
 import { AnnouncementService } from '@sakai/services/AnnouncementService';
+import type { Announcement } from '@sakai/types/announcement';
 import type {
   DataTablePageEvent,
   DataTableSortEvent,
 } from 'primevue/datatable';
-import type { Announcement } from '~/types/announcement';
 
 @Injectable()
 export class AnnouncementMgrService {

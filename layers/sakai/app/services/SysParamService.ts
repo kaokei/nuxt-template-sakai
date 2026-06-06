@@ -1,4 +1,4 @@
-import type { SysParam } from '~/types/sys-param';
+import type { SysParam } from '@sakai/types/sys-param';
 
 export interface SysParamQueryParams {
   page?: number;

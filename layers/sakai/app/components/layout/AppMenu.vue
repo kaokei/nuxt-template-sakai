@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { MenuItem } from '~/types/menu';
+import type { MenuItem } from '@sakai/types/menu';
 import AppMenuItem from './AppMenuItem.vue';
 
 const props = defineProps<{

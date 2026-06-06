@@ -4,6 +4,7 @@ import {
   type Dept,
   type SelectOption,
 } from '@sakai/services/DeptService';
+import UserPicker from '@sakai/components/common/UserPicker.vue';
 
 const visible = defineModel<boolean>('visible', { required: true });
 const editData = defineModel<Dept | null>('editData', { default: null });

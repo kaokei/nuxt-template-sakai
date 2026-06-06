@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useSeoMeta } from '#imports';
-import { UserService } from '../services/user.service';
+import { UserService } from '@sakai/services/user.service';
 
 const userService = useService(UserService);
 

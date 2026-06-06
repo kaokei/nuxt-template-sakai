@@ -1,9 +1,9 @@
-import { HttpResponse, delay, http } from 'msw';
 import type {
   NotificationFormData,
   NotificationRecord,
   UserNotification,
-} from '../../app/types/notification';
+} from '@sakai/types/notification';
+import { HttpResponse, delay, http } from 'msw';
 import {
   NOTIFICATION_RECORD_LIST,
   USER_NOTIFICATION_LIST,

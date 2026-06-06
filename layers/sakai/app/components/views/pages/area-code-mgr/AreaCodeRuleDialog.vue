@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { PHONE_RULE_TEMPLATES } from '@sakai/services/AreaCodeService';
 import { AreaCodeMgrService } from '@sakai/services/AreaCodeMgrService';
-import type { AreaCode } from '~/types/area-code';
+import type { AreaCode } from '@sakai/types/area-code';
 
 const visible = defineModel<boolean>('visible', { required: true });
 

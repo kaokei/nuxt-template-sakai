@@ -1,5 +1,5 @@
 import { JobService } from '@sakai/services/JobService';
-import type { Job } from '~/types/job';
+import type { Job } from '@sakai/types/job';
 
 export interface SaveResult {
   success: true;

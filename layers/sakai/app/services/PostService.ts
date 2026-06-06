@@ -1,4 +1,4 @@
-import type { Post } from '~/types/post';
+import type { Post } from '@sakai/types/post';
 
 /** 岗位分页查询参数 */
 export interface PostQueryParams {

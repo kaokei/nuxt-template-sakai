@@ -3,6 +3,7 @@ import type { User } from '@sakai/services/UserService';
 import { UserService, type SelectOption } from '@sakai/services/UserService';
 import { DeptService } from '@sakai/services/DeptService';
 import { PostService } from '@sakai/services/PostService';
+import DeptPicker from '@sakai/components/common/DeptPicker.vue';
 
 const visible = defineModel<boolean>('visible', { required: true });
 const editData = defineModel<User | null>('editData', { default: null });

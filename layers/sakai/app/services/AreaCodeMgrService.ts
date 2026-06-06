@@ -1,7 +1,7 @@
 import { AreaCodeService } from '@sakai/services/AreaCodeService';
+import type { AreaCode } from '@sakai/types/area-code';
+import { CONTINENT_OPTIONS } from '@sakai/types/area-code';
 import type { DataTableSortEvent } from 'primevue/datatable';
-import type { AreaCode } from '~/types/area-code';
-import { CONTINENT_OPTIONS } from '~/types/area-code';
 
 export interface DeleteResult {
   success: true;

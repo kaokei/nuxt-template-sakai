@@ -1,4 +1,4 @@
-import type { AuthUser, LoginResponse } from '~/types/auth';
+import type { AuthUser, LoginResponse } from '@sakai/types/auth';
 
 @Injectable()
 export class AuthService {

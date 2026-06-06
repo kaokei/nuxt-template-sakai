@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { AssetService } from '@sakai/services/AssetService';
 import type { MediaBehavior } from '@sakai/types/asset';
+import TagInput from '@sakai/components/common/TagInput.vue';
 
 const visible = defineModel<boolean>('visible', { required: true });
 const sceneId = defineModel<string>('sceneId', { required: true });

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { AnnouncementMgrService } from '@sakai/services/AnnouncementMgrService';
-import type { AnnouncementStatus } from '~/types/announcement';
+import type { AnnouncementStatus } from '@sakai/types/announcement';
 
 const props = defineProps<{
   mgr: AnnouncementMgrService;

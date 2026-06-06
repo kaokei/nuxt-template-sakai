@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { useLayout } from '@sakai/components/layout/composables/layout';
-import { MenuService } from '~/services/menu.service';
-import { AuthService } from '~/services/auth.service';
-import type { MenuItem } from '~/types/menu';
+import { MenuService } from '@sakai/services/menu.service';
+import { AuthService } from '@sakai/services/auth.service';
+import type { MenuItem } from '@sakai/types/menu';
 import AppMenu from './AppMenu.vue';
 
 const props = defineProps<{

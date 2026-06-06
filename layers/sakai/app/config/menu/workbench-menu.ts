@@ -1,4 +1,4 @@
-import type { MenuItem, SystemConfig } from '~/types/menu';
+import type { MenuItem, SystemConfig } from '@sakai/types/menu';
 
 const menuItems: MenuItem[] = [
   {

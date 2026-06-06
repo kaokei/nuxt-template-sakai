@@ -1,4 +1,4 @@
-import { UserNotificationService } from '~/services/UserNotificationService';
+import { UserNotificationService } from '@sakai/services/UserNotificationService';
 
 export default defineNuxtPlugin(() => {
   declareRootProviders([UserNotificationService]);

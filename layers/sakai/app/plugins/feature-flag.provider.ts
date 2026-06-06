@@ -1,4 +1,4 @@
-import { FeatureFlagService } from '~/services/feature-flag.service';
+import { FeatureFlagService } from '@sakai/services/feature-flag.service';
 
 export default defineNuxtPlugin(async () => {
   declareRootProviders([FeatureFlagService]);

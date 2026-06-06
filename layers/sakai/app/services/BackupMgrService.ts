@@ -1,5 +1,5 @@
 import { BackupService } from '@sakai/services/BackupService';
-import type { Backup } from '~/types/backup';
+import type { Backup } from '@sakai/types/backup';
 
 export interface DeleteResult {
   success: true;

@@ -1,9 +1,9 @@
 import { PostService } from '@sakai/services/PostService';
+import type { Post } from '@sakai/types/post';
 import type {
   DataTablePageEvent,
   DataTableSortEvent,
 } from 'primevue/datatable';
-import type { Post } from '~/types/post';
 
 export interface DeleteResult {
   success: true;

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { AuthService } from '~/services/auth.service';
+import { AuthService } from '@sakai/services/auth.service';
 
 definePageMeta({ layout: false });
 useSeoMeta({ title: '系统登录' });

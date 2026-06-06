@@ -1,4 +1,4 @@
-import type { AreaCode } from '~/types/area-code';
+import type { AreaCode } from '@sakai/types/area-code';
 
 export interface AreaCodeQueryParams {
   sortField?: string;

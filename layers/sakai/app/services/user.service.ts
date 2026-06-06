@@ -1,4 +1,4 @@
-import type { UserVO } from '~/types/user';
+import type { UserVO } from '@sakai/types/user';
 import { StorageService } from './storage.service';
 
 @Injectable()

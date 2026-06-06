@@ -1,6 +1,6 @@
 import autobind from 'autobind-decorator';
+import type { Pagination } from '@sakai/types/common';
 import { cloneDeep } from 'lodash-es';
-import type { Pagination } from '~/types/common';
 import type { RouterService } from './router.service';
 
 export class SearchService {

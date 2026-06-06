@@ -2,6 +2,7 @@
 import { UserService, type SelectOption } from '@sakai/services/UserService';
 import { FeatureFlagAdminService } from '@sakai/services/FeatureFlagAdminService';
 import { FeatureFlagMgrService } from '@sakai/services/FeatureFlagMgrService';
+import UserPicker from '@sakai/components/common/UserPicker.vue';
 
 declareProviders([FeatureFlagAdminService, FeatureFlagMgrService, UserService]);
 

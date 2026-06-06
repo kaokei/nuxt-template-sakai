@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { AreaCodeMgrService } from '@sakai/services/AreaCodeMgrService';
-import type { AreaCode } from '~/types/area-code';
+import type { AreaCode } from '@sakai/types/area-code';
 
 const visible = defineModel<boolean>('visible', { required: true });
 const editData = defineModel<AreaCode | null>('editData', { default: null });

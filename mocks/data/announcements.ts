@@ -1,4 +1,4 @@
-import type { Announcement } from '../../app/types/announcement';
+import type { Announcement } from '@sakai/types/announcement';
 
 export const ANNOUNCEMENT_LIST: Announcement[] = [
   {

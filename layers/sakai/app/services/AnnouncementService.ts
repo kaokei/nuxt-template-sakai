@@ -1,4 +1,7 @@
-import type { Announcement, AnnouncementFormData } from '~/types/announcement';
+import type {
+  Announcement,
+  AnnouncementFormData,
+} from '@sakai/types/announcement';
 
 export interface PageResult<T> {
   data: T[];

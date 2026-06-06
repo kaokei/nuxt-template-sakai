@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { AnnouncementService } from '@sakai/services/AnnouncementService';
-import type { Announcement } from '~/types/announcement';
+import type { Announcement } from '@sakai/types/announcement';
 
 declareProviders([AnnouncementService]);
 

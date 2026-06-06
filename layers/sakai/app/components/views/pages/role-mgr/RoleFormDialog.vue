@@ -2,6 +2,7 @@
 import type { Menu } from '@sakai/services/MenuAdminService';
 import { MenuAdminService } from '@sakai/services/MenuAdminService';
 import { RoleService, type Role } from '@sakai/services/RoleService';
+import DeptMultiPicker from '@sakai/components/common/DeptMultiPicker.vue';
 
 const visible = defineModel<boolean>('visible', { required: true });
 const editData = defineModel<Role | null>('editData', { default: null });

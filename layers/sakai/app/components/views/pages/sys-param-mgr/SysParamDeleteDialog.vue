@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { SysParam } from '~/types/sys-param';
+import type { SysParam } from '@sakai/types/sys-param';
 
 const visible = defineModel<boolean>('visible', { required: true });
 

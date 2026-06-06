@@ -1,4 +1,4 @@
-import { AuthService } from '~/services/auth.service';
+import { AuthService } from '@sakai/services/auth.service';
 
 /**
  * RBAC 按钮级权限控制 composable

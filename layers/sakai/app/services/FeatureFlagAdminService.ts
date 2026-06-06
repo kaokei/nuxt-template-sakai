@@ -1,4 +1,7 @@
-import type { FeatureFlag, FeatureFlagQueryParams } from '~/types/feature-flag';
+import type {
+  FeatureFlag,
+  FeatureFlagQueryParams,
+} from '@sakai/types/feature-flag';
 
 export type { FeatureFlag, FeatureFlagQueryParams };
 

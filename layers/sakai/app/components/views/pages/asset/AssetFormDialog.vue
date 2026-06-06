@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { AssetService } from '@sakai/services/AssetService';
 import type { Asset, MediaBehavior } from '@sakai/types/asset';
+import TagInput from '@sakai/components/common/TagInput.vue';
 
 const visible = defineModel<boolean>('visible', { required: true });
 const editData = defineModel<Asset | null>('editData', { default: null });

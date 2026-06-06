@@ -2,7 +2,7 @@
 import AppFooter from '@sakai/components/layout/AppFooter.vue';
 import AppTopMenu from '@sakai/components/layout/AppTopMenu.vue';
 import AppTopbar from '@sakai/components/layout/AppTopbar.vue';
-import { MenuService } from '~/services/menu.service';
+import { MenuService } from '@sakai/services/menu.service';
 
 const menuService = useService(MenuService);
 const currentMenu = computed(() => menuService.currentMenu);

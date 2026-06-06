@@ -1,4 +1,4 @@
-import type { Job } from '~/types/job';
+import type { Job } from '@sakai/types/job';
 
 export interface JobQueryParams {
   page?: number;

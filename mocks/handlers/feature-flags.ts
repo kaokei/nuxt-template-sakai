@@ -1,5 +1,5 @@
+import type { FeatureFlag } from '@sakai/types/feature-flag';
 import { HttpResponse, delay, http } from 'msw';
-import type { FeatureFlag } from '../../app/types/feature-flag';
 import {
   ALL_FEATURE_FLAGS,
   ALL_FLAG_RULES,

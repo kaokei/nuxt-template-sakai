@@ -3,8 +3,9 @@ import type { NotificationMgrService } from '@sakai/services/NotificationMgrServ
 import type {
   NotificationType,
   NotificationTargetType,
-} from '~/types/notification';
+} from '@sakai/types/notification';
 import type { SelectOption } from '@sakai/services/DeptService';
+import UserMultiPicker from '@sakai/components/common/UserMultiPicker.vue';
 
 const props = defineProps<{
   mgr: NotificationMgrService;

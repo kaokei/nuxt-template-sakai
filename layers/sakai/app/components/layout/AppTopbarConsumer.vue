@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useLayout } from '@sakai/components/layout/composables/layout';
-import { UserNotificationService } from '~/services/UserNotificationService';
+import { UserNotificationService } from '@sakai/services/UserNotificationService';
 import AppConfigurator from './AppConfigurator.vue';
 
 const { toggleDarkMode, isDarkTheme } = useLayout();

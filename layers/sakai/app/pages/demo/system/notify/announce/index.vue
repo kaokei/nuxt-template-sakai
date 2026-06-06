@@ -2,7 +2,7 @@
 import AnnouncementFormDialog from '@sakai/components/views/pages/announce-mgr/AnnouncementFormDialog.vue';
 import { AnnouncementMgrService } from '@sakai/services/AnnouncementMgrService';
 import { AnnouncementService } from '@sakai/services/AnnouncementService';
-import type { Announcement } from '~/types/announcement';
+import type { Announcement } from '@sakai/types/announcement';
 
 declareProviders([AnnouncementService, AnnouncementMgrService]);
 

@@ -1,4 +1,4 @@
-import type { Environment, FeatureFlag } from '~/types/feature-flag';
+import type { Environment, FeatureFlag } from '@sakai/types/feature-flag';
 
 const KEY_FEATURE_FLAGS = 'KEY_FEATURE_FLAGS';
 

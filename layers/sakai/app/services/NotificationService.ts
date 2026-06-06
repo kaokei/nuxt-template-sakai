@@ -1,7 +1,7 @@
 import type {
   NotificationFormData,
   NotificationRecord,
-} from '~/types/notification';
+} from '@sakai/types/notification';
 
 export interface PageResult<T> {
   data: T[];

@@ -1,9 +1,9 @@
 import { NotificationService } from '@sakai/services/NotificationService';
+import type { NotificationRecord } from '@sakai/types/notification';
 import type {
   DataTablePageEvent,
   DataTableSortEvent,
 } from 'primevue/datatable';
-import type { NotificationRecord } from '~/types/notification';
 
 @Injectable()
 export class NotificationMgrService {

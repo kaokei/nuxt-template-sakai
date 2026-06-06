@@ -1,7 +1,7 @@
 import type {
   NotificationRecord,
   UserNotification,
-} from '../../app/types/notification';
+} from '@sakai/types/notification';
 
 /** 通知发送记录（管理员视角） */
 export const NOTIFICATION_RECORD_LIST: NotificationRecord[] = [

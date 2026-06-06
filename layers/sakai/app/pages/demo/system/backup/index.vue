@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { BackupMgrService } from '@sakai/services/BackupMgrService';
 import { BackupService } from '@sakai/services/BackupService';
-import type { Backup } from '~/types/backup';
+import type { Backup } from '@sakai/types/backup';
 
 declareProviders([BackupService, BackupMgrService]);
 

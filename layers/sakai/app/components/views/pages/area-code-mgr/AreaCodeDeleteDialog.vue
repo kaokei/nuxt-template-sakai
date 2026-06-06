@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { AreaCode } from '~/types/area-code';
+import type { AreaCode } from '@sakai/types/area-code';
 
 const visible = defineModel<boolean>('visible', { required: true });
 
