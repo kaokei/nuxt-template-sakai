@@ -115,82 +115,57 @@ onMounted(() => {
     </div>
 
     <div class="search-container">
-      <div class="flex flex-wrap items-end gap-4">
-        <div class="min-w-40 flex-1">
-          <label
-            class="text-surface-500 dark:text-surface-400 mb-1 block text-xs"
-          >
-            选择小程序
-          </label>
-          <PrimeSelect
-            v-model="mgr.selectedAppId"
-            :options="mgr.miniApps.map((a) => ({ label: a.name, value: a.id }))"
-            option-label="label"
-            option-value="value"
-            placeholder="请选择小程序"
-            :loading="mgr.miniAppsLoading"
-            fluid
-          />
-        </div>
-        <div class="w-36">
-          <label
-            class="text-surface-500 dark:text-surface-400 mb-1 block text-xs"
-          >
-            环境版本
-          </label>
-          <PrimeSelect
-            v-model="mgr.formEnvVersion"
-            :options="ENV_VERSIONS"
-            option-label="label"
-            option-value="value"
-            fluid
-          />
-        </div>
+      <div class="flex items-center gap-2">
+        <label class="text-sm font-medium whitespace-nowrap">选择小程序</label>
+        <PrimeSelect
+          v-model="mgr.selectedAppId"
+          :options="mgr.miniApps.map((a) => ({ label: a.name, value: a.id }))"
+          option-label="label"
+          option-value="value"
+          placeholder="请选择小程序"
+          :loading="mgr.miniAppsLoading"
+        />
       </div>
-
-      <div class="mt-4 flex flex-wrap items-end gap-4">
-        <div class="flex-1">
-          <label
-            class="text-surface-500 dark:text-surface-400 mb-1 block text-xs"
-          >
-            页面路径 <span class="text-red-400">*</span>
-          </label>
-          <PrimeInputText
-            v-model="mgr.formPath"
-            placeholder="pages/goods/detail"
-            fluid
-          />
-        </div>
-        <div class="flex-1">
-          <label
-            class="text-surface-500 dark:text-surface-400 mb-1 block text-xs"
-          >
-            URL 参数
-          </label>
-          <PrimeInputText
-            v-model="mgr.formQuery"
-            placeholder="id=123&source=share"
-            fluid
-          />
-        </div>
+      <div class="flex items-center gap-2">
+        <label class="text-sm font-medium whitespace-nowrap">环境版本</label>
+        <PrimeSelect
+          v-model="mgr.formEnvVersion"
+          :options="ENV_VERSIONS"
+          option-label="label"
+          option-value="value"
+        />
       </div>
-
-      <div class="mt-4">
-        <PrimeButton
-          :label="mgr.advancedExpanded ? '收起高级选项' : '展开高级选项'"
-          :icon="
-            mgr.advancedExpanded ? 'pi pi-chevron-up' : 'pi pi-chevron-down'
-          "
-          severity="secondary"
-          size="small"
-          text
-          @click="mgr.toggleAdvanced()"
+      <div class="flex items-center gap-2">
+        <label class="text-sm font-medium whitespace-nowrap">
+          页面路径 <span class="text-red-400">*</span>
+        </label>
+        <PrimeInputText
+          v-model="mgr.formPath"
+          placeholder="pages/goods/detail"
+          class="w-56"
+        />
+      </div>
+      <div class="flex items-center gap-2">
+        <label class="text-sm font-medium whitespace-nowrap">URL 参数</label>
+        <PrimeInputText
+          v-model="mgr.formQuery"
+          placeholder="id=123&source=share"
+          class="w-56"
         />
       </div>
 
+      <PrimeButton
+        :label="mgr.advancedExpanded ? '收起高级选项' : '展开高级选项'"
+        :icon="mgr.advancedExpanded ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"
+        severity="secondary"
+        size="small"
+        text
+        @click="mgr.toggleAdvanced()"
+      />
+
       <div
         v-if="mgr.advancedExpanded"
-        class="mt-3 grid grid-cols-1 gap-4 md:grid-cols-2"
+        class="grid w-full grid-cols-1 gap-4 md:grid-cols-2"
       >
         <div>
           <label
