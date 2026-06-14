@@ -520,6 +520,10 @@ a {
   }
 }
 /* Utils */
+.search-container {
+  @apply border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-800 flex flex-wrap items-center gap-4 rounded-lg border p-4;
+}
+
 .clearfix:after {
   content: ' ';
   display: block;

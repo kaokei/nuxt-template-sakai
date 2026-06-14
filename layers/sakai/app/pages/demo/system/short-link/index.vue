@@ -96,9 +96,7 @@ onMounted(() => {
 <template>
   <div class="flex flex-col gap-4">
     <!-- 搜索栏 -->
-    <div
-      class="border-surface-200 bg-surface-0 flex flex-wrap items-center gap-4 rounded-lg border p-4"
-    >
+    <div class="search-container">
       <div class="flex flex-wrap items-end gap-4">
         <div class="min-w-50 flex-1">
           <label

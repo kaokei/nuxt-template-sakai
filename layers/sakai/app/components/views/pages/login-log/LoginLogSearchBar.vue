@@ -53,9 +53,7 @@ function handleReset() {
 </script>
 
 <template>
-  <div
-    class="border-surface-200 bg-surface-0 flex flex-wrap items-center gap-4 rounded-lg border p-4"
-  >
+  <div class="search-container">
     <div class="flex items-center gap-2">
       <label class="text-sm font-medium whitespace-nowrap">用户名</label>
       <PrimeInputText

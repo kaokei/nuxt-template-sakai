@@ -114,7 +114,7 @@ onMounted(() => {
       </a>
     </div>
 
-    <div class="border-surface-200 bg-surface-0 rounded-lg border p-4">
+    <div class="search-container">
       <div class="flex flex-wrap items-end gap-4">
         <div class="min-w-40 flex-1">
           <label
@@ -227,7 +227,7 @@ onMounted(() => {
       </div>
     </div>
 
-    <div class="border-surface-200 bg-surface-0 rounded-lg border p-4">
+    <div class="search-container">
       <label class="text-surface-500 dark:text-surface-400 mb-2 block text-xs">
         一键生成
       </label>
@@ -247,10 +247,7 @@ onMounted(() => {
       </div>
     </div>
 
-    <div
-      v-if="mgr.records.length > 0"
-      class="border-surface-200 bg-surface-0 rounded-lg border p-4"
-    >
+    <div v-if="mgr.records.length > 0" class="search-container">
       <div class="mb-3 flex items-center justify-between">
         <h2 class="text-surface-900 dark:text-surface-0 text-lg font-semibold">
           生成结果（本次会话）

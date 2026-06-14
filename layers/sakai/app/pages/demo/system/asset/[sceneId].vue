@@ -127,9 +127,7 @@ watch(
       />
     </div>
 
-    <div
-      class="border-surface-200 bg-surface-0 flex flex-wrap items-center gap-4 rounded-lg border p-4"
-    >
+    <div class="search-container">
       <div class="flex flex-wrap items-end gap-4">
         <div class="min-w-[200px] flex-1">
           <label class="text-surface-500 mb-1 block text-xs">关键词</label>
