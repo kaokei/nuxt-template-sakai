@@ -32,5 +32,6 @@ logs
 .playwright/
 .playwright-mcp/
 .playwright-cli/
+.superpowers/
 
 app/components.d.ts
