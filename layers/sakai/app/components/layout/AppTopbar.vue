@@ -312,9 +312,9 @@ function toggleSystemMenu(event: Event) {
   gap: 0.5rem;
   padding: 0.5rem 1rem;
   border-radius: var(--p-border-radius-md, 6px);
-  background: var(--p-surface-0, rgba(255, 255, 255, 0.05));
-  border: 1px solid var(--p-surface-200, rgba(255, 255, 255, 0.12));
-  color: var(--p-text-color, inherit);
+  background: transparent;
+  border: 1px solid var(--surface-border);
+  color: var(--text-color);
   cursor: pointer;
   transition:
     background 0.15s,
@@ -325,13 +325,13 @@ function toggleSystemMenu(event: Event) {
 }
 
 .system-selector-trigger:hover {
-  background: var(--p-surface-100, rgba(255, 255, 255, 0.08));
-  border-color: var(--p-surface-300, rgba(255, 255, 255, 0.2));
+  background: var(--surface-hover);
+  border-color: var(--surface-border);
 }
 
 .system-selector-icon {
   font-size: 1rem;
-  color: var(--p-primary-color, var(--primary-color));
+  color: var(--p-primary-color);
 }
 
 .system-selector-name {
@@ -344,16 +344,5 @@ function toggleSystemMenu(event: Event) {
   font-size: 0.75rem;
   opacity: 0.6;
   margin-left: 0.25rem;
-}
-
-/* 深色模式适配 */
-:global(.app-dark) .system-selector-trigger {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.1);
-}
-
-:global(.app-dark) .system-selector-trigger:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.18);
 }
 </style>
