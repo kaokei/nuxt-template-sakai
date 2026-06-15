@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-@import 'tailwindcss-primeui';
+@plugin 'tailwindcss-primeui';
 @import 'primeicons/primeicons.css';
 
 @source '../../../layers';
@@ -7,13 +7,6 @@
 @custom-variant dark (&:where([class*="app-dark"], [class*="app-dark"] *));
 
 @theme static {
-  --breakpoint-*: initial;
-  --breakpoint-sm: 576px;
-  --breakpoint-md: 768px;
-  --breakpoint-lg: 992px;
-  --breakpoint-xl: 1200px;
-  --breakpoint-2xl: 1920px;
-
   /* 所有项目字体统一通过 --font-* 变量在此集中定义：
      - Tailwind 自动生成对应的 font-{name} 工具类
      - @nuxt/fonts 的 processCSSVariables（默认 "font-prefixed-only"）扫描 --font-* 变量，
@@ -22,6 +15,18 @@
   --font-noto-sans-sc: 'Noto Sans SC', sans-serif;
   --font-rubik: 'Rubik Doodle Shadow', cursive;
   --font-tourney: 'Tourney', sans-serif;
+
+  --breakpoint-*: initial;
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+  --breakpoint-2xl: 1920px;
+
+  --tab-size-none: 0;
+  --tab-size-sm: 2;
+  --tab-size-md: 4;
+  --tab-size-lg: 8;
 }
 
 /*
@@ -40,4 +45,26 @@
   ::file-selector-button {
     border-color: var(--color-gray-200, currentcolor);
   }
+}
+
+@utility content-auto {
+  content-visibility: auto;
+}
+@utility flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+@utility fullscreen {
+  width: 100%;
+  height: 100%;
+  position: fixed !important;
+  left: 50%;
+  top: 50%;
+  transform-origin: 0 0; /* 缩放变换的原点设置在左上角 */
+  transform: translate(-50%, -50%); /* 初始位移，使容器中心对准视口中心 */
+  transition: all 0.5s ease-in-out;
+}
+@utility tab-* {
+  tab-size: --value(--tab-size-*);
 }

@@ -142,7 +142,7 @@ useSeoMeta({
                 >@fontsource/rubik-doodle-shadow</code
               >
             </p>
-            <p class="font-rubik text-[2rem]">
+            <p class="font-rubik text-3xl">
               Rubik Doodle Shadow — Hand drawn fun!
             </p>
           </div>
@@ -155,10 +155,10 @@ useSeoMeta({
                 >@fontsource/tourney</code
               >
             </p>
-            <p class="font-tourney text-[2rem] font-thin">
+            <p class="font-tourney text-3xl font-thin">
               Tourney Thin 100 — SPORTY DISPLAY
             </p>
-            <p class="font-tourney text-[2rem] font-thin italic">
+            <p class="font-tourney text-3xl font-thin italic">
               Tourney Thin 100 Italic — sporty display
             </p>
           </div>
