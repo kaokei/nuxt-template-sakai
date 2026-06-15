@@ -49,6 +49,7 @@ export default defineNuxtConfig({
   modules: [
     '@primevue/nuxt-module',
     '@nuxt/icon',
+    '@nuxt/fonts',
     '@nuxt/eslint',
     '@kaokei/nuxt-use-vue-service',
   ],
@@ -95,6 +96,24 @@ export default defineNuxtConfig({
         // if you want to include all the icons in nested directories:
         // recursive: true,
       },
+    ],
+  },
+  fonts: {
+    // 禁用默认启用的 google/bunny 等 provider（国内网络不可达）
+    // 仅保留 npm + local provider
+    providers: {
+      google: false,
+      googleicons: false,
+      bunny: false,
+      fontshare: false,
+      fontsource: false,
+      adobe: false,
+    },
+    families: [
+      { name: 'Inter', provider: 'npm', global: true },
+      { name: 'Noto Sans SC', provider: 'npm', global: true },
+      { name: 'Rubik Doodle Shadow', provider: 'npm', global: true },
+      { name: 'Tourney', provider: 'npm', global: true, weights: [100] },
     ],
   },
 });
