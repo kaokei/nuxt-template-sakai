@@ -263,10 +263,10 @@ function searchCountry(event) {
               :key="option.code"
             >
               <span
-                :class="'flag flag- mr-2' + option.code.toLowerCase()"
+                :class="'flag flag-' + option.code.toLowerCase()"
                 style="width: 18px; height: 12px"
               />
-              <div>{{ option.name }}</div>
+              <div class="ml-2">{{ option.name }}</div>
             </div>
             <template v-if="!slotProps.value || slotProps.value.length === 0">
               <div class="p-1">Select Countries</div>
@@ -275,10 +275,10 @@ function searchCountry(event) {
           <template #option="slotProps">
             <div class="flex items-center">
               <span
-                :class="'flag flag- mr-2' + slotProps.option.code.toLowerCase()"
+                :class="'flag flag-' + slotProps.option.code.toLowerCase()"
                 style="width: 18px; height: 12px"
               />
-              <div>{{ slotProps.option.name }}</div>
+              <div class="ml-2">{{ slotProps.option.name }}</div>
             </div>
           </template>
         </PrimeMultiSelect>
