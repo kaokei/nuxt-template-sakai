@@ -183,7 +183,7 @@ primevue: {
       >
     </p>
     <pre class="app-code">
-<code>css: ['~/assets/tailwind.css', '~/assets/styles.scss']</code></pre>
+<code>css: ['~/assets/css/main.css', '@sakai/assets/styles.scss']</code></pre>
 
     <p class="mb-4 text-lg">
       Change

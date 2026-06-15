@@ -1,4 +1,15 @@
 /* Utils */
+.search-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  border-radius: var(--p-content-border-radius);
+  border: 1px solid var(--p-content-border-color);
+  background-color: var(--p-content-background);
+  padding: 1rem;
+}
+
 .clearfix:after {
   content: ' ';
   display: block;

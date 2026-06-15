@@ -2,7 +2,6 @@
 @import 'tailwindcss-primeui';
 @import 'primeicons/primeicons.css';
 @import './font.css';
-@import '@sakai/assets/main.css';
 
 @source '../../../layers';
 
