@@ -134,6 +134,10 @@ function initFilters1() {
   };
 }
 
+function clearFilter() {
+  initFilters1();
+}
+
 function expandAll() {
   expandedRows.value = products.value.reduce(
     (acc, p) => (acc[p.id] = true) && acc,
