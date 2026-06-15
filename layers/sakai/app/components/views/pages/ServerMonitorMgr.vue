@@ -25,25 +25,33 @@ onMounted(() => {
     <div class="card mb-0! p-4!">
       <div class="mb-3 font-semibold">CPU</div>
       <div class="grid grid-cols-2 gap-4 lg:grid-cols-5">
-        <div class="rounded-lg border p-3 text-center">
+        <div
+          class="rounded-lg border border-[var(--p-content-border-color)] p-3 text-center"
+        >
           <div class="text-surface-500 text-xs">核心数</div>
           <div class="text-primary mt-1 text-xl font-bold">
             {{ mgr.monitorInfo?.cpu.cores ?? '--' }}
           </div>
         </div>
-        <div class="rounded-lg border p-3 text-center">
+        <div
+          class="rounded-lg border border-[var(--p-content-border-color)] p-3 text-center"
+        >
           <div class="text-surface-500 text-xs">系统使用率</div>
           <div class="mt-1 text-xl font-bold text-blue-500">
             {{ mgr.formatPercent(mgr.monitorInfo?.cpu.sysUsage ?? 0) }}
           </div>
         </div>
-        <div class="rounded-lg border p-3 text-center">
+        <div
+          class="rounded-lg border border-[var(--p-content-border-color)] p-3 text-center"
+        >
           <div class="text-surface-500 text-xs">用户使用率</div>
           <div class="mt-1 text-xl font-bold text-green-500">
             {{ mgr.formatPercent(mgr.monitorInfo?.cpu.userUsage ?? 0) }}
           </div>
         </div>
-        <div class="rounded-lg border p-3 text-center">
+        <div
+          class="rounded-lg border border-[var(--p-content-border-color)] p-3 text-center"
+        >
           <div class="text-surface-500 text-xs">空闲率</div>
           <div
             class="mt-1 text-xl font-bold"
@@ -56,7 +64,9 @@ onMounted(() => {
             {{ mgr.formatPercent(mgr.monitorInfo?.cpu.idle ?? 0) }}
           </div>
         </div>
-        <div class="rounded-lg border p-3 text-center">
+        <div
+          class="rounded-lg border border-[var(--p-content-border-color)] p-3 text-center"
+        >
           <div class="text-surface-500 text-xs">I/O 等待</div>
           <div class="mt-1 text-xl font-bold text-orange-500">
             {{ mgr.formatPercent(mgr.monitorInfo?.cpu.wait ?? 0) }}
@@ -69,25 +79,33 @@ onMounted(() => {
     <div class="card mb-0! p-4!">
       <div class="mb-3 font-semibold">内存</div>
       <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
-        <div class="rounded-lg border p-3 text-center">
+        <div
+          class="rounded-lg border border-[var(--p-content-border-color)] p-3 text-center"
+        >
           <div class="text-surface-500 text-xs">总内存</div>
           <div class="mt-1 text-xl font-bold">
             {{ mgr.formatMemory((mgr.monitorInfo?.memory.total ?? 0) * 1024) }}
           </div>
         </div>
-        <div class="rounded-lg border p-3 text-center">
+        <div
+          class="rounded-lg border border-[var(--p-content-border-color)] p-3 text-center"
+        >
           <div class="text-surface-500 text-xs">已用内存</div>
           <div class="mt-1 text-xl font-bold text-blue-500">
             {{ mgr.formatMemory((mgr.monitorInfo?.memory.used ?? 0) * 1024) }}
           </div>
         </div>
-        <div class="rounded-lg border p-3 text-center">
+        <div
+          class="rounded-lg border border-[var(--p-content-border-color)] p-3 text-center"
+        >
           <div class="text-surface-500 text-xs">空闲内存</div>
           <div class="mt-1 text-xl font-bold text-green-500">
             {{ mgr.formatMemory((mgr.monitorInfo?.memory.free ?? 0) * 1024) }}
           </div>
         </div>
-        <div class="rounded-lg border p-3 text-center">
+        <div
+          class="rounded-lg border border-[var(--p-content-border-color)] p-3 text-center"
+        >
           <div class="text-surface-500 text-xs">使用率</div>
           <div
             class="mt-1 text-xl font-bold"
@@ -107,7 +125,9 @@ onMounted(() => {
     <div class="card mb-0! p-4!">
       <div class="mb-3 font-semibold">JVM 信息</div>
       <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <div class="rounded-lg border p-4">
+        <div
+          class="rounded-lg border border-[var(--p-content-border-color)] p-4"
+        >
           <div class="mb-2 text-sm font-medium">基本信息</div>
           <div class="flex flex-col gap-2 text-sm">
             <div class="flex justify-between">
@@ -146,7 +166,9 @@ onMounted(() => {
             </div>
           </div>
         </div>
-        <div class="rounded-lg border p-4">
+        <div
+          class="rounded-lg border border-[var(--p-content-border-color)] p-4"
+        >
           <div class="mb-2 text-sm font-medium">堆内存</div>
           <div class="flex flex-col gap-2 text-sm">
             <div class="flex justify-between">
@@ -176,25 +198,33 @@ onMounted(() => {
     <div class="card mb-0! p-4!">
       <div class="mb-3 font-semibold">服务器信息</div>
       <div class="grid grid-cols-2 gap-3 text-sm lg:grid-cols-4">
-        <div class="rounded-lg border p-3">
+        <div
+          class="rounded-lg border border-[var(--p-content-border-color)] p-3"
+        >
           <div class="text-surface-500 text-xs">主机名</div>
           <div class="mt-1 font-semibold">
             {{ mgr.monitorInfo?.server.hostName ?? '--' }}
           </div>
         </div>
-        <div class="rounded-lg border p-3">
+        <div
+          class="rounded-lg border border-[var(--p-content-border-color)] p-3"
+        >
           <div class="text-surface-500 text-xs">操作系统</div>
           <div class="mt-1 font-semibold">
             {{ mgr.monitorInfo?.server.osName ?? '--' }}
           </div>
         </div>
-        <div class="rounded-lg border p-3">
+        <div
+          class="rounded-lg border border-[var(--p-content-border-color)] p-3"
+        >
           <div class="text-surface-500 text-xs">系统架构</div>
           <div class="mt-1 font-mono font-semibold">
             {{ mgr.monitorInfo?.server.osArch ?? '--' }}
           </div>
         </div>
-        <div class="rounded-lg border p-3">
+        <div
+          class="rounded-lg border border-[var(--p-content-border-color)] p-3"
+        >
           <div class="text-surface-500 text-xs">IP 地址</div>
           <div class="mt-1 font-mono font-semibold">
             {{ mgr.monitorInfo?.server.ipAddress ?? '--' }}
