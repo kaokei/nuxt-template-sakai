@@ -669,4 +669,4 @@ function calculateCustomerTotal(name) {
 }
 </style>
 
-<style src="@sakai/assets/demo/flags/flags.css"></style>
+<style src="@sakai/assets/demo/flags/flags.css" scoped></style>

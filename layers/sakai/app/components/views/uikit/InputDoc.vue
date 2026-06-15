@@ -271,8 +271,6 @@ function searchCountry(event) {
             <template v-if="!slotProps.value || slotProps.value.length === 0">
               <div class="p-1">Select Countries</div>
             </template>
-
-            <style src="@sakai/assets/demo/flags/flags.css"></style>
           </template>
           <template #option="slotProps">
             <div class="flex items-center">
@@ -349,3 +347,5 @@ function searchCountry(event) {
     </div>
   </PrimeFluid>
 </template>
+
+<style src="@sakai/assets/demo/flags/flags.css" scoped></style>
