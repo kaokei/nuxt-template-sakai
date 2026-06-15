@@ -14,7 +14,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
   build: { analyze: true },
-  css: ['~/assets/css/main.css', '@sakai/assets/styles.scss'],
+  css: ['~/assets/css/main.css'],
   vite: {
     plugins: [tailwindcss()],
   },
