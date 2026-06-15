@@ -668,3 +668,5 @@ function calculateCustomerTotal(name) {
   font-weight: bold;
 }
 </style>
+
+<style src="@sakai/assets/demo/flags/flags.css"></style>

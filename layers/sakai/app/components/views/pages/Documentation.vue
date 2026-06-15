@@ -284,3 +284,5 @@ import AppLayout from './AppLayout.vue';
   }
 }
 </style>
+
+<style lang="scss" src="@sakai/assets/demo/code.scss"></style>

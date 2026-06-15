@@ -10,12 +10,6 @@
   padding: 1rem;
 }
 
-.clearfix:after {
-  content: ' ';
-  display: block;
-  clear: both;
-}
-
 .card {
   background: var(--surface-card);
   padding: 2rem;
