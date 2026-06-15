@@ -261,7 +261,7 @@ onMounted(() => {
               <img
                 :src="record.result.imageUrl"
                 :alt="GENERATE_TYPE_LABELS[record.type]"
-                class="border-surface-100 max-h-24 max-w-[120px] rounded border object-contain"
+                class="border-surface-100 max-h-24 max-w-30 rounded border object-contain"
               />
               <PrimeButton
                 icon="pi pi-download"
@@ -272,7 +272,7 @@ onMounted(() => {
             </template>
 
             <template v-else>
-              <code class="text-surface-600 max-w-[200px] truncate text-xs">
+              <code class="text-surface-600 max-w-50 truncate text-xs">
                 {{ record.result.link }}
               </code>
               <PrimeButton

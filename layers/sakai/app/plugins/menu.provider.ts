@@ -9,7 +9,7 @@ export default defineNuxtPlugin(() => {
   const menuService = useRootService(MenuService);
   const route = useRoute();
   menuService.registerSystems(
-    [demoSystemConfig, demoWorkbenchConfig, demoShowcaseConfig],
+    [demoWorkbenchConfig, demoShowcaseConfig, demoSystemConfig],
     route.path,
   );
 

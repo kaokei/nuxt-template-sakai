@@ -35,8 +35,18 @@ function toggle() {
       <div class="mb-4 text-xl font-semibold">Toolbar</div>
       <PrimeToolbar>
         <template #start>
-          <PrimeButton icon="pi pi-plus" class="mr-2" severity="secondary" text />
-          <PrimeButton icon="pi pi-print" class="mr-2" severity="secondary" text />
+          <PrimeButton
+            icon="pi pi-plus"
+            class="mr-2"
+            severity="secondary"
+            text
+          />
+          <PrimeButton
+            icon="pi pi-print"
+            class="mr-2"
+            severity="secondary"
+            text
+          />
           <PrimeButton icon="pi pi-upload" severity="secondary" text />
         </template>
 
@@ -190,7 +200,11 @@ function toggle() {
           <template v-slot:title>
             <div class="mb-0 flex items-center justify-between">
               <div class="mb-4 text-xl font-semibold">Card</div>
-              <PrimeButton icon="pi pi-plus" class="p-button-text" @click="toggle" />
+              <PrimeButton
+                icon="pi pi-plus"
+                class="p-button-text"
+                @click="toggle"
+              />
             </div>
             <PrimeMenu
               id="config_menu"
@@ -233,7 +247,7 @@ function toggle() {
             <PrimeButton
               label="Login"
               icon="pi pi-user"
-              class="mx-auto w-full max-w-[17.35rem]"
+              class="mx-auto w-full"
             ></PrimeButton>
           </div>
         </div>
@@ -241,7 +255,10 @@ function toggle() {
           <PrimeDivider layout="vertical" class="hidden! md:flex!"
             ><b>OR</b></PrimeDivider
           >
-          <PrimeDivider layout="horizontal" class="flex! md:hidden!" align="center"
+          <PrimeDivider
+            layout="horizontal"
+            class="flex! md:hidden!"
+            align="center"
             ><b>OR</b></PrimeDivider
           >
         </div>
@@ -250,7 +267,7 @@ function toggle() {
             label="Sign Up"
             icon="pi pi-user-plus"
             severity="success"
-            class="mx-auto w-full max-w-[17.35rem]"
+            class="mx-auto w-full max-w-56"
           ></PrimeButton>
         </div>
       </div>

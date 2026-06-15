@@ -139,10 +139,10 @@ watch(visible, (v) => {
                 :key="i"
                 class="border-surface-100 dark:border-surface-800 border-b"
               >
-                <td class="max-w-[100px] truncate px-2 py-1">
+                <td class="max-w-25 truncate px-2 py-1">
                   {{ row.title }}
                 </td>
-                <td class="max-w-[200px] truncate px-2 py-1">
+                <td class="max-w-50 truncate px-2 py-1">
                   {{ row.originalUrl }}
                 </td>
                 <td class="px-2 py-1 font-mono">{{ row.shortCode }}</td>
