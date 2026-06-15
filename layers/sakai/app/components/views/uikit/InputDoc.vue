@@ -125,6 +125,7 @@ function searchCountry(event) {
         <PrimeDatePicker
           :showIcon="true"
           :showButtonBar="true"
+          placeholder="选择时间"
           v-model="calendarValue"
         ></PrimeDatePicker>
 
