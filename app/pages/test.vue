@@ -78,15 +78,15 @@ useSeoMeta({
         </p>
 
         <div class="space-y-3 rounded-lg border p-5">
-          <p style="font-family: 'Noto Sans SC', sans-serif; font-weight: 400">
+          <p class="font-noto-sans-sc font-normal">
             <strong>Regular 400：</strong>思源黑体 —
             简体中文首选系统字体。天地玄黄，宇宙洪荒。The quick brown fox.
           </p>
-          <p style="font-family: 'Noto Sans SC', sans-serif; font-weight: 500">
+          <p class="font-noto-sans-sc font-medium">
             <strong>Medium 500：</strong
             >思源黑体中等字重。日月盈昃，辰宿列张。Pack my box with liquor jugs.
           </p>
-          <p style="font-family: 'Noto Sans SC', sans-serif; font-weight: 700">
+          <p class="font-noto-sans-sc font-bold">
             <strong>Bold 700：</strong>思源黑体粗体。寒来暑往，秋收冬藏。How
             vexingly quick daft zebras jump!
           </p>
@@ -113,11 +113,11 @@ useSeoMeta({
         </p>
 
         <div class="space-y-3 rounded-lg border p-5">
-          <p style="font-family: Inter, sans-serif; font-weight: 400">
+          <p class="font-inter font-normal">
             <strong>Regular 400：</strong>Inter is a typeface carefully crafted
             &amp; designed for computer screens.
           </p>
-          <p style="font-family: Inter, sans-serif; font-weight: 700">
+          <p class="font-inter font-bold">
             <strong>Bold 700：</strong>Inter features a tall x-height to aid
             readability of mixed-case and lower-case text.
           </p>
@@ -142,13 +142,7 @@ useSeoMeta({
                 >@fontsource/rubik-doodle-shadow</code
               >
             </p>
-            <p
-              class="text-lg"
-              style="
-                font-family: 'Rubik Doodle Shadow', cursive;
-                font-size: 2rem;
-              "
-            >
+            <p class="font-rubik text-[2rem]">
               Rubik Doodle Shadow — Hand drawn fun!
             </p>
           </div>
@@ -161,24 +155,10 @@ useSeoMeta({
                 >@fontsource/tourney</code
               >
             </p>
-            <p
-              style="
-                font-family: Tourney, sans-serif;
-                font-weight: 100;
-                font-style: normal;
-                font-size: 2rem;
-              "
-            >
+            <p class="font-tourney text-[2rem] font-thin">
               Tourney Thin 100 — SPORTY DISPLAY
             </p>
-            <p
-              style="
-                font-family: Tourney, sans-serif;
-                font-weight: 100;
-                font-style: italic;
-                font-size: 2rem;
-              "
-            >
+            <p class="font-tourney text-[2rem] font-thin italic">
               Tourney Thin 100 Italic — sporty display
             </p>
           </div>

@@ -110,10 +110,10 @@ export default defineNuxtConfig({
       adobe: false,
     },
     families: [
-      { name: 'Inter', provider: 'npm', global: true },
-      { name: 'Noto Sans SC', provider: 'npm', global: true },
-      { name: 'Rubik Doodle Shadow', provider: 'npm', global: true },
-      { name: 'Tourney', provider: 'npm', global: true, weights: [100] },
+      { name: 'Inter', provider: 'npm', global: false },
+      { name: 'Noto Sans SC', provider: 'npm', global: false },
+      { name: 'Rubik Doodle Shadow', provider: 'npm', global: false },
+      { name: 'Tourney', provider: 'npm', global: false, weights: [100] },
     ],
   },
 });
